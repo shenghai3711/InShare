@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.Model
 {
@@ -35,42 +31,7 @@ namespace InShare.Model
         /// 资料图片
         /// </summary>
         public string ProfilePic { get; set; }
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// 密码密文
-        /// </summary>
-        public string PasswordSalt { get; set; }
-
-        /// <summary>
-        /// 上一次密码
-        /// </summary>
-        public string LastPassword { get; set; }
-
-        /// <summary>
-        /// 上一次密码密文
-        /// </summary>
-        public string LastPasswordSalt { get; set; }
-
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public bool Gender { get; set; }
-
-        /// <summary>
-        /// 邮箱
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// 手机号
-        /// </summary>
-        public string PhoneNum { get; set; }
-
+        
         /// <summary>
         /// 关注者编号
         /// 是否关注，数量遍历Id即可
@@ -89,6 +50,42 @@ namespace InShare.Model
         /// </summary>
         public string MutualFollowerIds { get; set; }
 
+        #region 详细信息
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        /// 密码密文
+        /// </summary>
+        public string PasswordSalt { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public bool Gender { get; set; }
+
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+        public string Email { get; set; }
+
+        /// <summary>
+        /// 手机号
+        /// </summary>
+        public string PhoneNum { get; set; }
+
+        /// <summary>
+        /// 上一次密码
+        /// </summary>
+        public string LastPassword { get; set; }
+
+        /// <summary>
+        /// 上一次密码密文
+        /// </summary>
+        public string LastPasswordSalt { get; set; }
+
         /// <summary>
         /// 上次登录时间
         /// </summary>
@@ -98,5 +95,7 @@ namespace InShare.Model
         /// 用户登陆IP
         /// </summary>
         public string IP { get; set; }
+        #endregion
+
     }
 }

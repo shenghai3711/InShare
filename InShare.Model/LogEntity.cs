@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InShare.Model
+﻿namespace InShare.Model
 {
     /// <summary>
     /// 日志实体类
@@ -13,7 +7,7 @@ namespace InShare.Model
     {
         /// <summary>
         /// 日志类型
-        /// Like，Follow，Comment，Tag，Unfollow等操作
+        /// Like，Follow，Comment，Tag，Unfollow，Delete操作
         /// </summary>
         public int LogType { get; set; }
 
