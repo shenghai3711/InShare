@@ -10,6 +10,7 @@ namespace InShare.Model
         public TagEntity()
         {
             this.Posts = new List<PostEntity>();
+            this.Comments = new List<CommentEntity>();
         }
 
         /// <summary>
@@ -21,5 +22,10 @@ namespace InShare.Model
         /// 帖子导航属性
         /// </summary>
         public virtual ICollection<PostEntity> Posts { get; set; }
+
+        /// <summary>
+        /// 评论导航属性
+        /// </summary>
+        public virtual ICollection<CommentEntity> Comments { get; set; }
     }
 }

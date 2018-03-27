@@ -10,7 +10,6 @@ namespace InShare.Model
         public CommentEntity()
         {
             this.Tags = new List<TagEntity>();
-            this.TagUsers = new List<UserEntity>();
         }
 
         /// <summary>
@@ -37,12 +36,7 @@ namespace InShare.Model
         /// 作者导航属性
         /// </summary>
         public virtual UserEntity Owner { get; set; }
-
-        /// <summary>
-        /// 标记用户导航属性
-        /// </summary>
-        public virtual ICollection<UserEntity> TagUsers { get; set; }
-
+        
         /// <summary>
         /// 标记导航属性
         /// </summary>

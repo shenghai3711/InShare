@@ -49,10 +49,12 @@
   <ItemGroup>
     <Compile Include="InShareContext.cs" />
     <Compile Include="ModelConfig\CommentConfig.cs" />
+    <Compile Include="ModelConfig\LikerConfig.cs" />
     <Compile Include="ModelConfig\LogConfig.cs" />
     <Compile Include="ModelConfig\PostConfig.cs" />
     <Compile Include="ModelConfig\TagConfig.cs" />
     <Compile Include="ModelConfig\UserConfig.cs" />
+    <Compile Include="ModelConfig\UserProfileConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

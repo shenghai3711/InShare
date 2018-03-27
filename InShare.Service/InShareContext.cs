@@ -21,6 +21,8 @@ namespace InShare.Service
         public DbSet<CommentEntity> Comments { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<LogEntity> Logs { get; set; }
+        public DbSet<LikerEntity> Likers { get; set; }
+        public DbSet<UserProfileEntity> Profiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

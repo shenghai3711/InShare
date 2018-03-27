@@ -1,10 +1,5 @@
 ﻿using InShare.Model;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.Service.ModelConfig
 {
@@ -12,10 +7,20 @@ namespace InShare.Service.ModelConfig
     {
         public PostConfig()
         {
+            //配置表名
             this.ToTable("T_Post");
+            //配置主键
             this.HasKey(p => p.Id);
+            //配置主键列名
             this.Property(p => p.Id).HasColumnName("PostId").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
-
+            //配置图片路径不能为空
+            this.Property(p => p.DisplayUrl).IsRequired();
+            //配置最大长度
+            this.Property(p => p.ShortCode).IsRequired().HasMaxLength(20);
+            //多对一配置 （在多端配置）
+            this.HasRequired(p => p.Owner).WithMany().HasForeignKey(p => p.UserId).WillCascadeOnDelete(false);
+            //多对多配置 （在任意多端配置，只配置一次即可）
+            this.HasMany(p => p.Tags).WithMany(t => t.Posts).Map(m => m.ToTable("T_PostTags").MapLeftKey("PostId").MapRightKey("TagId"));
         }
     }
 }

@@ -10,7 +10,6 @@ namespace InShare.Model
         public PostEntity()
         {
             this.Tags = new List<TagEntity>();
-            this.Likers = new List<UserEntity>();
         }
 
         /// <summary>
@@ -48,9 +47,5 @@ namespace InShare.Model
         /// </summary>
         public virtual ICollection<TagEntity> Tags { get; set; }
 
-        /// <summary>
-        /// Liker导航属性
-        /// </summary>
-        public virtual ICollection<UserEntity> Likers { get; set; }
     }
 }
