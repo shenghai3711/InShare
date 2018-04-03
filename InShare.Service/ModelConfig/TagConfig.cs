@@ -13,6 +13,8 @@ namespace InShare.Service.ModelConfig
             this.HasKey(t => t.Id);
             //配置主键列名
             this.Property(t => t.Id).HasColumnName("TagId").IsRequired();
+            //配置名称为非空，最长为30
+            this.Property(t => t.Name).IsRequired().HasMaxLength(30);
         }
     }
 }

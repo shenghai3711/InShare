@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
     <Compile Include="CommentEntity.cs" />
+    <Compile Include="FollowEntity.cs" />
     <Compile Include="LikerEntity.cs" />
     <Compile Include="LogEntity.cs" />
     <Compile Include="PostEntity.cs" />

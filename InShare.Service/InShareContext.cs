@@ -11,10 +11,9 @@ namespace InShare.Service
 {
     public class InShareContext : DbContext
     {
-        public InShareContext() : base("name=配置数据库名称")
+        public InShareContext() : base("name=dbContext")
         {
-            Database.SetInitializer<InShareContext>(null);
-
+            //System.Data.Entity.Database.SetInitializer<InShareContext>(null);
         }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<PostEntity> Posts { get; set; }
@@ -23,6 +22,7 @@ namespace InShare.Service
         public DbSet<LogEntity> Logs { get; set; }
         public DbSet<LikerEntity> Likers { get; set; }
         public DbSet<UserProfileEntity> Profiles { get; set; }
+        public DbSet<FollowEntity> Follows { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

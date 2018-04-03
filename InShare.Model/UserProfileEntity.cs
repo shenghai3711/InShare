@@ -53,6 +53,11 @@ namespace InShare.Model
         public string IP { get; set; }
 
         /// <summary>
+        /// 上次修改日期
+        /// </summary>
+        public DateTime? LastEditDateTime { get; set; }
+
+        /// <summary>
         /// 导航属性
         /// </summary>
         public virtual UserEntity User { get; set; }

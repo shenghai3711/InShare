@@ -16,6 +16,8 @@ namespace InShare.Service.ModelConfig
             //配置非空
             this.Property(l => l.Content).IsRequired();
             this.Property(l => l.LogType).IsRequired();
+            //配置内容非空，最长为100
+            this.Property(l => l.Content).IsRequired().HasMaxLength(100);
             //配置多对一 （多端配置）
             this.HasRequired(l => l.User).WithMany().HasForeignKey(l => l.UserId).WillCascadeOnDelete(false);
         }

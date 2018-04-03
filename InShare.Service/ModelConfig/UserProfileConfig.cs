@@ -1,10 +1,5 @@
 ﻿using InShare.Model;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.Service.ModelConfig
 {
@@ -13,13 +8,18 @@ namespace InShare.Service.ModelConfig
         public UserProfileConfig()
         {
             this.ToTable("T_UserProfile");
-            this.Property(u => u.Email).IsRequired();
-            this.Property(u => u.Gender).IsRequired();
-            this.Property(u => u.LastPassword).HasMaxLength(16);
-            this.Property(u => u.LastPasswordSalt).HasMaxLength(10);
-            this.Property(u => u.Password).IsRequired().HasMaxLength(16);
-            this.Property(u => u.PasswordSalt).IsRequired().HasMaxLength(10);
-            this.Property(u => u.PhoneNum).HasMaxLength(11);
+            //设置主键,并且与Profile表一对一关联 https://www.cnblogs.com/bidianqing/p/7512992.html
+            this.HasKey(p => p.Id).HasRequired(p => p.User).WithOptional(u => u.Profile).WillCascadeOnDelete(false);
+
+            this.Property(p => p.Id).HasColumnName("ProfileId").HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
+            this.Property(p => p.Email).IsRequired().HasMaxLength(30);
+            this.Property(p => p.Gender).IsRequired();
+            this.Property(p => p.LastPassword).HasMaxLength(16);
+            this.Property(p => p.LastPasswordSalt).HasMaxLength(10);
+            this.Property(p => p.Password).IsRequired().HasMaxLength(16);
+            this.Property(p => p.PasswordSalt).IsRequired().HasMaxLength(10);
+            this.Property(p => p.PhoneNum).HasMaxLength(11);
+            this.Property(p => p.IP).HasMaxLength(15);
         }
     }
 }

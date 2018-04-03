@@ -15,6 +15,8 @@ namespace InShare.Service.ModelConfig
             this.Property(p => p.Id).HasColumnName("PostId").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
             //配置图片路径不能为空
             this.Property(p => p.DisplayUrl).IsRequired();
+            //配置内容最长为100
+            this.Property(p => p.Caption).HasMaxLength(100);
             //配置最大长度
             this.Property(p => p.ShortCode).IsRequired().HasMaxLength(20);
             //多对一配置 （在多端配置）

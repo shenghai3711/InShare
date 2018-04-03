@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="InShareContext.cs" />
     <Compile Include="ModelConfig\CommentConfig.cs" />
+    <Compile Include="ModelConfig\FollowConfig.cs" />
     <Compile Include="ModelConfig\LikerConfig.cs" />
     <Compile Include="ModelConfig\LogConfig.cs" />
     <Compile Include="ModelConfig\PostConfig.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -67,8 +67,6 @@
       <Name>InShare.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

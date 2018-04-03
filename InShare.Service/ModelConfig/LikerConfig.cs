@@ -1,10 +1,5 @@
 ﻿using InShare.Model;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.Service.ModelConfig
 {
@@ -17,6 +12,7 @@ namespace InShare.Service.ModelConfig
             this.Property(l => l.Id).HasColumnName("LikerId");
             //多对一配置 （在多端配置）
             this.HasRequired(l => l.Post).WithMany().HasForeignKey(l => l.PostId).WillCascadeOnDelete(false);
+            //一对一配置
             this.HasRequired(l => l.User).WithMany().HasForeignKey(l => l.UserId).WillCascadeOnDelete(false);
         }
     }

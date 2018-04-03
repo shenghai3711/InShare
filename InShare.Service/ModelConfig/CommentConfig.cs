@@ -13,8 +13,8 @@ namespace InShare.Service.ModelConfig
             this.HasKey(c => c.Id);
             //配置列名
             this.Property(c => c.Id).HasColumnName("CommentId");
-            //配置内容为必须字段
-            this.Property(c => c.Content).IsRequired();
+            //配置内容为必须字段，最长50
+            this.Property(c => c.Content).IsRequired().HasMaxLength(50);
             //多对一配置 （在多端配置）
             this.HasRequired(c => c.Post).WithMany().HasForeignKey(c => c.PostId).WillCascadeOnDelete(false);
             //多对一配置 （在多端配置）
