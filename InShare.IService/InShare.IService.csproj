@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICommentService.cs" />
     <Compile Include="IFollowService.cs" />
+    <Compile Include="ILikeService.cs" />
     <Compile Include="IPostService.cs" />
     <Compile Include="IServiceSupport.cs" />
+    <Compile Include="ITagService.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

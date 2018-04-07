@@ -46,6 +46,5 @@ namespace InShare.Model
         /// 标记导航属性
         /// </summary>
         public virtual ICollection<TagEntity> Tags { get; set; }
-
     }
 }

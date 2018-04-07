@@ -19,8 +19,6 @@ namespace InShare.Service.ModelConfig
             this.HasRequired(c => c.Post).WithMany().HasForeignKey(c => c.PostId).WillCascadeOnDelete(false);
             //多对一配置 （在多端配置）
             this.HasRequired(c => c.Owner).WithMany().HasForeignKey(c => c.UserId).WillCascadeOnDelete(false);
-            //多对多配置 （在任意多端配置，只配置一次即可）
-            this.HasMany(c => c.Tags).WithMany(t => t.Comments).Map(m => m.ToTable("T_CommentTags").MapLeftKey("CommentId").MapRightKey("TagId"));
         }
     }
 }
