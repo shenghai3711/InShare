@@ -1,13 +1,9 @@
 ﻿using InShare.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.IService
 {
-   public interface ICommentService:IServiceSupport
+    public interface ICommentService:IServiceSupport
     {
         /// <summary>
         /// 新增评论
@@ -31,14 +27,7 @@ namespace InShare.IService
         /// <param name="postId">帖子编号</param>
         /// <returns></returns>
         bool DeleteByPostId(long postId);
-
-        /// <summary>
-        /// 根据帖子获取评论
-        /// </summary>
-        /// <param name="postId">帖子编号</param>
-        /// <returns></returns>
-        List<CommentEntity> GetPostList(long postId);
-
+        
         /// <summary>
         /// 根据帖子获取评论数量
         /// </summary>

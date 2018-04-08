@@ -1,9 +1,5 @@
 ﻿using InShare.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.IService
 {
@@ -31,14 +27,7 @@ namespace InShare.IService
         /// <param name="postId">帖子编号</param>
         /// <returns></returns>
         PostEntity GetPostInfo(long postId);
-
-        /// <summary>
-        /// 根据用户编号获取帖子列表
-        /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <returns></returns>
-        List<PostEntity> GetPostList(long userId);
-
+        
         /// <summary>
         /// 根据用户编号获取帖子数量
         /// </summary>

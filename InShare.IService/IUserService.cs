@@ -55,33 +55,17 @@ namespace InShare.IService
         /// 根据用户名称查找用户
         /// </summary>
         /// <param name="name">名称（账号/全名）</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
-        List<UserEntity> GetUserByName(string name);
-
-        /// <summary>
-        /// 获取所有用户
-        /// </summary>
-        /// <returns></returns>
-        List<UserEntity> GetAllUserList();
+        List<UserEntity> GetUserByName(string name,int pageSize,int pageIndex);
 
         /// <summary>
         /// 获取所有用户数量
         /// </summary>
+        /// <param name="name">名称（账号/全名）</param>
         /// <returns></returns>
-        long GetAllUserCount();
-
-        /// <summary>
-        /// 根据用户编号删除用户
-        /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <returns></returns>
-        bool DeleteUser(long userId);
-
-        /// <summary>
-        /// 根据用户编号批量删除用户
-        /// </summary>
-        /// <param name="userIds">用户编号数组</param>
-        /// <returns></returns>
-        bool BatchDelete(long[] userIds);
+        long GetAllUserCount(string name);
+        
     }
 }

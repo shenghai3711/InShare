@@ -1,9 +1,5 @@
 ﻿using InShare.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InShare.IService
 {
@@ -24,14 +20,7 @@ namespace InShare.IService
         /// <param name="postId">帖子编号</param>
         /// <returns></returns>
         bool UnLike(long userId, long postId);
-
-        /// <summary>
-        /// 根据帖子获取点赞者
-        /// </summary>
-        /// <param name="postId">帖子编号</param>
-        /// <returns></returns>
-        List<LikerEntity> GetPostList(long postId);
-
+        
         /// <summary>
         /// 根据帖子获取点赞者数量
         /// </summary>
@@ -49,7 +38,7 @@ namespace InShare.IService
         List<LikerEntity> GetLikePagerList(long postId, int pageSize, int pageIndex);
 
         /// <summary>
-        /// 根据用户编号获取点赞者数量
+        /// 根据用户编号获取点赞数量
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <returns></returns>
