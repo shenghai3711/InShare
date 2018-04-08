@@ -57,6 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InShare.IService\InShare.IService.csproj">
+      <Project>{a61c59b1-0894-4a50-8f53-a67351b62c6a}</Project>
+      <Name>InShare.IService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InShare.Model\InShare.Model.csproj">
       <Project>{0b8a2d2f-8581-4d66-982f-cb91e991e04b}</Project>
       <Name>InShare.Model</Name>

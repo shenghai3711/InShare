@@ -1,4 +1,5 @@
 ﻿using InShare.Model;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -13,8 +14,15 @@ namespace InShare.Service
     {
         public InShareContext() : base("name=dbContext")
         {
+            this.Database.Log = (sql) =>
+            {
+                _log.DebugFormat("EF执行SQL：{0}", sql);
+            };
             //System.Data.Entity.Database.SetInitializer<InShareContext>(null);
         }
+
+        private static ILog _log = LogManager.GetLogger(typeof(InShareContext));
+
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<PostEntity> Posts { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }

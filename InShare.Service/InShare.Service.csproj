@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -47,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseService.cs" />
     <Compile Include="InShareContext.cs" />
     <Compile Include="ModelConfig\CommentConfig.cs" />
     <Compile Include="ModelConfig\FollowConfig.cs" />
@@ -57,11 +61,20 @@
     <Compile Include="ModelConfig\UserConfig.cs" />
     <Compile Include="ModelConfig\UserProfileConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InShare.Common\InShare.Common.csproj">
+      <Project>{19a02b54-3e0e-4fd5-953b-860a862d4df2}</Project>
+      <Name>InShare.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InShare.IService\InShare.IService.csproj">
+      <Project>{a61c59b1-0894-4a50-8f53-a67351b62c6a}</Project>
+      <Name>InShare.IService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InShare.Model\InShare.Model.csproj">
       <Project>{0b8a2d2f-8581-4d66-982f-cb91e991e04b}</Project>
       <Name>InShare.Model</Name>

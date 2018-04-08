@@ -22,6 +22,11 @@
         public long UserId { get; set; }
 
         /// <summary>
+        /// 用户IP
+        /// </summary>
+        public string IP { get; set; }
+
+        /// <summary>
         /// 用户导航属性
         /// </summary>
         public virtual UserEntity User { get; set; }
