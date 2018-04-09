@@ -109,7 +109,7 @@ namespace InShare.Common
                 return "";
             }
         }
-        
+
         #region 删除最后一个字符之后的字符
 
         /// <summary>
@@ -421,7 +421,6 @@ namespace InShare.Common
         #endregion
 
 
-
         #region HTML转行成TEXT
         /// <summary>
         /// HTML转行成TEXT
@@ -518,6 +517,21 @@ namespace InShare.Common
             //不为空
             return false;
         }
+        #endregion
+
+        #region 分割Tag
+
+        public static List<string> GetTagList(string str)
+        {
+            //不能大于30
+            List<string> tagList = new List<string>();
+            if (str.Contains('#'))
+            {
+                tagList = str.Split(' ').Where(s => s.Contains('#') && s.Length <= 30).Select(s => s.Replace("#", "")).ToList();
+            }
+            return tagList;
+        }
+
         #endregion
     }
 }

@@ -30,7 +30,7 @@ namespace InShare.Common
         public static string CreatePostCode()
         {
             string str = Guid.NewGuid().ToString();
-            return str.Substring(str.LastIndexOf('-'));
+            return str.Substring(str.LastIndexOf('-')+1);
         }
 
         /// <summary>

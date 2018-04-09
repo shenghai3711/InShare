@@ -13,10 +13,13 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            IUserService userService = new UserService();
-            long id = userService.Add("123456@qq.com", "instagram", "Instagrm", "123456");
+            //IUserService userService = new UserService();
+            //long id = userService.Add("123456@qq.com", "instagram", "Instagrm", "123456");
 
-            Console.WriteLine(id);
+            IPostService postService = new PostService();
+            long postId = postService.Add(6502458435, "#123 #test askdjfla;sdf", "1.png");
+
+            Console.WriteLine(postId);
 
             Console.WriteLine("ok");
             Console.ReadKey();
