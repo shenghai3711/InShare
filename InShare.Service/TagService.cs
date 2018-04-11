@@ -47,17 +47,29 @@ namespace InShare.Service
 
         public int GetTagCount(string name)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.GetAll().Where(t => t.Name == name).Count();
+            }
         }
 
         public List<TagEntity> GetTagList(string name)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.GetAll().Where(t => t.Name == name).ToList();
+            }
         }
 
         public List<TagEntity> GetTagPagerList(string name, int pageSize, int pageIndex)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.GetAll().Where(t => t.Name == name).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+            }
         }
     }
 }

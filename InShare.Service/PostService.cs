@@ -30,21 +30,18 @@ namespace InShare.Service
                 ShortCode = RandomHelper.CreatePostCode(),
                 CreateDateTime = DateTime.Now,
             };
-            List<TagEntity> tagList = new List<TagEntity>();
-            foreach (var tag in StringHelper.GetTagList(content))
-            {
-                if (string.IsNullOrEmpty(tag))
-                    continue;
-                tagList.Add(new TagEntity
-                {
-                    Name = tag
-                });
-            }
-            //ToDo:先要查询是否已存在标签，否则会重复添加
-            post.Tags = tagList;
             using (InShareContext db = new InShareContext())
             {
-                //BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                BaseService<TagEntity> tagService = new BaseService<TagEntity>(db);
+                foreach (var tagName in StringHelper.GetTagList(content))
+                {
+                    //ToDo:应该减少查询次数
+                    var tag = tagService.GetAll().FirstOrDefault(t => t.Name == tagName);
+                    if (tag == null)
+                        post.Tags.Add(new TagEntity { Name = tagName });
+                    else
+                        post.Tags.Add(tag);
+                }
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return post.Id;
@@ -53,32 +50,56 @@ namespace InShare.Service
 
         public bool Delete(long postId)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.MakeDel(postId);
+            }
         }
 
         public int GetPostCount(long userId)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetAll().Where(p => p.UserId == userId).Count();
+            }
         }
 
         public int GetPostCountByTag(long tagId)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetAll().Where(p => p.Tags.Any(t => t.Id == tagId)).Count();
+            }
         }
 
         public PostEntity GetPostInfo(long postId)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetById(postId);
+            }
         }
 
         public List<PostEntity> GetPostPagerByTag(long tagId, int pageSize, int pageIndex)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetAll().Where(p => p.Tags.Any(t => t.Id == tagId)).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+            }
         }
 
         public List<PostEntity> GetPostPagerList(long userId, int pageSize, int pageIndex)
         {
-            throw new NotImplementedException();
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetAll().Where(p => p.UserId == userId).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+            }
         }
     }
 }

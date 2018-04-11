@@ -48,8 +48,8 @@ namespace InShare.IService
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="pageInde">页索引</param>
+        /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
-        List<long> GetFollowingPagerList(long userId, int pageSize, int pageInde);
+        List<long> GetFollowingPagerList(long userId, int pageSize, int pageIndex);
     }
 }

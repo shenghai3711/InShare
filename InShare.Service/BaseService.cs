@@ -83,6 +83,20 @@ namespace InShare.Service
         }
 
         /// <summary>
+        /// 根据Id软删除一条数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool MakeDel(long id)
+        {
+            var user = GetAll().SingleOrDefault(t => t.Id == id);
+            if (user == null) return false;
+            user.IsDeleted = true;
+            context.SaveChanges();
+            return true;
+        }
+
+        /// <summary>
         /// 根据Id判断是否存在
         /// </summary>
         /// <param name="id"></param>
