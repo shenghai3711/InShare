@@ -11,8 +11,9 @@ namespace InShare.IService
         /// <param name="userId">用户编号</param>
         /// <param name="type">日志类型</param>
         /// <param name="content">日志内容</param>
+        /// <param name="ip">ip</param>
         /// <returns></returns>
-        long Add(long userId, int type, string content);
+        long Add(long userId, int type, string content, string ip);
 
         /// <summary>
         /// 获取用户日志数量
@@ -28,6 +29,6 @@ namespace InShare.IService
         /// <param name="pageSize">每页数量</param>
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
-        List<LogEntity> GetLogPagerList(long userId,int pageSize,int pageIndex);
+        List<LogEntity> GetLogPagerList(long userId, int pageSize, int pageIndex);
     }
 }

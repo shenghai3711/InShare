@@ -14,18 +14,16 @@ namespace InShare.Service
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="email"></param>
         /// <param name="userName"></param>
         /// <param name="fullName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public long Add(string email, string userName, string fullName, string password)
+        public long Add(string userName, string fullName, string password)
         {
             long id = RandomHelper.CreateId(10);
             string salt = RandomHelper.CreateSalt();
             UserEntity user = new UserEntity
             {
-                //ToDo:邮箱是否已存在
                 Id = id,
                 UserName = userName,
                 FullName = fullName,
@@ -34,15 +32,40 @@ namespace InShare.Service
                     Id = id,
                     Password = EncryptHelper.MD5Encrypt(id + password + salt),
                     PasswordSalt = salt,
-                    Email = email,
                 }
             };
             using (InShareContext db = new InShareContext())
             {
-                //BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                while (true)
+                {
+                    if (baseService.IsExist(user.Id))
+                        user.Id = user.Profile.Id = RandomHelper.CreateId(10);
+                    else
+                        break;
+                }
                 db.Users.Add(user);
                 db.SaveChanges();
                 return id;
+            }
+        }
+
+        public bool CheckLogin(string userName, string password)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                var user = baseService.GetAll().FirstOrDefault(u => u.UserName == userName);
+                if (user != null)
+                {
+                    if (EncryptHelper.MD5Encrypt(user.Id + password + user.Profile.PasswordSalt) == user.Profile.Password)
+                    {
+                        user.Profile.LastLoginDateTime = DateTime.Now;
+                        db.SaveChanges();
+                        return true;
+                    }
+                }
+                return false;
             }
         }
 

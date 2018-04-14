@@ -525,9 +525,12 @@ namespace InShare.Common
         {
             //不能大于30
             List<string> tagList = new List<string>();
-            if (str.Contains('#'))
+            foreach (var item in str.Replace("\r\n", " ").Split(' ').Where(s => s.Contains('#')).Select(s => s.IndexOf('#') != 0 ? s.Substring(s.IndexOf('#')) : s))
             {
-                tagList = str.Split(' ').Where(s => s.Contains('#') && s.Length <= 30).Select(s => s.Replace("#", "")).ToList();
+                if (item.Contains('#'))
+                    tagList.AddRange(item.Split('#').Where(i => !string.IsNullOrEmpty(i) && !tagList.Contains(i) && i.Length <= 30).ToList());
+                else if (!tagList.Contains(item) && item.Length <= 30)
+                    tagList.Add(item);
             }
             return tagList;
         }

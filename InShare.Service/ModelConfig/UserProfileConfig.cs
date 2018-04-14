@@ -12,8 +12,7 @@ namespace InShare.Service.ModelConfig
             this.HasKey(p => p.Id).HasRequired(p => p.User).WithOptional(u => u.Profile).WillCascadeOnDelete(false);
 
             this.Property(p => p.Id).HasColumnName("ProfileId").HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
-            this.Property(p => p.Email).IsRequired().HasMaxLength(30);
-            this.Property(p => p.Gender).IsRequired();
+            this.Property(p => p.Email).HasMaxLength(50);
             this.Property(p => p.LastPassword).HasMaxLength(32);
             this.Property(p => p.LastPasswordSalt).HasMaxLength(10);
             this.Property(p => p.Password).IsRequired().HasMaxLength(32);

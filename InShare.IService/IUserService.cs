@@ -8,12 +8,11 @@ namespace InShare.IService
         /// <summary>
         /// 增加用户
         /// </summary>
-        /// <param name="email">邮箱</param>
         /// <param name="userName">账号</param>
         /// <param name="fullName">全名</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        long Add(string email, string userName, string fullName, string password);
+        long Add(string userName, string fullName, string password);
 
         /// <summary>
         /// 编辑用户资料
@@ -52,13 +51,21 @@ namespace InShare.IService
         UserEntity GetUserByUserName(string userName);
 
         /// <summary>
+        /// 用户登陆
+        /// </summary>
+        /// <param name="userName">账号或邮箱</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        bool CheckLogin(string userName, string password);
+
+        /// <summary>
         /// 根据用户名称查找用户
         /// </summary>
         /// <param name="name">名称（账号/全名）</param>
         /// <param name="pageSize">每页数量</param>
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
-        List<UserEntity> GetUserByName(string name,int pageSize,int pageIndex);
+        List<UserEntity> GetUserByName(string name, int pageSize, int pageIndex);
 
         /// <summary>
         /// 获取所有用户数量
@@ -66,6 +73,6 @@ namespace InShare.IService
         /// <param name="name">名称（账号/全名）</param>
         /// <returns></returns>
         long GetAllUserCount(string name);
-        
+
     }
 }

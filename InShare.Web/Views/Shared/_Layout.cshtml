@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <!-- jQuery -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    @RenderSection("head", required: false)
+
+    <style>
+        #bodyPage {
+            width: 100%;
+            min-height: 100%;
+            height: auto !important;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        img.bg {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 1;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="bodyPage">
+        <img src="~/Content/img/bg1.png" class="bg">
+        <img src="https://scontent-hkg3-2.cdninstagram.com/vp/0c92a26467d2d9e0669baad433e22f52/5B671E8E/t51.2885-15/e35/29739835_226138444799489_6181337320612954112_n.jpg" class="bg" />
+        <img src="~/Content/img/bg2.png" class="bg">
+        <img src="~/Content/img/bg3.png" class="bg">
+        <img src="~/Content/img/4.jpg" class="bg">
+    </div>
+    @RenderBody()
+
+    <!--轮播图-->
+    <script type="text/javascript" src="~/Content/js/fullplay.js"></script>
+    <script>
+        $("#bodyPage").fullImages({
+            ImgWidth: 1920,//图片的宽度
+            ImgHeight: 980,//图片的高度
+            autoplay: 3500,//幻灯片自动播放时间
+            fadeTime: 1500,//图片淡入时间
+        });
+    </script>
+</body>
+</html>
