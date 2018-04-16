@@ -14,7 +14,8 @@ namespace ConsoleTest
         static void Main(string[] args)
         {
             IUserService userService = new UserService();
-            long id = userService.Add("lhppppp", "LHP", "123456");
+            //long id = userService.Add("lhppppp", "LHP", "123456");
+            long id = userService.Add("admin", "Admin", "123456");
 
             //IPostService postService = new PostService();
             //long postId = postService.Add(6502458435, "#123 #test askdjfla;sdf", "1.png");

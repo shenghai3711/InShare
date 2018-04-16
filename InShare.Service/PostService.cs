@@ -17,8 +17,9 @@ namespace InShare.Service
         /// <param name="userId"></param>
         /// <param name="content"></param>
         /// <param name="imgPath"></param>
+        /// <param name="loaction"></param>
         /// <returns></returns>
-        public long Add(long userId, string content, string imgPath)
+        public long Add(long userId, string content, string imgPath, string loaction)
         {
             string shortCode = RandomHelper.CreatePostCode();
             PostEntity post = new PostEntity
@@ -29,6 +30,7 @@ namespace InShare.Service
                 DisplayUrl = imgPath,
                 ShortCode = RandomHelper.CreatePostCode(),
                 CreateDateTime = DateTime.Now,
+                Location = loaction,
             };
             using (InShareContext db = new InShareContext())
             {

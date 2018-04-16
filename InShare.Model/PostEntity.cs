@@ -28,9 +28,14 @@ namespace InShare.Model
         public string DisplayUrl { get; set; }
 
         /// <summary>
-        /// 是否为视频
+        /// 地理位置
         /// </summary>
-        public bool IsVideo { get; set; }
+        public string Location { get; set; }
+
+        /// <summary>
+        /// 转发帖子编号
+        /// </summary>
+        public long? RePostId { get; set; }
 
         /// <summary>
         /// 作者

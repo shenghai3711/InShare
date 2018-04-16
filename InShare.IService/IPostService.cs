@@ -11,8 +11,9 @@ namespace InShare.IService
         /// <param name="userId">用户编号</param>
         /// <param name="content">帖子内容</param>
         /// <param name="imgPath">图片路径</param>
+        /// <param name="location">地理位置</param>
         /// <returns></returns>
-        long Add(long userId, string content, string imgPath);
+        long Add(long userId, string content, string imgPath, string location);
 
         /// <summary>
         /// 删除帖子
@@ -27,7 +28,7 @@ namespace InShare.IService
         /// <param name="postId">帖子编号</param>
         /// <returns></returns>
         PostEntity GetPostInfo(long postId);
-        
+
         /// <summary>
         /// 根据用户编号获取帖子数量
         /// </summary>

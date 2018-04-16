@@ -16,6 +16,11 @@ namespace InShare.Model
         public string Content { get; set; }
 
         /// <summary>
+        /// 父级评论编号
+        /// </summary>
+        public long? ParentId { get; set; }
+
+        /// <summary>
         /// 帖子编号
         /// </summary>
         public long PostId { get; set; }

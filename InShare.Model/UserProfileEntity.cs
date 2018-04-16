@@ -58,6 +58,11 @@ namespace InShare.Model
         public DateTime? LastEditDateTime { get; set; }
 
         /// <summary>
+        /// 是否为官方账号
+        /// </summary>
+        public bool? IsOfficial { get; set; }
+
+        /// <summary>
         /// 导航属性
         /// </summary>
         public virtual UserEntity User { get; set; }

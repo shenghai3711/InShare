@@ -56,10 +56,6 @@
     <Compile Include="InShareContext.cs" />
     <Compile Include="LikeService.cs" />
     <Compile Include="LogService.cs" />
-    <Compile Include="Migrations\201804081436310_InitialCreate.cs" />
-    <Compile Include="Migrations\201804081436310_InitialCreate.Designer.cs">
-      <DependentUpon>201804081436310_InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfig\CommentConfig.cs" />
     <Compile Include="ModelConfig\FollowConfig.cs" />
@@ -90,11 +86,6 @@
       <Project>{0b8a2d2f-8581-4d66-982f-cb91e991e04b}</Project>
       <Name>InShare.Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804081436310_InitialCreate.resx">
-      <DependentUpon>201804081436310_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
