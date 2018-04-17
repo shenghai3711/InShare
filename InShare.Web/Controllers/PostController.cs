@@ -6,15 +6,10 @@ using System.Web.Mvc;
 
 namespace InShare.Web.Controllers
 {
-    public class HomeController : Controller
+    public class PostController : Controller
     {
-        // GET: Home
+        // GET: Post
         public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
         {
             return View();
         }

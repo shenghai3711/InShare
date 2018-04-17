@@ -1,7 +1,9 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Sign In";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section head {
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
@@ -34,7 +36,7 @@
                     <label for="remember"><input type="checkbox" id="remember"> Remember Me</label>
                 </div>
                 <div class="form-group">
-                    <p>Not registered? <a href="/Register/Index">Sign Up</a> | <a href="forgot.html">Forgot Password?</a></p>
+                    <p>Not registered? <a href="/User/Register">Sign Up</a> | <a href="forgot.html">Forgot Password?</a></p>
                 </div>
                 <div class="form-group">
                     <button id="btnLogin" class="btn btn-primary"><span>Sign In</span></button>
@@ -74,11 +76,11 @@
         $("#btnLogin").attr('disabled', 'true');
         $("#btnLogin").find('span').html("Loading...");
         $.ajax({
-            url: "/Login/Index", dataType: "json",
+            url: "/User/Login", dataType: "json",
             type: "post", data: { userName: name, passWord: password, IP: userIP, City: userCity },
             success: function (res) {
                 if (res.Status == "OK") {
-                    location.href = "https://www.baidu.com/";//如果登录成功，则自动跳转到首页
+                    location.href = "/User/" + res.Data;//"https://www.baidu.com/";//如果登录成功，则自动跳转到首页
                 } else {
                     $("#msg").show().find('div').html(res.ErrorMsg);
                     $("#btnLogin").find('span').html("Sign In");
@@ -95,3 +97,4 @@
             //    $(".imgCode").attr("src", "yanzhengma.php?" + Math.random());
             //})
 </script>
+

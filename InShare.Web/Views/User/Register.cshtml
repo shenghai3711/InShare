@@ -1,20 +1,22 @@
-﻿@{
-    ViewBag.Title = "Sign up";
+﻿
+@{
+    ViewBag.Title = "Sign Up";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section head {
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Content/css/animate.css">
-    <link rel="stylesheet" href="~/Content/css/signstyle.css">
 
-    <!-- Modernizr JS -->
-    <script src="~/Content/js/modernizr-2.6.2.min.js"></script>
-    <!-- FOR IE9 below -->
-    <!--[if lt IE 9]>
-    <script src="~/Content/js/respond.min.js"></script>
-    <![endif]-->
-    <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="utf-8"></script>
+section head {
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/css/animate.css">
+<link rel="stylesheet" href="~/Content/css/signstyle.css">
+
+<!-- Modernizr JS -->
+<script src="~/Content/js/modernizr-2.6.2.min.js"></script>
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<script src="~/Content/js/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="utf-8"></script>
 }
 <div class="container">
     <div class="row">
@@ -41,10 +43,10 @@
                 <div class="form-group">
                     <label for="verify-code" class="sr-only">Verify Code</label>
                     <input type="text" class="form-control" id="verify-code" placeholder="Verify Code" autocomplete="off" style="width:65%;float:left;">
-                    <img id="imgCode" src="/Register/VerifyCode" class="form-control" style="width:30%;margin-left:15%;height:35px;" />
+                    <img id="imgCode" src="/User/VerifyCode" class="form-control" style="width:30%;margin-left:15%;height:35px;" />
                 </div>
                 <div class="form-group">
-                    <p>Already registered? <a href="/Login/Index">Sign In</a></p>
+                    <p>Already registered? <a href="/User/Login">Sign In</a></p>
                 </div>
                 <div class="form-group">
                     <button id="btnRegister" class="btn btn-primary">
@@ -82,12 +84,12 @@
         $("#btnRegister").attr('disabled', 'true');
         $("#btnRegister").find('span').html("Loading...");
         $.ajax({
-            url: "/Register/Index", dataType: "json",
+            url: "/User/Register", dataType: "json",
             type: "post", data: { userName: userName, fullName: fullName, passWord: pwd, verifyCode: inputCode, IP: userIP, City: userCity },
             success: function (res) {
                 if (res.Status == "OK") {
                     alert("注册成功");
-                    location.href = "/Login/Index";//如果登录成功，则自动跳转到首页
+                    location.href = "/User/Login";//如果登录成功，则自动跳转到首页
                 } else {
                     $("#msg").show().find('div').html(res.ErrorMsg);
                     $("#btnRegister").find('span').html("Sign Up");
@@ -103,6 +105,6 @@
         });
     });
     $("#imgCode").click(function () {
-        $("#imgCode").attr("src", "/Register/VerifyCode?" + Math.random());
+        $("#imgCode").attr("src", "/User/VerifyCode?" + Math.random());
     })
 </script>
