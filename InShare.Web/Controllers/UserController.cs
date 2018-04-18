@@ -27,6 +27,38 @@ namespace InShare.Web.Controllers
             return View();
         }
 
+        #region 修改资料
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(long id, string userName, string fullName)
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region 修改密码
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(long? id, string oldPwd, string newPwd)
+        {
+            return View();
+        }
+
+        #endregion
+
         #region 登陆
 
         [HttpGet]

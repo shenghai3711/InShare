@@ -1,0 +1,401 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+@section head {
+    <style type="text/css">
+        .head {
+            height: 90px;
+            text-align: center;
+            color: gray;
+            font-size: 30px;
+        }
+
+            .head span {
+                float: left;
+                margin-left: 195px;
+                margin-top: 50px;
+            }
+
+        .headRight {
+            float: right;
+            top: 50px;
+            right: 210px;
+            position: relative;
+        }
+
+            .headRight a {
+                color: #FF8585;
+                font-size: 15px;
+            }
+
+                .headRight a:hover {
+                    text-decoration: none;
+                    color: #ec2b58
+                }
+
+        .myIndex {
+            margin: 140px auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        .center {
+            height: 150px;
+            background: url(image/21.jpg);
+        }
+
+            .center .centerTop {
+                /*width: 1200px;*/
+                height: 100%;
+            }
+
+                .center .centerTop img {
+                    /*margin-right: 30px;*/
+                }
+
+                .center .centerTop .top1 {
+                    /*width: 1000px;*/
+                }
+
+        .top1 .top1Left {
+            margin: 0px auto;
+            width: 400px;
+            height: 150px;
+            /*width: 520px;
+            height: 50px;
+            margin-left: 220px;
+            margin-top: 30px;
+            float: left;*/
+        }
+
+            .top1 .top1Left a {
+            }
+
+        .top1Left ul li {
+            float: left;
+            margin-right: 30px;
+            margin-top: 5px;
+        }
+
+        .center .centerTop .top2 {
+            /*width: 1000px;*/
+            height: 50px;
+            margin-top: 40px;
+        }
+
+        .top2 ul li {
+            float: left;
+            margin-top: 10px;
+            margin-left: 220px;
+            font-size: 20px;
+            list-style: none;
+        }
+
+        .top2 b {
+            color: black;
+            margin-left: 200px;
+            list-style: none;
+        }
+
+        .center .centerOther {
+            margin-top: 10px;
+            /*width: 1200px;*/
+            border: solid 1px red;
+        }
+
+
+        .t1, .t2, .t3, .t4, .t5, .t6, .t7 {
+            width: 400px;
+            height: 38px;
+            margin: 0px auto;
+            margin-top: 4px;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+
+        #main {
+            margin-top: -5em;
+        }
+
+        #tiles li {
+            width: 350px;
+            height:310px;
+            float: left;
+            margin: 10px 25px;
+        }
+    </style>
+}
+
+<div class="myIndex">
+    <div class="center">
+        <div class="centerTop">
+            <div class="top1">
+                <div style="position: absolute;height:150px;width:150px;margin-left:250px;">
+                    <img src="~/Content/img/UserPhoto.jpg">
+                </div>
+                <div class="top1Left">
+                    <text style="font-size:xx-large;">用户名</text>
+                    <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;">edit profile</button>
+                    <ul style="width: 100%; height: 30px; padding: 10px 0px;">
+                        <li>Following 48 </li>
+                        <li>follower 33 </li>
+                        <li>posts 12</li>
+                    </ul>
+                    <ul>
+                        <li><span>FUllName </span>Why not live a life of your dreams?</li>
+                        <li><a href="#">www.facebook.com/joey.tribanly</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!---start-content---->
+<div class="content">
+    <div class="wrap">
+        <div id="main" role="main">
+            <ul id="tiles">
+                <!-- These are our grid blocks -->
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='single-page.html';">
+                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
+                    <div class="post-info">
+                        <div class="post-basic-info">
+                            <h3><a href="#">Animation films</a></h3>
+                            <span><a href="#"><label> </label>Movies</a></span>
+                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
+                        </div>
+                        <div class="post-info-rate-share">
+                            <div class="rateit">
+                                <span> </span>
+                            </div>
+                            <div class="post-share">
+                                <span> </span>
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </li>
+                <!-- End of grid blocks -->
+            </ul>
+        </div>
+    </div>
+</div>
+<!---//End-content---->
+
+@section script {
+    <!----wookmark-scripts---->
+    <script src="~/Content/js/jquery.imagesloaded.js"></script>
+    <script src="~/Content/js/jquery.wookmark.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+            var $tiles = $('#tiles'),
+                $handler = $('li', $tiles),
+                $main = $('#main'),
+                $window = $(window),
+                $document = $(document),
+                options = {
+                    autoResize: true, // This will auto-update the layout when the browser window is resized.
+                    container: $main, // Optional, used for some extra CSS styling
+                    offset: 20, // Optional, the distance between grid items
+                    itemWidth: 280 // Optional, the width of a grid item
+                };
+            /**
+             * Reinitializes the wookmark handler after all images have loaded
+             */
+            function applyLayout() {
+                $tiles.imagesLoaded(function () {
+                    // Destroy the old handler
+                    if ($handler.wookmarkInstance) {
+                        $handler.wookmarkInstance.clear();
+                    }
+                    // Create a new layout handler.
+                    $handler = $('li', $tiles);
+                    $handler.wookmark(options);
+                });
+            }
+            /**
+             * When scrolled all the way to the bottom, add more tiles
+             */
+            function onScroll() {
+                // Check if we're within 100 pixels of the bottom edge of the broser window.
+                var winHeight = window.innerHeight ? window.innerHeight : $window.height(), // iphone fix
+                    closeToBottom = ($window.scrollTop() + winHeight > $document.height() - 100);
+
+                if (closeToBottom) {
+                    //发送加载下一页请求
+
+                    // Get the first then items from the grid, clone them, and add them to the bottom of the grid
+                    var $items = $('li', $tiles),
+                        $firstTen = $items.slice(0, 10);
+                    $tiles.append($firstTen.clone());
+
+                    applyLayout();
+                }
+            };
+
+            // Call the layout function for the first time
+            applyLayout();
+
+            // Capture scroll event.
+            $window.bind('scroll.wookmark', onScroll);
+        })(jQuery);
+    </script>
+    <!----//wookmark-scripts---->
+}

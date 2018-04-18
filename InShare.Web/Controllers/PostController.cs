@@ -8,10 +8,10 @@ namespace InShare.Web.Controllers
 {
     public class PostController : Controller
     {
-        // GET: Post
-        public ActionResult Index()
+        public ActionResult Index(string shortCode)
         {
             return View();
         }
+        
     }
 }
