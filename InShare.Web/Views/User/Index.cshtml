@@ -1,4 +1,5 @@
-﻿
+﻿@model InShare.Model.UserEntity
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
@@ -134,10 +135,10 @@
         <div class="centerTop">
             <div class="top1">
                 <div style="position: absolute;height:150px;width:150px;margin-left:250px;">
-                    <img src="~/Content/img/UserPhoto.jpg">
+                    <img src="~/App_Data/UserIcon/@Model.ProfilePic">
                 </div>
                 <div class="top1Left">
-                    <text style="font-size:xx-large;">用户名</text>
+                    <text style="font-size:xx-large;">@Model.UserName</text>
                     <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;">edit profile</button>
                     <ul style="width: 100%; height: 30px; padding: 10px 0px;">
                         <li>Following 48 </li>
@@ -145,8 +146,7 @@
                         <li>posts 12</li>
                     </ul>
                     <ul>
-                        <li><span>FUllName </span>Why not live a life of your dreams?</li>
-                        <li><a href="#">www.facebook.com/joey.tribanly</a></li>
+                        <li><span>@Model.FullName </span>@Model.Biography</li>
                     </ul>
                 </div>
             </div>
@@ -398,4 +398,24 @@
         })(jQuery);
     </script>
     <!----//wookmark-scripts---->
+    <!--start 数据加载-->
+    <script>
+        $(function () {
+            //$.ajax({
+            //    url: "/User/Login", dataType: "json",
+            //    type: "post", data: { userName: name, passWord: password, IP: userIP, City: userCity },
+            //    success: function (res) {
+            //        if (res.Status == "OK") {
+
+            //        } else {
+
+            //        }
+            //    }, error: function () {
+
+            //    }
+            //});
+        });
+        
+    </script>
+    <!--end 数据加载-->
 }

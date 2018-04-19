@@ -59,6 +59,17 @@ namespace InShare.Service
             }
         }
 
+        public List<PostEntity> GetHomePager(long userId, int pageSize, int pageIndex)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<FollowEntity> followService = new BaseService<FollowEntity>(db);
+                var followingList = followService.GetAll().Where(f => f.FollowId == userId).Select(f => f.FollowedId);
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetPager<DateTime>(p => followingList.Contains(userId), p => p.CreateDateTime, pageSize, pageIndex).ToList();
+            }
+        }
+
         public int GetPostCount(long userId)
         {
             using (InShareContext db = new InShareContext())
@@ -91,7 +102,7 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetAll().Where(p => p.Tags.Any(t => t.Id == tagId)).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+                return baseService.GetPager<DateTime>(p => p.Tags.Any(t => t.Id == tagId), p => p.CreateDateTime, pageSize, pageIndex).ToList();
             }
         }
 
@@ -100,7 +111,7 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetAll().Where(p => p.UserId == userId).Skip(pageSize * pageIndex).Take(pageSize).ToList();
+                return baseService.GetPager<DateTime>(p => p.UserId == userId, p => p.CreateDateTime, pageSize, pageIndex).ToList();
             }
         }
     }

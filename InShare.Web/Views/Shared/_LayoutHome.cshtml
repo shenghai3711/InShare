@@ -1,4 +1,6 @@
-﻿<!DOCTYPE HTML>
+﻿@model InShare.Model.UserEntity
+
+<!DOCTYPE HTML>
 <html>
 <head>
     <title>@ViewBag.Title</title>
@@ -63,11 +65,11 @@
                             <div class="menu_box_list">
                                 <ul>
                                     <li><a href="#"><span>home</span></a></li>
-                                    <li><a href="#"><span>About</span></a></li>
+                                    <li><a href="/Home/About"><span>About</span></a></li>
                                     <li><a href="#"><span>Works</span></a></li>
                                     <li><a href="#"><span>Clients</span></a></li>
                                     <li><a href="#"><span>Blog</span></a></li>
-                                    <li><a href="contact.html"><span>Contact</span></a></li>
+                                    <li><a href="#"><span>Contact</span></a></li>
                                     <div class="clear"> </div>
                                 </ul>
                             </div>
@@ -90,6 +92,11 @@
                                 <img src="~/Content/img/user-pic.png" title="user-name" />
                                 <span>Ipsum</span>
                             </a>
+
+                            @*<a href="/User/@Model.Id">
+                                <img src="~/Content/img/user-pic.png" title="user-name" />
+                                <span>@Model.UserName</span>
+                            </a>*@
                         </li>
                     </ul>
                 </div>

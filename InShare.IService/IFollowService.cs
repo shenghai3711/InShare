@@ -51,5 +51,12 @@ namespace InShare.IService
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
         List<long> GetFollowingPagerList(long userId, int pageSize, int pageIndex);
+
+        /// <summary>
+        /// 获取正在关注的用户编号列表
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns></returns>
+        List<long> GetFollowingList(long userId);
     }
 }

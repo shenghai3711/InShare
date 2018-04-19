@@ -15,6 +15,12 @@ namespace InShare.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Posting",
+                url: "Post/Posting",
+                defaults: new { controller = "Post", action = "Posting" }
+            );
+
+            routes.MapRoute(
                 name: "Post",
                 url: "Post/{shortCode}",
                 defaults: new { controller = "Post", action = "Index" }

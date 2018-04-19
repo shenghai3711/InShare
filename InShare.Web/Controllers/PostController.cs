@@ -12,6 +12,11 @@ namespace InShare.Web.Controllers
         {
             return View();
         }
-        
+
+        [HttpGet]
+        public ActionResult Posting()
+        {
+            return View();
+        }
     }
 }

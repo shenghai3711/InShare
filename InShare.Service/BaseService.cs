@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -104,6 +105,20 @@ namespace InShare.Service
         public bool IsExist(long id)
         {
             return GetById(id) != null;
+        }
+
+        /// <summary>
+        /// 获取分页列表
+        /// </summary>
+        /// <typeparam name="TKey">排序字段类型</typeparam>
+        /// <param name="whereLambda">条件Lambda表达式</param>
+        /// <param name="orderBy">排序Lambda表达式</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="pageIndex">页索引</param>
+        /// <returns></returns>
+        public IQueryable<T> GetPager<TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageSize, int pageIndex)
+        {
+            return GetAll().Where(whereLambda).OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }
     }
 }

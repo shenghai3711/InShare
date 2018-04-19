@@ -1,5 +1,7 @@
 ﻿using InShare.Model;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace InShare.IService
 {
@@ -60,5 +62,14 @@ namespace InShare.IService
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
         List<PostEntity> GetPostPagerByTag(long tagId, int pageSize, int pageIndex);
+
+        /// <summary>
+        /// 获取主页帖子
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="pageIndex">页索引</param>
+        /// <returns></returns>
+        List<PostEntity> GetHomePager(long userId, int pageSize, int pageIndex);
     }
 }

@@ -24,7 +24,11 @@ namespace InShare.Web.Controllers
         [HttpGet]
         public ActionResult Index(long? id)
         {
-            return View();
+            if (id == null)
+            {
+                return View();
+            }
+            return View(UserService.GetUserById(id.Value));
         }
 
         #region 修改资料
