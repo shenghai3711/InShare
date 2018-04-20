@@ -70,6 +70,15 @@ namespace InShare.Service
             }
         }
 
+        public bool IsFollowing(long accountId, long userId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<FollowEntity> baseService = new BaseService<FollowEntity>(db);
+                return baseService.GetAll().Any(f => f.FollowId == accountId && f.FollowedId == userId);
+            }
+        }
+
         public bool Unfollow(long userId, long unfollowId)
         {
             using (InShareContext db = new InShareContext())

@@ -45,7 +45,7 @@
 
         .center {
             height: 150px;
-            background: url(image/21.jpg);
+            /*background: url(image/21.jpg);*/
         }
 
             .center .centerTop {
@@ -65,11 +65,6 @@
             margin: 0px auto;
             width: 400px;
             height: 150px;
-            /*width: 520px;
-            height: 50px;
-            margin-left: 220px;
-            margin-top: 30px;
-            float: left;*/
         }
 
             .top1 .top1Left a {
@@ -123,10 +118,14 @@
 
         #tiles li {
             width: 350px;
-            height:310px;
+            height: 310px;
             float: left;
             margin: 10px 25px;
         }
+
+            #tiles li img {
+                height: 100%;
+            }
     </style>
 }
 
@@ -135,15 +134,30 @@
         <div class="centerTop">
             <div class="top1">
                 <div style="position: absolute;height:150px;width:150px;margin-left:250px;">
-                    <img src="~/App_Data/UserIcon/@Model.ProfilePic">
+                    <img src="@Model.ProfilePic" />
                 </div>
                 <div class="top1Left">
                     <text style="font-size:xx-large;">@Model.UserName</text>
-                    <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;">edit profile</button>
+                    @if (Model.Id == Convert.ToInt64(Session["userId"]))
+                    {
+                        <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_edit">edit profile</button>
+                    }
+                    else
+                    {
+                        if (ViewBag.Following)
+                        {
+                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_following">Following</button>
+                        }
+                        else
+                        {
+                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_follow">Follow</button>
+                        }
+                    }
                     <ul style="width: 100%; height: 30px; padding: 10px 0px;">
-                        <li>Following 48 </li>
-                        <li>follower 33 </li>
-                        <li>posts 12</li>
+                        <li>following @ViewBag.FollowingCount </li>
+                        <li>follower @ViewBag.FollowerCount </li>
+                        <li>posts @ViewBag.PostCount</li>
+                        <input type="hidden" value="@ViewBag.PostCount" id="postCount" />
                     </ul>
                     <ul>
                         <li><span>@Model.FullName </span>@Model.Biography</li>
@@ -151,187 +165,21 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
+<input type="hidden" value="1" id="pageIndex" />
 <!---start-content---->
 <div class="content">
     <div class="wrap">
         <div id="main" role="main">
             <ul id="tiles">
                 <!-- These are our grid blocks -->
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='single-page.html';">
-                    <img src="~/Content/img/img1.jpg" @*width="200" height="200"*@>
-                    <div class="post-info">
-                        <div class="post-basic-info">
-                            <h3><a href="#">Animation films</a></h3>
-                            <span><a href="#"><label> </label>Movies</a></span>
-                            <p>Lorem Ipsum is simply dummy text of the printing & typesetting industry.</p>
-                        </div>
-                        <div class="post-info-rate-share">
-                            <div class="rateit">
-                                <span> </span>
-                            </div>
-                            <div class="post-share">
-                                <span> </span>
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </li>
+                @foreach (var post in ViewBag.PostList)
+                {
+                    <li onclick="location.href='/Post/@post.ShortCode';">
+                        <img src="@post.DisplayUrl">
+                    </li>
+                }
                 <!-- End of grid blocks -->
             </ul>
         </div>
@@ -344,6 +192,7 @@
     <script src="~/Content/js/jquery.imagesloaded.js"></script>
     <script src="~/Content/js/jquery.wookmark.js"></script>
     <script type="text/javascript">
+        var isLoading = false;
         (function ($) {
             var $tiles = $('#tiles'),
                 $handler = $('li', $tiles),
@@ -375,16 +224,48 @@
              */
             function onScroll() {
                 // Check if we're within 100 pixels of the bottom edge of the broser window.
-                var winHeight = window.innerHeight ? window.innerHeight : $window.height(), // iphone fix
-                    closeToBottom = ($window.scrollTop() + winHeight > $document.height() - 100);
+                //var winHeight = window.innerHeight ? window.innerHeight : $window.height(), // iphone fix
+                //    //$window.scrollTop() 滚动条距顶部距离(页面超出窗口的高度)
+                //    closeToBottom = ($window.scrollTop() + winHeight > $document.height() - 200);
 
-                if (closeToBottom) {
+                if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                    var pageIndex = $("#pageIndex").val();
+                    var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
+                    var postCount = $("#postCount").val();
+                    if (pageIndex * 6 >= postCount) {
+                        return;//防止已全部加载后继续发送请求
+                    }
+                    var loadedCount = $("#tiles").children("li").length;
+                    if ((pageIndex - 1) * 6 == loadedCount) {
+                        return;//防止重复加载
+                    }
+                    if (isLoading) {
+                        return;
+                    }
+                    isLoading = true;
                     //发送加载下一页请求
+                    $.ajax({
+                        url: "/User/Load", dataType: "json",
+                        type: "post", data: { userId: userId, pageIndex: ++pageIndex },
+                        success: function (res) {
+                            if (res.Status == "OK") {
+                                $("#pageIndex").val(pageIndex);
+                                for (var i = 0; i < res.Data.length; i++) {
+                                    $tiles.append('<li onclick="location.href="/Post/' + res.Data[i].ShortCode + '";"><img src="' + res.Data[i].DisplayUrl + '"></li>');
+                                    //$tiles.append('<li onclick="location.href="/Post/res.Data[i].ShortCode";"><img src="res.Data[i].DisplayUrl"></li>')
+                                }
+                                isLoading = false;
+                            } else {
 
+                            }
+                        }, error: function () {
+
+                        }
+                    });
                     // Get the first then items from the grid, clone them, and add them to the bottom of the grid
-                    var $items = $('li', $tiles),
-                        $firstTen = $items.slice(0, 10);
-                    $tiles.append($firstTen.clone());
+                    //var $items = $('li', $tiles),
+                    //    $firstTen = $items.slice(0, 10);
+                    //$tiles.append($firstTen.clone());
 
                     applyLayout();
                 }
@@ -396,9 +277,22 @@
             // Capture scroll event.
             $window.bind('scroll.wookmark', onScroll);
         })(jQuery);
+
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                //$(document).scrollTop() 获取垂直滚动的距离
+                //$(document).scrollLeft() 这是获取水平滚动条的距离
+                //if ($(document).scrollTop() <= 0) {
+                //    alert("滚动条已经到达顶部为0");
+                //}
+                if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                    //alert("滚动条已经到达底部为" + $(document).scrollTop());
+                }
+            });
+        });
     </script>
     <!----//wookmark-scripts---->
-    <!--start 数据加载-->
+
     <script>
         $(function () {
             //$.ajax({
@@ -415,7 +309,7 @@
             //    }
             //});
         });
-        
+
     </script>
-    <!--end 数据加载-->
+
 }

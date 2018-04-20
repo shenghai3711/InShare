@@ -1,5 +1,7 @@
 ﻿using InShare.Common;
 using InShare.IService;
+using InShare.Model;
+using InShare.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,15 @@ namespace InShare.Web.Controllers
         public ILogService LogService { get; set; }
         [Dependency]
         public IUserService UserService { get; set; }
+        [Dependency]
+        public IFollowService FollowService { get; set; }
+        [Dependency]
+        public IPostService PostService { get; set; }
+
+        /// <summary>
+        /// 每页数量
+        /// </summary>
+        public int PageSize = 6;
 
         /// <summary>
         /// 加载用户详情
@@ -28,10 +39,40 @@ namespace InShare.Web.Controllers
             {
                 return View();
             }
+            ViewBag.FollowerCount = FollowService.GetFollowerCount(id.Value);
+            ViewBag.FollowingCount = FollowService.GetFollowingCount(id.Value);
+            if (Convert.ToInt64(Session["userId"]) != id.Value)
+            {
+                ViewBag.Following = FollowService.IsFollowing(Convert.ToInt64(Session["userId"]), id.Value);
+            }
+            ViewBag.PostCount = PostService.GetPostCount(id.Value);
+            ViewBag.PostList = PostService.GetPostPagerList(id.Value, PageSize, 1).Select(
+                p => new PostInfo
+                {
+                    Caption = p.Caption,
+                    DisplayUrl = p.DisplayUrl,
+                    Id = p.Id,
+                    Location = p.Location,
+                    ShortCode = p.ShortCode,
+                });
             return View(UserService.GetUserById(id.Value));
         }
 
-        #region 修改资料
+        public ActionResult Load(long userId, int pageIndex)
+        {
+            var returList = PostService.GetPostPagerList(userId, PageSize, pageIndex).Select(
+                p => new PostInfo
+                {
+                    Caption = p.Caption,
+                    DisplayUrl = p.DisplayUrl,
+                    Id = p.Id,
+                    Location = p.Location,
+                    ShortCode = p.ShortCode,
+                });
+            return Json(new AjaxResult { Status = "OK", Data = returList });
+        }
+
+        #region 修改资料 未完成
 
         [HttpGet]
         public ActionResult Edit()
@@ -47,7 +88,7 @@ namespace InShare.Web.Controllers
 
         #endregion
 
-        #region 修改密码
+        #region 修改密码 未完成
 
         [HttpGet]
         public ActionResult ChangePassword()
@@ -63,6 +104,22 @@ namespace InShare.Web.Controllers
 
         #endregion
 
+        #region Follow操作 未完成
+
+        [HttpPost]
+        public ActionResult Follow(long userId)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Unfollow(string userId)
+        {
+            return View();
+        }
+
+        #endregion
+        
         #region 登陆
 
         [HttpGet]
@@ -86,6 +143,8 @@ namespace InShare.Web.Controllers
             if (UserService.CheckLogin(userName, passWord))
             {
                 Session["userId"] = user.Id;
+                Session["userName"] = user.UserName;
+                Session["profilePic"] = user.ProfilePic;
                 LogService.Add(user.Id, 0, string.Format("{0}在{1}登陆成功", user.FullName, city), ip);//日志记录用户登录
                 return Json(new AjaxResult { Status = "OK", Data = user.Id });
             }
@@ -121,6 +180,8 @@ namespace InShare.Web.Controllers
 
         #endregion
 
+        #region 验证
+
         /// <summary>
         /// 校验账号是否存在
         /// </summary>
@@ -136,11 +197,18 @@ namespace InShare.Web.Controllers
             return Json(new AjaxResult { Status = "Error", ErrorMsg = "此账号已注册" });
         }
 
+        /// <summary>
+        /// 获取验证码
+        /// </summary>
+        /// <returns></returns>
         public ActionResult VerifyCode()
         {
             string checkCode = RandomHelper.CreateImageCode();
             TempData["verifyCode"] = checkCode;//将验证码随机数放入临时缓存
             return File(ImageHelper.CodeImage(checkCode), @"image/Gif");
         }
+
+        #endregion
+
     }
 }

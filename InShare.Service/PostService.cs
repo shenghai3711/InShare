@@ -24,7 +24,7 @@ namespace InShare.Service
             string shortCode = RandomHelper.CreatePostCode();
             PostEntity post = new PostEntity
             {
-                Id = RandomHelper.CreateId(19),
+                Id = RandomHelper.CreateId(15),
                 UserId = userId,
                 Caption = content,
                 DisplayUrl = imgPath,

@@ -25,7 +25,7 @@ namespace InShare.IService
         /// <param name="genger">性别</param>
         /// <param name="profilePic">头像</param>
         /// <returns></returns>
-        bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool genger, string email);
+        bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool genger,string profilePic);
 
         /// <summary>
         /// 修改密码

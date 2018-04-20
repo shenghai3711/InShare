@@ -19,7 +19,7 @@ namespace InShare.IService
         /// <param name="unfollowId">被取消关注用户编号</param>
         /// <returns></returns>
         bool Unfollow(long userId, long unfollowId);
-        
+
         /// <summary>
         /// 获取关注者数量
         /// </summary>
@@ -35,7 +35,7 @@ namespace InShare.IService
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
         List<long> GetFollowerPagerList(long userId, int pageSize, int pageIndex);
-        
+
         /// <summary>
         /// 获取正在关注编号数量
         /// </summary>
@@ -58,5 +58,13 @@ namespace InShare.IService
         /// <param name="userId">用户编号</param>
         /// <returns></returns>
         List<long> GetFollowingList(long userId);
+
+        /// <summary>
+        /// 是否正在关注此用户
+        /// </summary>
+        /// <param name="accountId">账号编号</param>
+        /// <param name="userId">用户编号</param>
+        /// <returns></returns>
+        bool IsFollowing(long accountId, long userId);
     }
 }

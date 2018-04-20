@@ -11,13 +11,13 @@
         addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
     </script>
     <!----webfonts---->
-    <link href='http://fonts.useso.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    @*<link href='http://fonts.useso.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>*@
     <!----//webfonts---->
     <!-- Global CSS for the page and tiles -->
     <link href="~/Content/css/main.css" rel="stylesheet" />
     <!-- //Global CSS for the page and tiles -->
     <!---start-click-drop-down-menu----->
-    <script src="/Content/js/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 
     <!----start-dropdown--->
     <script type="text/javascript">
@@ -88,15 +88,15 @@
                     <ul>
                         <li>
                             <!--点进去用户详情-->
-                            <a href="#">
+                            @*<a href="#">
                                 <img src="~/Content/img/user-pic.png" title="user-name" />
                                 <span>Ipsum</span>
-                            </a>
-
-                            @*<a href="/User/@Model.Id">
-                                <img src="~/Content/img/user-pic.png" title="user-name" />
-                                <span>@Model.UserName</span>
                             </a>*@
+
+                            <a href="/User/@Session["userId"]">
+                                <img src="~/Content/img/user-pic.png" title="user-name" />
+                                <span>@Session["userName"]</span>
+                            </a>
                         </li>
                     </ul>
                 </div>

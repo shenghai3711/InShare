@@ -78,9 +78,9 @@ namespace InShare.Service
         /// <param name="bio"></param>
         /// <param name="isPrivate"></param>
         /// <param name="genger"></param>
-        /// <param name="email"></param>
+        /// <param name="profilePic"></param>
         /// <returns></returns>
-        public bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool genger, string email)
+        public bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool genger, string profilePic)
         {
             using (InShareContext db = new InShareContext())
             {
@@ -95,7 +95,7 @@ namespace InShare.Service
                 user.Biography = bio;
                 user.IsPrivate = isPrivate;
                 user.Profile.Gender = genger;
-                user.Profile.Email = email;
+                user.ProfilePic = profilePic;
                 user.Profile.LastEditDateTime = DateTime.Now;
                 db.SaveChanges();
                 return true;
@@ -142,7 +142,7 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
-                return baseService.GetAll().Where(u => u.FullName.Contains(name) || u.UserName.Contains(name)).Take(pageSize).Skip(pageIndex * pageSize).ToList();
+                return baseService.GetPager<DateTime>(u => u.FullName.Contains(name) || u.UserName.Contains(name), u => u.CreateDateTime, pageSize, pageIndex).ToList();
             }
         }
 
