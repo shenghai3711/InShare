@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InShare.Model;
 using InShare.Common;
+using System.Data.Entity;
 
 namespace InShare.Service
 {
@@ -21,7 +22,6 @@ namespace InShare.Service
         /// <returns></returns>
         public long Add(long userId, string content, string imgPath, string loaction)
         {
-            string shortCode = RandomHelper.CreatePostCode();
             PostEntity post = new PostEntity
             {
                 Id = RandomHelper.CreateId(15),
@@ -43,6 +43,15 @@ namespace InShare.Service
                         post.Tags.Add(new TagEntity { Name = tagName });
                     else
                         post.Tags.Add(tag);
+                }
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                while (baseService.GetAll().Any(p => p.ShortCode == post.ShortCode))
+                {
+                    post.ShortCode = RandomHelper.CreatePostCode();
+                }
+                while (baseService.GetAll().Any(p => p.Id == post.Id))
+                {
+                    post.Id = RandomHelper.CreateId(15);
                 }
                 db.Posts.Add(post);
                 db.SaveChanges();
@@ -66,7 +75,7 @@ namespace InShare.Service
                 BaseService<FollowEntity> followService = new BaseService<FollowEntity>(db);
                 var followingList = followService.GetAll().Where(f => f.FollowId == userId).Select(f => f.FollowedId);
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetPager<DateTime>(p => followingList.Contains(userId), p => p.CreateDateTime, pageSize, pageIndex).ToList();
+                return baseService.GetPager<DateTime>(p => followingList.Contains(p.UserId) || p.UserId == userId, p => p.CreateDateTime, pageSize, pageIndex).Include(p => p.Owner).Include(p => p.Tags).AsNoTracking().ToList();
             }
         }
 
@@ -97,6 +106,16 @@ namespace InShare.Service
             }
         }
 
+        public PostEntity GetPostInfo(string ShortCode)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                var post = baseService.GetAll().Where(p => p.ShortCode == ShortCode).Include(p => p.Tags).Include(p => p.Owner.Profile);
+                return post.FirstOrDefault();
+            }
+        }
+
         public List<PostEntity> GetPostPagerByTag(long tagId, int pageSize, int pageIndex)
         {
             using (InShareContext db = new InShareContext())
@@ -111,8 +130,9 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetPager<DateTime>(p => p.UserId == userId, p => p.CreateDateTime, pageSize, pageIndex).ToList();
+                return baseService.GetPager<DateTime>(p => p.UserId == userId, p => p.CreateDateTime, pageSize, pageIndex).Include(p=>p.Owner).Include(p=>p.Tags).ToList();
             }
         }
+
     }
 }

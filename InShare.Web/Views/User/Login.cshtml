@@ -80,7 +80,7 @@
             type: "post", data: { userName: name, passWord: password, IP: userIP, City: userCity },
             success: function (res) {
                 if (res.Status == "OK") {
-                    location.href = "/User/" + res.Data;//"https://www.baidu.com/";//如果登录成功，则自动跳转到首页
+                    location.href = "/Home/Index";//"https://www.baidu.com/";//如果登录成功，则自动跳转到首页
                 } else {
                     $("#msg").show().find('div').html(res.ErrorMsg);
                     $("#btnLogin").find('span').html("Sign In");

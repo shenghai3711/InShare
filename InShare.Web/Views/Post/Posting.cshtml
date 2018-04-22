@@ -12,35 +12,13 @@
     <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="utf-8"></script>
     <!--start 输入框-->
     <style type="text/css">
-        body, div, h2, h3, ul, li, p {
-            margin: 0;
-            padding: 0;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-            a:hover {
-                text-decoration: underline;
-            }
-
-        ul {
-            list-style-type: none;
-        }
-
-        body {
-            color: #333;
-            background: #3c3a3b;
-            font: 12px/1.5 \5b8b\4f53;
-        }
-
         #msgBox {
             width: 500px;
             background: #fff;
             border-radius: 5px;
             margin: 10px auto;
             padding-top: 10px;
+            font: 12px/1.5 \5b8b\4f53;
         }
 
             #msgBox form h2 {
@@ -279,7 +257,7 @@
                     <div><textarea id="conBox" class="f-text"></textarea></div>
                     <div class="tr">
                         <p>
-                            <span class="countTxt">还能输入</span><strong class="maxNum">140</strong><span>个字</span>
+                            <span class="countTxt">还能输入</span><strong class="maxNum">100</strong><span>个字</span>
                             <input id="sendBtn" type="button" value="" title="快捷键 Ctrl+Enter" />
                         </p>
                     </div>
@@ -420,6 +398,8 @@
         }
 
     </script>
+
+    <!--发帖子-->
     <script type="text/javascript">
 
         /*-------------------------- +
@@ -490,7 +470,7 @@
             var timer = null;
             var oTmp = "";
             var i = 0;
-            var maxNum = 140;
+            var maxNum = 100;
 
             //禁止表单提交
             EventUtil.addHandler(get.byTagName("form", oMsgBox)[0], "submit", function () { return false });
@@ -546,57 +526,7 @@
                             $("#sendBtn").removeAttr("disabled");
                         }
                     });
-
-
-
-
-                    //var oLi = document.createElement("li");
-                    //var oDate = new Date();
-
-                    ////重置表单
-                    //get.byTagName("form", oMsgBox)[0].reset();
-                    //for (i = 0; i < aImg.length; i++) aImg[i].className = "";
-                    //aImg[0].className = "current";
-
-                    ////将元素高度保存
-                    //var iHeight = oLi.clientHeight - parseFloat(css(oLi, "paddingTop")) - parseFloat(css(oLi, "paddingBottom"));
-                    //var alpah = count = 0;
-                    //css(oLi, { "opacity": "0", "height": "0" });
-                    //timer = setInterval(function () {
-                    //    css(oLi, { "display": "block", "opacity": "0", "height": (count += 8) + "px" });
-                    //    if (count > iHeight) {
-                    //        clearInterval(timer);
-                    //        css(oLi, "height", iHeight + "px");
-                    //        timer = setInterval(function () {
-                    //            css(oLi, "opacity", (alpah += 10));
-                    //            alpah > 100 && (clearInterval(timer), css(oLi, "opacity", 100))
-                    //        }, 30)
-                    //    }
-                    //}, 30);
                 }
-            };
-
-            function handleSave() {
-                var oDate = new Date();
-                var mycanvas = document.getElementById("canvas");
-                var base64Data = mycanvas.toDataURL("image/jpeg", 1.0);
-                var blob = dataURItoBlob(base64Data);
-                //组装formdata
-                var fd = new FormData();
-                fd.append("fileData", blob);//fileData为自定义
-                fd.append("fileName", format(oDate.getDate()));//fileName为自定义，名字随机生成或者写死，看需求
-                //需要注意的是服务端需要设定，允许跨域请求。数据接收的方式和<input type="file"/> 上传的文件没有区别
-                $.ajax("home/SavePicture", {
-                    type: "post",
-                    datatype: "json",
-                    data: fd,
-                    error: function () { },
-                    success: function (result) {
-                        if (result) {
-                            alert(result.msg);
-                        }
-                    }
-                });
             };
 
             function dataURItoBlob(base64Data) {

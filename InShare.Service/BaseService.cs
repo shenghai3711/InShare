@@ -118,7 +118,7 @@ namespace InShare.Service
         /// <returns></returns>
         public IQueryable<T> GetPager<TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageSize, int pageIndex)
         {
-            return GetAll().Where(whereLambda).OrderBy(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            return GetAll().Where(whereLambda).OrderByDescending(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }
     }
 }

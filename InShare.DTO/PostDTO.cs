@@ -11,7 +11,7 @@ namespace InShare.DTO
         public string ShortCode { get; set; }
         public string Caption { get; set; }
         public string DisplayUrl { get; set; }
-        public bool IsVideo { get; set; }
+        public string Location { get; set; }
         public DateTime CreateDateTime { get; set; }
         public OwnerDTO Owner { get; set; }
         public List<CommentDTO> CommentList { get; set; }

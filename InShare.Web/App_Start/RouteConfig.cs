@@ -14,16 +14,17 @@ namespace InShare.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Posting",
-                url: "Post/Posting",
-                defaults: new { controller = "Post", action = "Posting" }
-            );
+            //routes.MapRoute(
+            //    name: "Posting",
+            //    url: "Post/Posting",
+            //    defaults: new { controller = "Post", action = "Posting" }
+            //);
 
             routes.MapRoute(
                 name: "Post",
                 url: "Post/{shortCode}",
-                defaults: new { controller = "Post", action = "Index" }
+                defaults: new { controller = "Post", action = "Index" },
+                constraints: new { shortCode = "^[0-9a-zA-Z]{10,20}$" }
             );
 
             routes.MapRoute(
@@ -32,11 +33,6 @@ namespace InShare.Web
                 defaults: new { controller = "User", action = "Index", id = UrlParameter.Optional },
                 constraints: new { id = @"^\d*$" }
             );
-            //routes.MapRoute(
-            //    name: "User",
-            //    url: "User/{action}",
-            //    defaults: new { controller = "User", action = "Index" }
-            //);
 
             routes.MapRoute(
                 name: "Default",

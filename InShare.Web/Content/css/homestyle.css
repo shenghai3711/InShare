@@ -285,10 +285,24 @@ a.boxclose {
         }
 /*--//userinfo--*/
 /*----start-post-grids----*/
+/*.post-like span {
+    background: url(/Content/img/forward.png) no-repeat 0px 0px;
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    border-radius: 30em;
+    -webkit-border-radius: 30em;
+    -moz-border-radius: 30em;
+    -o-border-radius: 30em;
+}
+    .post-like span:hover {
+        background: url(/Content/img/forward-hover.png) no-repeat 0px 0px;
+    }*/
+
 .post-share span {
-    background: url(/Content/img/facebook.png) no-repeat 0px 0px;
-    height: 26px;
-    width: 26px;
+    background: url(/Content/img/forward.png) no-repeat 0px 0px;
+    height: 24px;
+    width: 24px;
     display: inline-block;
     border-radius: 30em;
     -webkit-border-radius: 30em;
@@ -297,18 +311,18 @@ a.boxclose {
 }
 
     .post-share span:hover {
-        background: url(/Content/img/facebookh.png) no-repeat 0px 0px;
+        background: url(/Content/img/forward-hover.png) no-repeat 0px 0px;
     }
 
 .rateit span {
     height: 18px;
-    width: 76px;
-    background: url(/Content/img/start-rate.png) no-repeat 0px 0px;
+    /*width: 76px;
+    background: url(/Content/img/start-rate.png) no-repeat 0px 0px;*/
     display: inline-block;
 }
 
     .rateit span:hover {
-        background: url(/Content/img/start-rateh.png) no-repeat 0px 0px;
+        /*background: url(/Content/img/start-rateh.png) no-repeat 0px 0px;*/
     }
 
 .post-basic-info {

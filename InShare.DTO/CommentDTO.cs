@@ -11,6 +11,5 @@ namespace InShare.DTO
         public string Content { get; set; }
         public DateTime CreateDateTime { get; set; }
         public OwnerDTO Owner { get; set; }
-        public List<TagDTO> TagList { get; set; }
     }
 }

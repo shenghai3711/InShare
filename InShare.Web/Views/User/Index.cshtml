@@ -251,8 +251,8 @@
                             if (res.Status == "OK") {
                                 $("#pageIndex").val(pageIndex);
                                 for (var i = 0; i < res.Data.length; i++) {
-                                    $tiles.append('<li onclick="location.href="/Post/' + res.Data[i].ShortCode + '";"><img src="' + res.Data[i].DisplayUrl + '"></li>');
-                                    //$tiles.append('<li onclick="location.href="/Post/res.Data[i].ShortCode";"><img src="res.Data[i].DisplayUrl"></li>')
+                                    var postUrl = "location.href='/Post/" + res.Data[i].ShortCode + "';";
+                                    $tiles.append('<li onclick="' + postUrl + '"><img src="' + res.Data[i].DisplayUrl + '"></li>');
                                 }
                                 isLoading = false;
                             } else {
@@ -262,11 +262,6 @@
 
                         }
                     });
-                    // Get the first then items from the grid, clone them, and add them to the bottom of the grid
-                    //var $items = $('li', $tiles),
-                    //    $firstTen = $items.slice(0, 10);
-                    //$tiles.append($firstTen.clone());
-
                     applyLayout();
                 }
             };

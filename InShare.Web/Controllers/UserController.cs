@@ -47,28 +47,14 @@ namespace InShare.Web.Controllers
             }
             ViewBag.PostCount = PostService.GetPostCount(id.Value);
             ViewBag.PostList = PostService.GetPostPagerList(id.Value, PageSize, 1).Select(
-                p => new PostInfo
-                {
-                    Caption = p.Caption,
-                    DisplayUrl = p.DisplayUrl,
-                    Id = p.Id,
-                    Location = p.Location,
-                    ShortCode = p.ShortCode,
-                });
+                p => new PostInfo(p));
             return View(UserService.GetUserById(id.Value));
         }
 
         public ActionResult Load(long userId, int pageIndex)
         {
             var returList = PostService.GetPostPagerList(userId, PageSize, pageIndex).Select(
-                p => new PostInfo
-                {
-                    Caption = p.Caption,
-                    DisplayUrl = p.DisplayUrl,
-                    Id = p.Id,
-                    Location = p.Location,
-                    ShortCode = p.ShortCode,
-                });
+                p => new PostInfo(p));
             return Json(new AjaxResult { Status = "OK", Data = returList });
         }
 
@@ -119,7 +105,7 @@ namespace InShare.Web.Controllers
         }
 
         #endregion
-        
+
         #region 登陆
 
         [HttpGet]

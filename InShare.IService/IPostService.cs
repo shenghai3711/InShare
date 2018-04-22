@@ -32,6 +32,13 @@ namespace InShare.IService
         PostEntity GetPostInfo(long postId);
 
         /// <summary>
+        /// 获取帖子信息
+        /// </summary>
+        /// <param name="ShortCode">链接码</param>
+        /// <returns></returns>
+        PostEntity GetPostInfo(string ShortCode);
+
+        /// <summary>
         /// 根据用户编号获取帖子数量
         /// </summary>
         /// <param name="userId">用户编号</param>
