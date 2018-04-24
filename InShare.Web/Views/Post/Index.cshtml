@@ -1,7 +1,4 @@
-﻿@model InShare.Web.Models.PostInfo
-
-<!--通过ViewBag实现-->
-
+﻿
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
@@ -12,35 +9,42 @@
         <div class="single-page">
             <div class="single-page-artical">
                 <div class="artical-content">
-                    <img src="@Model.DisplayUrl" title="banner1">
-                    <h3>
-                        @foreach (var tag in Model.Tags)
+                    <img src="@ViewBag.Post.DisplayUrl" title="banner1">
+
+                    <hr />
+                    <p>@ViewBag.Post.Caption</p>
+                </div>
+                <div class="artical-links" style="float: none;">
+                    <ul>
+                        @foreach (var tag in ViewBag.Post.Tags)
                         {
-                            <a href="#">#@tag</a><span>|</span>
+                            <li>
+                                <h3>
+                                    <a href="#">#@tag</a>
+                                </h3>
+                            </li>
                         }
-                    </h3>
-                    <p>@Model.Caption</p>
+                    </ul>
                 </div>
                 <div class="artical-links">
                     <ul>
                         <li>
-                            <a href="/User/@Model.UserId">
-                                <img src="~/Content/img/blog-icon2.png" title="@Model.UserName">
-                                <span>@Model.UserName</span>
+                            <a href="/User/@ViewBag.Post.UserId">
+                                <img src="~/Content/img/blog-icon2.png" title="@ViewBag.Post.UserName">
+                                <span>@ViewBag.Post.UserName</span>
                             </a>
                         </li>
-                        <li>
-                            <!--判断是否有评论-->
-                            <a href="#">
-                                <img src="~/Content/img/blog-icon3.png" title="Comments">
-                                <span>No comments</span>
-                            </a>
-                        </li>
+                        @*<li>
+                                <a href="#">
+                                    <img src="~/Content/img/blog-icon3.png" title="Comments">
+                                    <span>No comments</span>
+                                </a>
+                            </li>*@
                         <li>
                             <a href="#">
                                 <img src="~/Content/img/blog-icon4.png" title="Lables">
                                 <span>
-                                    @*@Model.DateTime*@
+                                    @ViewBag.Post.DateTime
                                 </span>
                             </a>
                         </li>
@@ -61,54 +65,50 @@
             <div class="comment-section">
                 <div class="grids_of_2">
                     <h2>Comments</h2>
-                    <div class="grid1_of_2">
-                        <div class="grid_img">
-                            <a href=""><img src="images/pic10.jpg" alt=""></a>
+                    @foreach (var commentItem in ViewBag.Comments)
+                    {
+                        <div class="grid1_of_2">
+                            <div class="grid_img">
+                                <a href="/User/@commentItem.UserId"><img src="@commentItem.UserIcon" alt="@commentItem.UserName"></a>
+                            </div>
+                            <div class="grid_text">
+                                <h4 class="style1 list"><a href="/User/@commentItem.UserId">@commentItem.UserName</a></h4>
+                                <h3 class="style">@commentItem.DateTime</h3>
+                                <p class="para top">@commentItem.Content</p>
+                                <a href="" class="btn1">Click to Reply</a>
+                            </div>
+                            <div class="clear"></div>
                         </div>
-                        <div class="grid_text">
-                            <h4 class="style1 list"><a href="#">Uku Mason</a></h4>
-                            <h3 class="style">march 2, 2013 - 12.50 AM</h3>
-                            <p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
-                            <a href="" class="btn1">Click to Reply</a>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="grid1_of_2 left">
-                        <div class="grid_img">
-                            <a href=""><img src="images/pic10.jpg" alt=""></a>
-                        </div>
-                        <div class="grid_text">
-                            <h4 class="style1 list"><a href="#">Designer First</a></h4>
-                            <h3 class="style">march 3, 2013 - 4.00 PM</h3>
-                            <p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
-                            <a href="" class="btn1">Click to Reply</a>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="grid1_of_2">
-                        <div class="grid_img">
-                            <a href=""><img src="images/pic12.jpg" alt=""></a>
-                        </div>
-                        <div class="grid_text">
-                            <h4 class="style1 list"><a href="#">Ro Kanth</a></h4>
-                            <h3 class="style">march 2, 2013 - 12.50 AM</h3>
-                            <p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
-                            <a href="" class="btn1">Click to Reply</a>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
+                    }
+
+
+                    <!--回复评论-->
+                    @*<div class="grid1_of_2 left">
+                            <div class="grid_img">
+                                <a href=""><img src="/Content/img/pic10.jpg" alt=""></a>
+                            </div>
+                            <div class="grid_text">
+                                <h4 class="style1 list"><a href="#">Designer First</a></h4>
+                                <h3 class="style">march 3, 2013 - 4.00 PM</h3>
+                                <p class="para top"> All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
+                                <a href="" class="btn1">Click to Reply</a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>*@
+
+                    <!--评论框-->
                     <div class="artical-commentbox">
                         <h2>Leave a Comment</h2>
                         <div class="table-form">
                             <form action="#" method="post" name="post_comment">
-                                <div>
-                                    <label>Name<span>*</span></label>
-                                    <input type="text" value=" ">
-                                </div>
-                                <div>
-                                    <label>Email<span>*</span></label>
-                                    <input type="text" value=" ">
-                                </div>
+                                @*<div>
+                                        <label>Name<span>*</span></label>
+                                        <input type="text" value=" ">
+                                    </div>
+                                    <div>
+                                        <label>Email<span>*</span></label>
+                                        <input type="text" value=" ">
+                                    </div>*@
                                 <div>
                                     <label>Your Comment<span>*</span></label>
                                     <textarea> </textarea>

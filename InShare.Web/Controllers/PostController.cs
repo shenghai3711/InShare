@@ -17,6 +17,10 @@ namespace InShare.Web.Controllers
         public ILogService LogService { get; set; }
         [Dependency]
         public IPostService PostService { get; set; }
+        [Dependency]
+        public ICommentService CommentService { get; set; }
+
+        public int PageSize = 6;
 
         [HttpGet]
         public ActionResult Index(string shortCode)
@@ -30,7 +34,9 @@ namespace InShare.Web.Controllers
             {
                 return Redirect("/Home/Index");
             }
-            return View(new PostInfo(post));
+            ViewBag.Post = new PostInfo(post);
+            ViewBag.Comments = CommentService.GetCommentPagerList(post.Id, PageSize, 1).Select(c => new CommentInfo(c)).ToList();
+            return View();
         }
 
         #region Like操作 未完成
