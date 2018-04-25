@@ -53,33 +53,37 @@
                 <div class="share-artical">
                     <ul>
                         @*<li><a href="#"><img src="~/Content/img/facebooks.png" title="facebook">Facebook</a></li>
-                            <li><a href="#"><img src="~/Content/img/twiter.png" title="Twitter">Twiiter</a></li>
-                            <li><a href="#"><img src="~/Content/img/google+.png" title="google+">Google+</a></li>*@
-                        <li><a href="#"><img src="~/Content/img/forward.png" title="rss">Repost</a></li>
+        <li><a href="#"><img src="~/Content/img/twiter.png" title="Twitter">Twiiter</a></li>
+        <li><a href="#"><img src="~/Content/img/google+.png" title="google+">Google+</a></li>
+    <li><a href="#"><img src="~/Content/img/forward.png" title="rss">Repost</a></li>*@
                     </ul>
                 </div>
                 <div class="clear"> </div>
+                <input type="hidden" value="@ViewBag.Post.Id" id="postId" />
             </div>
 
             <!---start-comments-section--->
             <div class="comment-section">
                 <div class="grids_of_2">
                     <h2>Comments</h2>
-                    @foreach (var commentItem in ViewBag.Comments)
-                    {
-                        <div class="grid1_of_2">
-                            <div class="grid_img">
-                                <a href="/User/@commentItem.UserId"><img src="@commentItem.UserIcon" alt="@commentItem.UserName"></a>
-                            </div>
-                            <div class="grid_text">
-                                <h4 class="style1 list"><a href="/User/@commentItem.UserId">@commentItem.UserName</a></h4>
-                                <h3 class="style">@commentItem.DateTime</h3>
-                                <p class="para top">@commentItem.Content</p>
-                                <a href="" class="btn1">Click to Reply</a>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                    }
+                    <input type="hidden" value="1" id="pageIndex" />
+                    <div id="commentList">
+                        @*@foreach (var commentItem in ViewBag.Comments)
+                            {
+                                <div class="grid1_of_2">
+                                    <div class="grid_img">
+                                        <a href="/User/@commentItem.UserId"><img src="@commentItem.UserIcon" alt="@commentItem.UserName"></a>
+                                    </div>
+                                    <div class="grid_text">
+                                        <h4 class="style1 list"><a href="/User/@commentItem.UserId">@commentItem.UserName</a></h4>
+                                        <h3 class="style">@commentItem.DateTime</h3>
+                                        <p class="para top">@commentItem.Content</p>
+                                        <a href="" class="btn1">Click to Reply</a>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            }*@
+                    </div>
 
 
                     <!--回复评论-->
@@ -111,10 +115,10 @@
                                     </div>*@
                                 <div>
                                     <label>Your Comment<span>*</span></label>
-                                    <textarea> </textarea>
+                                    <textarea id="commentContent"> </textarea>
                                 </div>
                             </form>
-                            <input type="submit" value="submit">
+                            <input type="submit" value="submit" id="btnAdd">
 
                         </div>
                         <div class="clear"> </div>
@@ -127,3 +131,70 @@
     </div>
 </div>
 <!---end-content---->
+@section script {
+
+    <script type="text/javascript">
+        $(function () {
+            loadComment();
+            //发表评论
+            $("#btnAdd").click(function () {
+                addComment();
+            });
+        });
+        //加载评论
+        function loadComment() {
+            var postId = $("#postId").val();
+            var pageIndex = $("#pageIndex").val();
+            if (pageIndex == 0) {
+                return;
+            }
+            $.ajax({
+                url: "/Post/LoadComment", dataType: "json",
+                type: "post", data: { postId: postId, pageIndex: pageIndex },
+                success: function (res) {
+                    if (res.Status == "OK") {
+                        $("#commentList").text("");
+                        for (var i = 0; i < res.Data.length; i++) {
+                            $(' <div class="grid1_of_2"><div class="grid_img"><a href="/User/' + res.Data[i].UserId + '"><img src="' + res.Data[i].UserIcon + '" alt="' + res.Data[i].UserName + '"></a></div><div class="grid_text"><h4 class="style1 list"><a href="/User/' + res.Data[i].UserId + '">' + res.Data[i].UserName + '</a ></h4 ><h3 class="style">' + res.Data[i].DateTime + '</h3 ><p class="para top">' + res.Data[i].Content + '</p ></div><div class="clear"></div></div>').appendTo("#commentList");
+                        }//<a href="" class="btn1">Click to Reply</a>
+                        if (res.Data.length <= 6) {
+                            $("#pageIndex").val(0);
+                        }
+                        else {
+                            $("#pageIndex").val(++pageIndex);
+                        }
+                    } else {
+
+                    }
+                }, error: function () {
+
+                }
+            });
+        }
+        //发表评论
+        function addComment() {
+            var msg = $("#commentContent").val();//获取编辑器内容
+            if (msg != "") {
+                var postId = $("#postId").val();
+                $.post("/Post/Comment", { postId, postId, content: msg },
+                    function (res) {
+                        if (res.Status == "OK") {
+                            if ($("#pageIndex").val() == 0) {
+                                $("#pageIndex").val(1);
+                            }
+                            loadComment();
+                            $("#commentContent").val("");
+                            $("#commentContent").focus();
+                        }
+                        if (res.Status == "Error") {
+                            alert(res.ErrorMsg);
+                        }
+                    });
+            } else {
+                alert("评论内容不能为空");
+                $("#commentContent").focus();
+            }
+        }
+
+    </script>
+}

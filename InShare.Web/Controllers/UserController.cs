@@ -99,7 +99,7 @@ namespace InShare.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Unfollow(string userId)
+        public ActionResult Unfollow(long userId)
         {
             return View();
         }

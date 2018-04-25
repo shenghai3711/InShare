@@ -289,22 +289,39 @@
     <!----//wookmark-scripts---->
 
     <script>
+        var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
         $(function () {
-            //$.ajax({
-            //    url: "/User/Login", dataType: "json",
-            //    type: "post", data: { userName: name, passWord: password, IP: userIP, City: userCity },
-            //    success: function (res) {
-            //        if (res.Status == "OK") {
 
-            //        } else {
-
-            //        }
-            //    }, error: function () {
-
-            //    }
-            //});
         });
+        //<button onclick='handleClick()'>关注</button>
 
+        //function handleClick(ev) {
+        //    ev.target.innerHTML = '已关注'
+        //}
+        //follow
+        function follow() {
+            $.post("/User/Follow", { userId, userId },
+                function (res) {
+                    if (res.Status == "OK") {
+
+                    }
+                    if (res.Status == "Error") {
+                        alert(res.ErrorMsg);
+                    }
+                });
+        }
+        //unfollow
+        function unFollow() {
+            $.post("/User/UnFollow", { userId, userId },
+                function (res) {
+                    if (res.Status == "OK") {
+
+                    }
+                    if (res.Status == "Error") {
+                        alert(res.ErrorMsg);
+                    }
+                });
+        }
     </script>
 
 }

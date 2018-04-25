@@ -16,15 +16,15 @@ namespace InShare.Web
 
             //routes.MapRoute(
             //    name: "Posting",
-            //    url: "Post/Posting",
-            //    defaults: new { controller = "Post", action = "Posting" }
+            //    url: "Post/LoadComment",
+            //    defaults: new { controller = "Post", action = "LoadComment" }
             //);
 
             routes.MapRoute(
                 name: "Post",
                 url: "Post/{shortCode}",
                 defaults: new { controller = "Post", action = "Index" },
-                constraints: new { shortCode = "^[0-9a-zA-Z]{10,20}$" }
+                constraints: new { shortCode = @"^(\d|[a-zA-Z])*((\d[a-zA-Z])|([a-zA-Z]\d))(\d|[a-zA-Z])*$" }
             );
 
             routes.MapRoute(

@@ -35,9 +35,9 @@ namespace InShare.Web.Controllers
                 return Redirect("/Home/Index");
             }
             ViewBag.Post = new PostInfo(post);
-            ViewBag.Comments = CommentService.GetCommentPagerList(post.Id, PageSize, 1).Select(c => new CommentInfo(c)).ToList();
             return View();
         }
+
 
         #region Like操作 未完成
 
@@ -60,7 +60,24 @@ namespace InShare.Web.Controllers
         [HttpPost]
         public ActionResult Comment(long postId, string content)
         {
-            return View();
+            if (string.IsNullOrEmpty(content))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "评论内容为空" });
+            }
+            long userId = 0;
+            if (!long.TryParse(Session["userId"].ToString(), out userId))
+            {
+                return Redirect("/User/Login");
+            }
+            CommentService.Add(userId, postId, content);
+            return Json(new AjaxResult { Status = "OK" });
+        }
+
+        [HttpPost]
+        public ActionResult LoadComment(long postId, int pageIndex = 1)
+        {
+            var commentList = CommentService.GetCommentPagerList(postId, PageSize, pageIndex).Select(c => new CommentInfo(c)).ToList();
+            return Json(new AjaxResult { Status = "OK", Data = commentList });
         }
 
         #endregion
