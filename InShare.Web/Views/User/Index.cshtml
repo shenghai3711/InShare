@@ -134,10 +134,10 @@
         <div class="centerTop">
             <div class="top1">
                 <div style="position: absolute;height:150px;width:150px;margin-left:250px;">
-                    <img src="@Model.ProfilePic" />
+                    <img id="profilePic" src="@Model.ProfilePic" />
                 </div>
                 <div class="top1Left">
-                    <text style="font-size:xx-large;">@Model.UserName</text>
+                    <text style="font-size:xx-large;" id="user-name">@Model.UserName</text>
                     @if (Model.Id == Convert.ToInt64(Session["userId"]))
                     {
                         <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_edit">edit profile</button>
@@ -146,21 +146,23 @@
                     {
                         if (ViewBag.Following)
                         {
-                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_following">Following</button>
+                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" onclick="handleClick(this)">Following</button>
+                            <input type="hidden" value="1" id="followValue" />
                         }
                         else
                         {
-                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_follow">Follow</button>
+                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" onclick="handleClick(this)">Follow</button>
+                            <input type="hidden" value="0" id="followValue" />
                         }
                     }
                     <ul style="width: 100%; height: 30px; padding: 10px 0px;">
-                        <li>following @ViewBag.FollowingCount </li>
-                        <li>follower @ViewBag.FollowerCount </li>
-                        <li>posts @ViewBag.PostCount</li>
+                        <li>following <span id="following-count">@ViewBag.FollowingCount</span> </li>
+                        <li>follower <span id="follower-count">@ViewBag.FollowerCount </span></li>
+                        <li>posts <span id="post-count">@ViewBag.PostCount</span></li>
                         <input type="hidden" value="@ViewBag.PostCount" id="postCount" />
                     </ul>
                     <ul>
-                        <li><span>@Model.FullName </span>@Model.Biography</li>
+                        <li><span id="full-name">@Model.FullName</span> | <span id="biography">@Model.Biography</span></li>
                     </ul>
                 </div>
             </div>
@@ -176,9 +178,9 @@
                 <!-- These are our grid blocks -->
                 @foreach (var post in ViewBag.PostList)
                 {
-                    <li onclick="location.href='/Post/@post.ShortCode';">
-                        <img src="@post.DisplayUrl">
-                    </li>
+                <li onclick="location.href='/Post/@post.ShortCode';">
+                    <img src="@post.DisplayUrl">
+                </li>
                 }
                 <!-- End of grid blocks -->
             </ul>
@@ -293,32 +295,48 @@
         $(function () {
 
         });
-        //<button onclick='handleClick()'>关注</button>
-
-        //function handleClick(ev) {
-        //    ev.target.innerHTML = '已关注'
-        //}
-        //follow
-        function follow() {
-            $.post("/User/Follow", { userId, userId },
-                function (res) {
-                    if (res.Status == "OK") {
-
-                    }
-                    if (res.Status == "Error") {
-                        alert(res.ErrorMsg);
-                    }
-                });
+        //按钮点击
+        function handleClick(ev) {
+            var isFollow = $("#followValue").val();
+            if (isFollow == 1) {
+                $.post("/User/Unfollow", { userId, userId },
+                    function (res) {
+                        if (res.Status == "OK") {
+                            $("#followValue").val("0");
+                            ev.textContent = "Follow";
+                            loadUserInfo();
+                        }
+                        if (res.Status == "Error") {
+                            alert(res.ErrorMsg);
+                        }
+                    });
+            }
+            else {
+                $.post("/User/Follow", { userId, userId },
+                    function (res) {
+                        if (res.Status == "OK") {
+                            $("#followValue").val("1")
+                            ev.textContent = "Following";
+                            loadUserInfo();
+                        }
+                        if (res.Status == "Error") {
+                            alert(res.ErrorMsg);
+                        }
+                    });
+            }
         }
-        //unfollow
-        function unFollow() {
-            $.post("/User/UnFollow", { userId, userId },
+        //加载用户信息
+        function loadUserInfo() {
+            $.post("/User/LoadUserInfo", { userId, userId },
                 function (res) {
                     if (res.Status == "OK") {
-
-                    }
-                    if (res.Status == "Error") {
-                        alert(res.ErrorMsg);
+                        $("#user-name")[0].innerText = res.Data.UserName;
+                        $("#full-name")[0].innerText = res.Data.FullName;
+                        $("#profilePic")[0].innerText = res.Data.ProfilePic;
+                        $("#biography")[0].innerText = res.Data.Biography;
+                        $("#following-count")[0].innerText = res.Data.FollowingCount;
+                        $("#follower-count")[0].innerText = res.Data.FollowerCount;
+                        $("#post-count")[0].innerText = res.Data.PostCount;
                     }
                 });
         }

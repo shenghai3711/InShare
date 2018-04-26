@@ -51,11 +51,42 @@ namespace InShare.Web.Controllers
             return View(UserService.GetUserById(id.Value));
         }
 
+        [HttpPost]
         public ActionResult Load(long userId, int pageIndex)
         {
             var returList = PostService.GetPostPagerList(userId, PageSize, pageIndex).Select(
                 p => new PostInfo(p));
             return Json(new AjaxResult { Status = "OK", Data = returList });
+        }
+
+        [HttpPost]
+        public ActionResult LoadUserInfo(long userId)
+        {
+            if (userId == 0)
+            {
+                return View();
+            }
+            var user = UserService.GetUserById(userId);
+            if (user==null)
+            {
+                return View();
+            }
+            return Json(new AjaxResult
+            {
+                Status = "OK",
+                Data = new UserInfo
+                {
+                    Id = user.Id,
+                    Biography = user.Biography,
+                    FollowerCount = FollowService.GetFollowerCount(userId),
+                    FollowingCount = FollowService.GetFollowingCount(userId),
+                    FullName = user.FullName,
+                    PostCount = PostService.GetPostCount(userId),
+                    ProfilePic = user.ProfilePic,
+                    UserName = user.UserName,
+                    IsFollowing= FollowService.IsFollowing(Convert.ToInt64(Session["userId"]), userId)
+                }
+            });
         }
 
         #region 修改资料 未完成
@@ -90,18 +121,44 @@ namespace InShare.Web.Controllers
 
         #endregion
 
-        #region Follow操作 未完成
+        #region Follow操作
 
         [HttpPost]
         public ActionResult Follow(long userId)
         {
-            return View();
+            long accountId = 0;
+            if (Session["userId"] == null || !long.TryParse(Session["userId"].ToString(), out accountId))
+            {
+                Session.Clear();
+                return Redirect("/User/Login");
+            }
+            if (userId != accountId || userId == 0)
+            {
+                if (FollowService.Follow(accountId, userId))
+                {
+                    return Json(new AjaxResult { Status = "OK" });
+                }
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "Follow 失败" });
         }
 
         [HttpPost]
         public ActionResult Unfollow(long userId)
         {
-            return View();
+            long accountId = 0;
+            if (Session["userId"] == null || !long.TryParse(Session["userId"].ToString(), out accountId))
+            {
+                Session.Clear();
+                return Redirect("/User/Login");
+            }
+            if (userId != accountId || userId == 0)
+            {
+                if (FollowService.Unfollow(accountId, userId))
+                {
+                    return Json(new AjaxResult { Status = "OK" });
+                }
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "Unfollow 失败" });
         }
 
         #endregion
