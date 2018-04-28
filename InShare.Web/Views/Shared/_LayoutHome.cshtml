@@ -87,16 +87,14 @@
                 <div class="user">
                     <ul>
                         <li>
-                            <!--点进去用户详情-->
-                            @*<a href="#">
-                                <img src="~/Content/img/user-pic.png" title="user-name" />
-                                <span>Ipsum</span>
-                            </a>*@
-
                             <a href="/User/@Session["userId"]">
-                                <img src="~/Content/img/user-pic.png" title="user-name" />
+                                @*<img src="~/Content/img/user-pic.png" title="user-name" />*@
                                 <span>@Session["userName"]</span>
+                                <input type="hidden" value="@Session["userId"]" id="accountId" />
                             </a>
+                        </li>
+                        <li>
+                            <a href="/User/Logout">Logout</a>
                         </li>
                     </ul>
                 </div>

@@ -47,6 +47,20 @@ namespace InShare.Web.Controllers
             return Json(new AjaxResult { Status = "OK", Data = postList });
         }
 
+        #region 搜索 未完成
+
+        public ActionResult SearchPost()
+        {
+            return View();
+        }
+
+        public ActionResult SearchUser()
+        {
+            return View();
+        }
+
+        #endregion
+
         public ActionResult About()
         {
             return View();

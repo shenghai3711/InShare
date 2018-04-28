@@ -23,7 +23,7 @@ namespace InShare.Web.Controllers
         public IPostService PostService { get; set; }
 
         /// <summary>
-        /// 每页数量
+        /// 帖子每页数量
         /// </summary>
         public int PageSize = 6;
 
@@ -59,35 +59,53 @@ namespace InShare.Web.Controllers
             return Json(new AjaxResult { Status = "OK", Data = returList });
         }
 
+        #region 加载关注者或被关注者
+
         [HttpPost]
-        public ActionResult LoadUserInfo(long userId)
+        public ActionResult LoadFollower(long userId, int pageIndex = 1)
         {
-            if (userId == 0)
+            long accountId = Convert.ToInt64(Session["userId"]);
+            List<UserInfo> userList = new List<UserInfo>();
+            var followerList = FollowService.GetFollowerPagerList(userId, 12, pageIndex);
+            foreach (var followerId in followerList)
             {
-                return View();
-            }
-            var user = UserService.GetUserById(userId);
-            if (user==null)
-            {
-                return View();
-            }
-            return Json(new AjaxResult
-            {
-                Status = "OK",
-                Data = new UserInfo
+                var user = UserService.GetUserById(followerId);
+                userList.Add(new UserInfo
                 {
                     Id = user.Id,
-                    Biography = user.Biography,
-                    FollowerCount = FollowService.GetFollowerCount(userId),
-                    FollowingCount = FollowService.GetFollowingCount(userId),
                     FullName = user.FullName,
-                    PostCount = PostService.GetPostCount(userId),
-                    ProfilePic = user.ProfilePic,
                     UserName = user.UserName,
-                    IsFollowing= FollowService.IsFollowing(Convert.ToInt64(Session["userId"]), userId)
-                }
-            });
+                    IsFollowing = FollowService.IsFollowing(accountId, followerId),
+                    Biography = user.Biography.Length > 50 ? user.Biography.Substring(0, 50) + "..." : user.Biography,
+                    ProfilePic = user.ProfilePic
+                });
+            }
+            return Json(new AjaxResult { Status = "OK", Data = userList });
         }
+
+        [HttpPost]
+        public ActionResult LoadFollowing(long userId, int pageIndex = 1)
+        {
+            long accountId = Convert.ToInt64(Session["userId"]);
+            List<UserInfo> userList = new List<UserInfo>();
+            var followingList = FollowService.GetFollowingPagerList(userId, 12, pageIndex);
+            foreach (var followingId in followingList)
+            {
+                var user = UserService.GetUserById(followingId);
+                userList.Add(new UserInfo
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    UserName = user.UserName,
+                    IsFollowing = FollowService.IsFollowing(accountId, followingId),
+                    Biography = user.Biography.Length > 50 ? user.Biography.Substring(0, 50) + "..." : user.Biography,
+                    ProfilePic = user.ProfilePic
+                });
+            }
+            return Json(new AjaxResult { Status = "OK", Data = userList });
+        }
+
+        #endregion
 
         #region 修改资料 未完成
 
@@ -161,6 +179,40 @@ namespace InShare.Web.Controllers
             return Json(new AjaxResult { Status = "Error", ErrorMsg = "Unfollow 失败" });
         }
 
+        /// <summary>
+        /// 点击关注或取消关注后重新加载数据
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult LoadUserInfo(long userId)
+        {
+            if (userId == 0)
+            {
+                return View();
+            }
+            var user = UserService.GetUserById(userId);
+            if (user == null)
+            {
+                return View();
+            }
+            return Json(new AjaxResult
+            {
+                Status = "OK",
+                Data = new UserInfo
+                {
+                    Id = user.Id,
+                    Biography = user.Biography,
+                    FollowerCount = FollowService.GetFollowerCount(userId),
+                    FollowingCount = FollowService.GetFollowingCount(userId),
+                    FullName = user.FullName,
+                    PostCount = PostService.GetPostCount(userId),
+                    ProfilePic = user.ProfilePic,
+                    UserName = user.UserName,
+                    IsFollowing = FollowService.IsFollowing(Convert.ToInt64(Session["userId"]), userId)
+                }
+            });
+        }
         #endregion
 
         #region 登陆
@@ -219,6 +271,16 @@ namespace InShare.Web.Controllers
             long userId = UserService.Add(userName, fullName, passWord);
             LogService.Add(userId, 1, string.Format("{0}在{1}注册账号成功", userName, cityName), ip);
             return Json(new AjaxResult { Status = "OK" });
+        }
+
+        #endregion
+
+        #region 退出
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return Redirect("/User/Login");
         }
 
         #endregion

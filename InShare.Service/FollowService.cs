@@ -39,7 +39,7 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<FollowEntity> baseService = new BaseService<FollowEntity>(db);
-                return baseService.GetAll().Where(f => f.FollowedId == userId).Skip(pageSize * pageIndex).Take(pageSize).Select(f => f.FollowId).ToList();
+                return baseService.GetPager<DateTime>(f => f.FollowedId == userId, f => f.CreateDateTime, pageSize, pageIndex).Select(f => f.FollowId).ToList();
             }
         }
 
@@ -66,7 +66,7 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<FollowEntity> baseService = new BaseService<FollowEntity>(db);
-                return baseService.GetAll().Where(f => f.FollowId == userId).Skip(pageSize * pageIndex).Take(pageSize).Select(f => f.FollowedId).ToList();
+                return baseService.GetPager<DateTime>(f => f.FollowId == userId, f => f.CreateDateTime, pageSize, pageIndex).Select(f => f.FollowedId).ToList();
             }
         }
 

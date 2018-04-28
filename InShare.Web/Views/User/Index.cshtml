@@ -126,6 +126,67 @@
             #tiles li img {
                 height: 100%;
             }
+
+        #userBoxShow {
+            display: none;
+            width: 460px;
+            height: 400px;
+            left: 32.5%;
+            top: 150px;
+            position: fixed;
+            border: solid 1px black;
+            background: #fff;
+            /*border-radius: 5px;*/
+            padding-top: 10px;
+            font: 12px/1.5 \5b8b\4f53;
+        }
+
+            #userBoxShow #boxTitle {
+                margin-top: -10px;
+                position: fixed;
+                height: 40px;
+                width: 460px;
+                font-size: x-large;
+                font-weight: bold;
+                background: #F0EFEE;
+            }
+
+                #userBoxShow #boxTitle #boxTitleTxt {
+                    /*font-size: x-large;
+                    font-weight: bold;*/
+                }
+
+            #userBoxShow ul {
+                margin-top: 30px;
+            }
+
+                #userBoxShow ul li {
+                    margin-top: 20px;
+                    border-bottom: 1px solid black;
+                }
+
+                    #userBoxShow ul li img {
+                        height: 100%;
+                        width: 44px;
+                    }
+
+                    #userBoxShow ul li p {
+                        /*float: left;*/
+                    }
+
+                    #userBoxShow ul li .user-name {
+                        font-size: large;
+                    }
+
+                    #userBoxShow ul li .user_info {
+                        display: inline-block;
+                    }
+
+                    #userBoxShow ul li .btnFollow {
+                        float: right;
+                        padding: 5px;
+                        margin-top: 8px;
+                    }
     </style>
 }
 
@@ -140,24 +201,24 @@
                     <text style="font-size:xx-large;" id="user-name">@Model.UserName</text>
                     @if (Model.Id == Convert.ToInt64(Session["userId"]))
                     {
-                        <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" id="btn_edit">edit profile</button>
+                        <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" id="btn_edit">edit profile</button>
                     }
                     else
                     {
                         if (ViewBag.Following)
                         {
-                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" onclick="handleClick(this)">Following</button>
+                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" onclick="handleClick(this)">Following</button>
                             <input type="hidden" value="1" id="followValue" />
                         }
                         else
                         {
-                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px;" onclick="handleClick(this)">Follow</button>
+                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" onclick="handleClick(this)">Follow</button>
                             <input type="hidden" value="0" id="followValue" />
                         }
                     }
                     <ul style="width: 100%; height: 30px; padding: 10px 0px;">
-                        <li>following <span id="following-count">@ViewBag.FollowingCount</span> </li>
-                        <li>follower <span id="follower-count">@ViewBag.FollowerCount </span></li>
+                        <li>following <span id="following-count" style="cursor: pointer;">@ViewBag.FollowingCount</span> </li>
+                        <li>follower <span id="follower-count" style="cursor: pointer;">@ViewBag.FollowerCount </span></li>
                         <li>posts <span id="post-count">@ViewBag.PostCount</span></li>
                         <input type="hidden" value="@ViewBag.PostCount" id="postCount" />
                     </ul>
@@ -178,16 +239,37 @@
                 <!-- These are our grid blocks -->
                 @foreach (var post in ViewBag.PostList)
                 {
-                <li onclick="location.href='/Post/@post.ShortCode';">
-                    <img src="@post.DisplayUrl">
-                </li>
+                    <li onclick="location.href='/Post/@post.ShortCode';">
+                        <img src="@post.DisplayUrl">
+                    </li>
                 }
                 <!-- End of grid blocks -->
             </ul>
         </div>
     </div>
 </div>
-<!---//End-content---->
+<!---End-content---->
+<!--start-followBox-->
+<div id="userBoxShow">
+    <div id="boxTitle">
+        <span id="boxTitleTxt"></span><span id="cancelBtn" style="float:right;cursor: pointer;">×</span>
+        <input type="hidden" value="0" id="followPageIndex" />
+    </div>
+    <div id="boxFollow" style="overflow: auto;height:100%;">
+        <ul id="followUser">
+            @*<li>
+                    <a href="#">
+                        <img src="~/Content/img/UserPhoto.jpg" />
+                        <div class="user_info">
+                            <p class="user-name">用户名</p><p>简介</p>
+                        </div>
+                    </a>
+                    <input type="button" class="btnFollow" value="Follow" onclick="followClick(123456456)" />
+                </li>*@
+        </ul>
+    </div>
+</div>
+<!--end-followBox-->
 
 @section script {
     <!----wookmark-scripts---->
@@ -228,22 +310,19 @@
                 // Check if we're within 100 pixels of the bottom edge of the broser window.
                 //var winHeight = window.innerHeight ? window.innerHeight : $window.height(), // iphone fix
                 //    //$window.scrollTop() 滚动条距顶部距离(页面超出窗口的高度)
-                //    closeToBottom = ($window.scrollTop() + winHeight > $document.height() - 200);
+                closeToBottom = $(document).scrollTop() >= $(document).height() - $(window).height();
 
-                if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                    var pageIndex = $("#pageIndex").val();
-                    var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
-                    var postCount = $("#postCount").val();
-                    if (pageIndex * 6 >= postCount) {
-                        return;//防止已全部加载后继续发送请求
-                    }
-                    var loadedCount = $("#tiles").children("li").length;
-                    if ((pageIndex - 1) * 6 == loadedCount) {
-                        return;//防止重复加载
-                    }
+                var loadedCount = $("#tiles").children("li").length;
+                if (closeToBottom && loadedCount >= 6) {
                     if (isLoading) {
                         return;
                     }
+                    var pageIndex = $("#pageIndex").val();
+                    var postCount = $("#postCount").val();
+                    if (postCount == loadedCount) {
+                        return;
+                    }
+                    var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
                     isLoading = true;
                     //发送加载下一页请求
                     $.ajax({
@@ -255,16 +334,17 @@
                                 for (var i = 0; i < res.Data.length; i++) {
                                     var postUrl = "location.href='/Post/" + res.Data[i].ShortCode + "';";
                                     $tiles.append('<li onclick="' + postUrl + '"><img src="' + res.Data[i].DisplayUrl + '"></li>');
+                                    applyLayout();
                                 }
-                                isLoading = false;
                             } else {
-
+                                $("#pageIndex").val(--pageIndex);
                             }
+                            isLoading = false;
                         }, error: function () {
-
+                            $("#pageIndex").val(--pageIndex);
+                            isLoading = false;
                         }
                     });
-                    applyLayout();
                 }
             };
 
@@ -291,43 +371,142 @@
     <!----//wookmark-scripts---->
 
     <script>
+        var isLoading = false;
         var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
         $(function () {
-
+            $("#following-count").click(function () {
+                $("#boxTitleTxt").text("Following");
+                $("#userBoxShow").show();
+                var followingCount = $("#following-count").text();
+                loadFollowData("/User/LoadFollowing", followingCount);
+                scrollFun(followingCount);
+            });
+            $("#follower-count").click(function () {
+                $("#boxTitleTxt").text("Follower");
+                $("#userBoxShow").show();
+                var followerCount = $("#follower-count").text();
+                loadFollowData("/User/LoadFollower", followerCount);
+                scrollFun(followerCount);
+            });
+            $("#cancelBtn").click(function () {
+                $("#followUser").html("");
+                $("#userBoxShow").hide();
+                $("#followPageIndex").val(0);
+            });
         });
+
+        //滚动条加载
+        function scrollFun(count) {
+            $("#boxFollow").scroll(function () {
+                if ($("#boxFollow").scrollTop() >= $("#userBoxShow").height()) {
+                    //alert("滚动条已经到达底部为" + $("#followUser").scrollTop());
+                    var url = "";
+                    if ($("#boxTitleTxt").text() == "Following") {
+                        url = "/User/LoadFollowing";
+                    }
+                    else {
+                        url = "/User/LoadFollower";
+                    }
+                    loadFollowData(url, count);
+                }
+            });
+        }
+        //加载follow数据
+        function loadFollowData(url, count) {
+            var followPageIndex = $("#followPageIndex").val();
+            var loadedCount = $("#followUser").children("li").length;
+            if (isLoading || count == loadedCount) {
+                return;
+            }
+            isLoading = true;
+            $.post(url, { userId: userId, pageIndex: ++followPageIndex },
+                function (res) {
+                    if (res.Status == "OK") {
+                        var accountId = $("#accountId").val();
+                        var data = "";
+                        for (var i = 0; i < res.Data.length; i++) {
+                            var isFollowing = res.Data[i].IsFollowing ? 'Following' : 'Follow';
+                            var buttonHtml = "";
+                            if (accountId != res.Data[i].Id) {
+                                buttonHtml = '<input type="button" class="btnFollow" value="' + isFollowing + '" onclick="followClick(' + res.Data[i].Id + ',' + res.Data[i].IsFollowing + ')" />';
+                            }
+                            data += '<li id= "' + res.Data[i].Id + '"><a href="/User/' + res.Data[i].Id + '"><img src= "' + res.Data[i].ProfilePic + '" /><div class="user_info"><p class="user-name">' + res.Data[i].UserName + '</p><p>' + res.Data[i].Biography + '</p></div></a>' + buttonHtml + '</li>';
+                        }
+                        if (followPageIndex == 1) {
+                            $("#followUser").html(data);
+                        }
+                        else {
+                            $("#followUser").append(data);
+                        }
+                        $("#followPageIndex").val(followPageIndex);
+                    }
+                    isLoading = false;
+                });
+        }
+
+        //follow列表关注或取消关注
+        function followClick(followId, isFollowing) {
+            var url = "";
+            if (isFollowing) {
+                //取消关注
+                url = "/User/Unfollow";
+
+            }
+            else {
+                //点击关注
+                url = "/User/Follow";
+            }
+            followOperation(followId, url, isFollowing);
+        }
+        //follow操作
+        function followOperation(followId, url, isFollowing) {
+            $.post(url, { userId: followId },
+                function (res) {
+                    if (res.Status == "OK") {
+                        if (isFollowing) {
+                            $("#" + followId).children("input").val("Follow").removeAttr("onclick").attr("onclick", "followClick(" + followId + "," + !isFollowing + ")");
+                        }
+                        else {
+                            $("#" + followId).children("input").val("Following").removeAttr("onclick").attr("onclick", "followClick(" + followId + "," + !isFollowing + ")");
+                        }
+                    }
+                    if (res.Status == "Error") {
+                        alert(res.ErrorMsg);
+                    }
+                });
+        }
         //按钮点击
         function handleClick(ev) {
             var isFollow = $("#followValue").val();
+            var url = "";
             if (isFollow == 1) {
-                $.post("/User/Unfollow", { userId, userId },
-                    function (res) {
-                        if (res.Status == "OK") {
-                            $("#followValue").val("0");
-                            ev.textContent = "Follow";
-                            loadUserInfo();
-                        }
-                        if (res.Status == "Error") {
-                            alert(res.ErrorMsg);
-                        }
-                    });
+                url = "/User/Unfollow";
             }
             else {
-                $.post("/User/Follow", { userId, userId },
-                    function (res) {
-                        if (res.Status == "OK") {
+                url = "/User/Follow";
+            }
+            $.post(url, { userId: userId },
+                function (res) {
+                    if (res.Status == "OK") {
+                        if (isFollow == 1) {
+                            $("#followValue").val("0");
+                            ev.textContent = "Follow";
+                        }
+                        else {
                             $("#followValue").val("1")
                             ev.textContent = "Following";
-                            loadUserInfo();
                         }
-                        if (res.Status == "Error") {
-                            alert(res.ErrorMsg);
-                        }
-                    });
-            }
+                        loadUserInfo();
+                    }
+                    if (res.Status == "Error") {
+                        alert(res.ErrorMsg);
+                    }
+                });
         }
+
         //加载用户信息
         function loadUserInfo() {
-            $.post("/User/LoadUserInfo", { userId, userId },
+            $.post("/User/LoadUserInfo", { userId: userId },
                 function (res) {
                     if (res.Status == "OK") {
                         $("#user-name")[0].innerText = res.Data.UserName;

@@ -1,8 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = @ViewBag.Post.Caption;
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
+
+@section head{
+    <style type="text/css">
+        #commentBox {
+            display: none;
+        }
+    </style>
+}
+
 <!---start-content---->
 <div class="content">
     <div class="wrap">
@@ -34,14 +43,14 @@
                                 <span>@ViewBag.Post.UserName</span>
                             </a>
                         </li>
-                        @*<li>
-                                <a href="#">
-                                    <img src="~/Content/img/blog-icon3.png" title="Comments">
-                                    <span>No comments</span>
-                                </a>
-                            </li>*@
                         <li>
-                            <a href="#">
+                            <a href="#" onclick="showCommentBox()">
+                                <img src="~/Content/img/blog-icon3.png" title="Comments">
+                                <span>Comments</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="return false">
                                 <img src="~/Content/img/blog-icon4.png" title="Lables">
                                 <span>
                                     @ViewBag.Post.DateTime
@@ -53,9 +62,9 @@
                 <div class="share-artical">
                     <ul>
                         @*<li><a href="#"><img src="~/Content/img/facebooks.png" title="facebook">Facebook</a></li>
-        <li><a href="#"><img src="~/Content/img/twiter.png" title="Twitter">Twiiter</a></li>
-        <li><a href="#"><img src="~/Content/img/google+.png" title="google+">Google+</a></li>
-    <li><a href="#"><img src="~/Content/img/forward.png" title="rss">Repost</a></li>*@
+                                <li><a href="#"><img src="~/Content/img/twiter.png" title="Twitter">Twiiter</a></li>
+                                <li><a href="#"><img src="~/Content/img/google+.png" title="google+">Google+</a></li>
+                            <li><a href="#"><img src="~/Content/img/forward.png" title="rss">Repost</a></li>*@
                     </ul>
                 </div>
                 <div class="clear"> </div>
@@ -101,7 +110,7 @@
                         </div>*@
 
                     <!--评论框-->
-                    <div class="artical-commentbox">
+                    <div id="commentBox" class="artical-commentbox">
                         <h2>Leave a Comment</h2>
                         <div class="table-form">
                             <form action="#" method="post" name="post_comment">
@@ -134,16 +143,33 @@
 @section script {
 
     <script type="text/javascript">
+        var postId = $("#postId").val();
         $(function () {
             loadComment();
             //发表评论
             $("#btnAdd").click(function () {
                 addComment();
             });
+            $(window).scroll(function () {
+                scrollFun();
+            });
         });
+        function scrollFun() {
+            if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                //alert("滚动条已经到达底部为" + $(document).scrollTop());
+                loadComment();
+            }
+        }
+        //显示评论框
+        function showCommentBox() {
+            $("#commentBox").show();
+            $('html, body').animate({
+                scrollTop: $("#commentBox").offset().top
+            }, 1000);
+            $("#commentContent").focus();
+        }
         //加载评论
         function loadComment() {
-            var postId = $("#postId").val();
             var pageIndex = $("#pageIndex").val();
             if (pageIndex == 0) {
                 return;
@@ -153,11 +179,11 @@
                 type: "post", data: { postId: postId, pageIndex: pageIndex },
                 success: function (res) {
                     if (res.Status == "OK") {
-                        $("#commentList").text("");
+                        //$("#commentList").text("");
                         for (var i = 0; i < res.Data.length; i++) {
-                            $(' <div class="grid1_of_2"><div class="grid_img"><a href="/User/' + res.Data[i].UserId + '"><img src="' + res.Data[i].UserIcon + '" alt="' + res.Data[i].UserName + '"></a></div><div class="grid_text"><h4 class="style1 list"><a href="/User/' + res.Data[i].UserId + '">' + res.Data[i].UserName + '</a ></h4 ><h3 class="style">' + res.Data[i].DateTime + '</h3 ><p class="para top">' + res.Data[i].Content + '</p ></div><div class="clear"></div></div>').appendTo("#commentList");
+                            $("#commentList").append('<div class="grid1_of_2"><div class="grid_img"><a href="/User/' + res.Data[i].UserId + '"><img src="' + res.Data[i].UserIcon + '" alt="' + res.Data[i].UserName + '"></a></div><div class="grid_text"><h4 class="style1 list"><a href="/User/' + res.Data[i].UserId + '">' + res.Data[i].UserName + '</a ></h4 ><h3 class="style">' + res.Data[i].DateTime + '</h3 ><p class="para top">' + res.Data[i].Content + '</p ></div><div class="clear"></div></div>');
                         }//<a href="" class="btn1">Click to Reply</a>
-                        if (res.Data.length <= 6) {
+                        if (res.Data.length < 6) {
                             $("#pageIndex").val(0);
                         }
                         else {
@@ -176,15 +202,16 @@
             var msg = $("#commentContent").val();//获取编辑器内容
             if (msg != "") {
                 var postId = $("#postId").val();
-                $.post("/Post/Comment", { postId, postId, content: msg },
+                $.post("/Post/Comment", { postId: postId, content: msg },
                     function (res) {
                         if (res.Status == "OK") {
+                            $("#commentList").text("");
                             if ($("#pageIndex").val() == 0) {
                                 $("#pageIndex").val(1);
                             }
                             loadComment();
                             $("#commentContent").val("");
-                            $("#commentContent").focus();
+                            $("#commentBox").hide();
                         }
                         if (res.Status == "Error") {
                             alert(res.ErrorMsg);
