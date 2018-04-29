@@ -52,6 +52,7 @@ namespace InShare.Web
             container.RegisterType<IFollowService, FollowService>();
             container.RegisterType<ILikeService, LikeService>();
             container.RegisterType<ITagService, TagService>();
+            container.RegisterType<IVerifyService, VerifyService>();
         }
     }
 }

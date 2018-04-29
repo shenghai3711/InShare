@@ -31,6 +31,7 @@ namespace InShare.Service
         public DbSet<LikerEntity> Likers { get; set; }
         public DbSet<UserProfileEntity> Profiles { get; set; }
         public DbSet<FollowEntity> Follows { get; set; }
+        public DbSet<VerifyEntity> Verifys { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

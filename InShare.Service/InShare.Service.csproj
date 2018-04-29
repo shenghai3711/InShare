@@ -66,10 +66,12 @@
     <Compile Include="ModelConfig\TagConfig.cs" />
     <Compile Include="ModelConfig\UserConfig.cs" />
     <Compile Include="ModelConfig\UserProfileConfig.cs" />
+    <Compile Include="ModelConfig\VerifyConfig.cs" />
     <Compile Include="PostService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagService.cs" />
     <Compile Include="UserService.cs" />
+    <Compile Include="VerifyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

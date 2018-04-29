@@ -61,7 +61,6 @@ namespace InShare.Common
         /// <returns></returns>
         private static string CreateRandomStr(char[] data, int length)
         {
-            //char[] data = { 'a', 'b', 'c', 'd', 'e', 'f', 'r', 's', 't', 'w', 'x', 'y', '2', '3', '4' };
             StringBuilder sb = new StringBuilder();
             Random rand = new Random();
             for (int i = 0; i < length; i++)

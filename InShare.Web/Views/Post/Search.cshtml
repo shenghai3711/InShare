@@ -1,0 +1,257 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+@section head {
+    <style type="text/css">
+        .top1 .top1Left {
+            margin: 0px auto;
+            width: 400px;
+            height: 170px;
+        }
+
+            .top1 .top1Left a {
+            }
+
+        .top1Left ul li {
+            float: left;
+            margin-right: 30px;
+            margin-top: 5px;
+        }
+
+        .center .centerTop .top2 {
+            /*width: 1000px;*/
+            height: 50px;
+            margin-top: 40px;
+        }
+
+        .top2 ul li {
+            float: left;
+            margin-top: 10px;
+            margin-left: 220px;
+            font-size: 20px;
+            list-style: none;
+        }
+
+        .top2 b {
+            color: black;
+            margin-left: 200px;
+            list-style: none;
+        }
+
+        .center .centerOther {
+            margin-top: 10px;
+            /*width: 1200px;*/
+            border: solid 1px red;
+        }
+
+
+        .t1, .t2, .t3, .t4, .t5, .t6, .t7 {
+            width: 400px;
+            height: 38px;
+            margin: 0px auto;
+            margin-top: 4px;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+
+        #main {
+            margin-top: -5em;
+        }
+
+        #tiles li {
+            width: 350px;
+            height: 310px;
+            float: left;
+            margin: 10px 25px;
+        }
+
+            #tiles li img {
+                height: 100%;
+            }
+
+        .top1 .top1Left {
+            margin: 0px auto;
+            width: 600px;
+            height: 200px;
+            border: solid 1px #978f94;
+        }
+
+            .top1 .top1Left ul li {
+                margin-top: 10px;
+                height: 50px;
+                /*border: solid 1px blue;*/
+            }
+    </style>
+}
+
+<div class="myIndex">
+    <div class="center">
+        <div class="centerTop">
+            <div class="top1">
+                <div class="top1Left">
+                    <ul>
+                        <li style="height: 160px;width: 100%;">
+                            <img id="profilePic" style="border-radius:50%;margin-left: 65px;" src="https://scontent-hkg3-2.cdninstagram.com/vp/761993dc007e86f9968a9f938e80e70a/5B697B1A/t51.2885-19/s150x150/25005602_1904421042944210_7172550441782214656_n.jpg">
+                            <div style="float: right;width: 55%;height: 100%;line-height: 2;">
+                                <h1 style="font-size: -webkit-xxx-large;">#Test</h1>
+                                <h3>1,959,395 帖子</h3>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" value="1" id="pageIndex" />
+<!---start-content---->
+<div class="content">
+    <div class="wrap">
+        <div id="main" role="main">
+            <ul id="tiles">
+                <!-- These are our grid blocks -->
+                @*@foreach (var post in ViewBag.PostList)
+                    {
+                        <li onclick="location.href='/Post/@post.ShortCode';">
+                            <img src="@post.DisplayUrl">
+                        </li>
+                    }*@
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <li onclick="location.href='#';">
+                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
+                </li>
+                <!-- End of grid blocks -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@section script {
+    <!----wookmark-scripts---->
+    <script src="~/Content/js/jquery.imagesloaded.js"></script>
+    <script src="~/Content/js/jquery.wookmark.js"></script>
+    <script type="text/javascript">
+        var isLoading = false;
+        (function ($) {
+            var $tiles = $('#tiles'),
+                $handler = $('li', $tiles),
+                $main = $('#main'),
+                $window = $(window),
+                $document = $(document),
+                options = {
+                    autoResize: true, // This will auto-update the layout when the browser window is resized.
+                    container: $main, // Optional, used for some extra CSS styling
+                    offset: 20, // Optional, the distance between grid items
+                    itemWidth: 280 // Optional, the width of a grid item
+                };
+            /**
+             * Reinitializes the wookmark handler after all images have loaded
+             */
+            function applyLayout() {
+                $tiles.imagesLoaded(function () {
+                    // Destroy the old handler
+                    if ($handler.wookmarkInstance) {
+                        $handler.wookmarkInstance.clear();
+                    }
+                    // Create a new layout handler.
+                    $handler = $('li', $tiles);
+                    $handler.wookmark(options);
+                });
+            }
+            /**
+             * When scrolled all the way to the bottom, add more tiles
+             */
+            function onScroll() {
+                // Check if we're within 100 pixels of the bottom edge of the broser window.
+                //var winHeight = window.innerHeight ? window.innerHeight : $window.height(), // iphone fix
+                //    //$window.scrollTop() 滚动条距顶部距离(页面超出窗口的高度)
+                closeToBottom = $(document).scrollTop() >= $(document).height() - $(window).height();
+
+                var loadedCount = $("#tiles").children("li").length;
+                if (closeToBottom && loadedCount >= 6) {
+                    if (isLoading) {
+                        return;
+                    }
+                    var pageIndex = $("#pageIndex").val();
+                    var postCount = $("#postCount").val();
+                    if (postCount == loadedCount) {
+                        return;
+                    }
+                    var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
+                    isLoading = true;
+                    //发送加载下一页请求
+                    //$.ajax({
+                    //    url: "/User/Load", dataType: "json",
+                    //    type: "post", data: { userId: userId, pageIndex: ++pageIndex },
+                    //    success: function (res) {
+                    //        if (res.Status == "OK") {
+                    //            $("#pageIndex").val(pageIndex);
+                    //            for (var i = 0; i < res.Data.length; i++) {
+                    //                var postUrl = "location.href='/Post/" + res.Data[i].ShortCode + "';";
+                    //                $tiles.append('<li onclick="' + postUrl + '"><img src="' + res.Data[i].DisplayUrl + '"></li>');
+                    //                applyLayout();
+                    //            }
+                    //        } else {
+                    //            $("#pageIndex").val(--pageIndex);
+                    //        }
+                    //        isLoading = false;
+                    //    }, error: function () {
+                    //        $("#pageIndex").val(--pageIndex);
+                    //        isLoading = false;
+                    //    }
+                    //});
+                }
+            };
+
+            // Call the layout function for the first time
+            applyLayout();
+
+            // Capture scroll event.
+            $window.bind('scroll.wookmark', onScroll);
+        })(jQuery);
+
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                //$(document).scrollTop() 获取垂直滚动的距离
+                //$(document).scrollLeft() 这是获取水平滚动条的距离
+                //if ($(document).scrollTop() <= 0) {
+                //    alert("滚动条已经到达顶部为0");
+                //}
+                if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                    //alert("滚动条已经到达底部为" + $(document).scrollTop());
+                }
+            });
+        });
+    </script>
+    <!----//wookmark-scripts---->
+}

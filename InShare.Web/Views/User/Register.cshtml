@@ -4,19 +4,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-section head {
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
-<link rel="stylesheet" href="~/Content/css/animate.css">
-<link rel="stylesheet" href="~/Content/css/signstyle.css">
+@section head {
 
-<!-- Modernizr JS -->
-<script src="~/Content/js/modernizr-2.6.2.min.js"></script>
-<!-- FOR IE9 below -->
-<!--[if lt IE 9]>
-<script src="~/Content/js/respond.min.js"></script>
-<![endif]-->
-<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="utf-8"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/animate.css">
+    <link rel="stylesheet" href="~/Content/css/signstyle.css">
+
+    <!-- Modernizr JS -->
+    <script src="~/Content/js/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script src="~/Content/js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="utf-8"></script>
 }
 <div class="container">
     <div class="row">
@@ -48,13 +49,13 @@ section head {
                 <div class="form-group">
                     <p>Already registered? <a href="/User/Login">Sign In</a></p>
                 </div>
+                <div id="msg" class="form-group">
+                    <div class="alert alert-warning" role="alert"></div>
+                </div>
                 <div class="form-group">
                     <button id="btnRegister" class="btn btn-primary">
                         <span>Sign Up</span>
                     </button>
-                </div>
-                <div id="msg" class="form-group">
-                    <div class="alert alert-warning" role="alert"></div>
                 </div>
             </div>
             <!-- END Sign In div -->
@@ -72,17 +73,55 @@ section head {
 <script>
     $(function () {
         $("#msg").hide();
+        $("#btnRegister").attr('disabled', 'true');
+        //当用户名失去焦点时验证数据库是否已存在此账号
+        $("#username").blur(function () {
+            var userName = $("#username").val();
+            if (userName.length == 0) {
+                return;
+            }
+            $.ajax({
+                url: "/User/VerifyName", dataType: "json",
+                type: "post", data: { userName: userName },
+                success: function (res) {
+                    if (res.Status == "OK") {
+                        $("#msg").hide();
+                        $("#btnRegister").removeAttr("disabled");
+                    } else {
+                        $("#msg").show().find('div').html(res.ErrorMsg);
+                    }
+                }, error: function () {
+                    $("#msg").show().find('div').html("Network error");
+                }
+            });
+        });
+        $("#username").focus(function () {
+            $("#msg").hide();
+        });
     });
+    //点击注册按钮
     $("#btnRegister").click(function () {
         var inputCode = $("#verify-code").val();
+        if (inputCode == "") {
+            $("#msg").show().find('div').html("请输入验证码");
+        }
         var userName = $("#username").val();
+        if (userName == "") {
+            $("#msg").show().find('div').html("请输入账号");
+        }
         var fullName = $("#fullname").val();
+        if (fullName == "") {
+            $("#msg").show().find('div').html("请输入全名");
+        }
         var pwd = $("#password").val();
+        if (pwd == "") {
+            $("#msg").show().find('div').html("请输入密码");
+        }
         var i = returnCitySN;
         var userIP = i['cip'];
         var userCity = i['cname'];
         $("#btnRegister").attr('disabled', 'true');
-        $("#btnRegister").find('span').html("Loading...");
+        $("#btnRegister").val("Loading...");
         $.ajax({
             url: "/User/Register", dataType: "json",
             type: "post", data: { userName: userName, fullName: fullName, passWord: pwd, verifyCode: inputCode, IP: userIP, City: userCity },

@@ -7,6 +7,61 @@
     <link href="~/Content/css/homestyle.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="~/Content/img/fav-icon.png" />
+    <style>
+        .head {
+            height: 90px;
+            text-align: center;
+            color: gray;
+            font-size: 30px;
+        }
+
+            .head span {
+                float: left;
+                margin-left: 195px;
+                margin-top: 50px;
+            }
+
+        .headRight {
+            float: right;
+            top: 50px;
+            right: 210px;
+            position: relative;
+        }
+
+            .headRight a {
+                color: #FF8585;
+                font-size: 15px;
+            }
+
+                .headRight a:hover {
+                    text-decoration: none;
+                    color: #ec2b58
+                }
+
+        .myIndex {
+            margin: 140px auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        .center {
+            height: 150px;
+            /*background: url(image/21.jpg);*/
+        }
+
+            .center .centerTop {
+                /*width: 1200px;*/
+                height: 100%;
+            }
+
+                .center .centerTop img {
+                    /*margin-right: 30px;*/
+                }
+
+                .center .centerTop .top1 {
+                    /*width: 1000px;*/
+                }
+    </style>
     <script type="application/x-javascript">
         addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
     </script>
@@ -64,12 +119,15 @@
                         <div class="form_content">
                             <div class="menu_box_list">
                                 <ul>
-                                    <li><a href="#"><span>home</span></a></li>
+                                    <li><a href="/Home/Index"><span>Home</span></a></li>
+
+                                    @if (@Session["userId"] != null)
+                                    {
+                                        <li><a href="/Post/Posting"><span>Posting</span></a></li>
+                                        <li><a href="/User/Edit"><span>Edit</span></a></li>
+                                        <li><a href="/User/ChangePassword"><span>ChangePassword</span></a></li>
+                                    }
                                     <li><a href="/Home/About"><span>About</span></a></li>
-                                    <li><a href="#"><span>Works</span></a></li>
-                                    <li><a href="#"><span>Clients</span></a></li>
-                                    <li><a href="#"><span>Blog</span></a></li>
-                                    <li><a href="#"><span>Contact</span></a></li>
                                     <div class="clear"> </div>
                                 </ul>
                             </div>
@@ -86,16 +144,29 @@
             <div class="userinfo">
                 <div class="user">
                     <ul>
-                        <li>
-                            <a href="/User/@Session["userId"]">
-                                @*<img src="~/Content/img/user-pic.png" title="user-name" />*@
-                                <span>@Session["userName"]</span>
-                                <input type="hidden" value="@Session["userId"]" id="accountId" />
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/User/Logout">Logout</a>
-                        </li>
+                        @if (@Session["userId"] == null)
+                        {
+                            <li>
+                                <a href="/User/Login">Sign In</a>
+                            </li>
+                            <li>|</li>
+                            <li>
+                                <a href="/User/Register">Sign Up</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/User/@Session["userId"]">
+                                    <span>@Session["userName"]</span>
+                                    <input type="hidden" value="@Session["userId"]" id="accountId" />
+                                </a>
+                            </li>
+                            <li>|</li>
+                            <li>
+                                <a href="/User/Logout">Logout</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

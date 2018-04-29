@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using InShare.Model;
 using InShare.Common;
+using System.Data.Entity;
 
 namespace InShare.Service
 {
@@ -80,7 +81,7 @@ namespace InShare.Service
         /// <param name="genger"></param>
         /// <param name="profilePic"></param>
         /// <returns></returns>
-        public bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool genger, string profilePic)
+        public bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool? genger, string profilePic, string email = "")
         {
             using (InShareContext db = new InShareContext())
             {
@@ -96,6 +97,7 @@ namespace InShare.Service
                 user.IsPrivate = isPrivate;
                 user.Profile.Gender = genger;
                 user.ProfilePic = profilePic;
+                user.Profile.Email = email;
                 user.Profile.LastEditDateTime = DateTime.Now;
                 db.SaveChanges();
                 return true;
@@ -126,7 +128,7 @@ namespace InShare.Service
             using (InShareContext db = new InShareContext())
             {
                 BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
-                return baseService.GetById(userId);
+                return baseService.GetAll().Where(u => u.Id == userId).Include(u => u.Profile).AsNoTracking().FirstOrDefault();
             }
         }
 
@@ -177,7 +179,7 @@ namespace InShare.Service
                 {
                     throw new Exception("此用户不存在");
                 }
-                if (user.Profile.Password != EncryptHelper.MD5Encrypt(userId + oldPwd + user.Profile.PasswordSalt))
+                if (user.Profile.Password != oldPwd)
                 {
                     throw new Exception("旧密码不匹配");
                 }

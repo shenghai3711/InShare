@@ -7,60 +7,6 @@
 
 @section head {
     <style type="text/css">
-        .head {
-            height: 90px;
-            text-align: center;
-            color: gray;
-            font-size: 30px;
-        }
-
-            .head span {
-                float: left;
-                margin-left: 195px;
-                margin-top: 50px;
-            }
-
-        .headRight {
-            float: right;
-            top: 50px;
-            right: 210px;
-            position: relative;
-        }
-
-            .headRight a {
-                color: #FF8585;
-                font-size: 15px;
-            }
-
-                .headRight a:hover {
-                    text-decoration: none;
-                    color: #ec2b58
-                }
-
-        .myIndex {
-            margin: 140px auto;
-            width: 100%;
-            height: 100%;
-        }
-
-        .center {
-            height: 150px;
-            /*background: url(image/21.jpg);*/
-        }
-
-            .center .centerTop {
-                /*width: 1200px;*/
-                height: 100%;
-            }
-
-                .center .centerTop img {
-                    /*margin-right: 30px;*/
-                }
-
-                .center .centerTop .top1 {
-                    /*width: 1000px;*/
-                }
-
         .top1 .top1Left {
             margin: 0px auto;
             width: 400px;
@@ -195,25 +141,25 @@
         <div class="centerTop">
             <div class="top1">
                 <div style="position: absolute;height:150px;width:150px;margin-left:250px;">
-                    <img id="profilePic" src="@Model.ProfilePic" />
+                    <img id="profilePic" style="border-radius:50%;" src="@Model.ProfilePic" />
                 </div>
                 <div class="top1Left">
                     <text style="font-size:xx-large;" id="user-name">@Model.UserName</text>
                     @if (Model.Id == Convert.ToInt64(Session["userId"]))
                     {
-                        <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" id="btn_edit">edit profile</button>
+                    <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" id="btn_edit">edit profile</button>
                     }
                     else
                     {
                         if (ViewBag.Following)
                         {
-                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" onclick="handleClick(this)">Following</button>
-                            <input type="hidden" value="1" id="followValue" />
+                    <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" onclick="handleClick(this)">Following</button>
+                    <input type="hidden" value="1" id="followValue" />
                         }
                         else
                         {
-                            <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" onclick="handleClick(this)">Follow</button>
-                            <input type="hidden" value="0" id="followValue" />
+                    <button type="button" style="position: relative; float: right; font-size: x-large; margin-top: 5px; cursor: pointer;" onclick="handleClick(this)">Follow</button>
+                    <input type="hidden" value="0" id="followValue" />
                         }
                     }
                     <ul style="width: 100%; height: 30px; padding: 10px 0px;">

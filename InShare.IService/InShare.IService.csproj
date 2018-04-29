@@ -49,6 +49,7 @@
     <Compile Include="IServiceSupport.cs" />
     <Compile Include="ITagService.cs" />
     <Compile Include="IUserService.cs" />
+    <Compile Include="IVerifyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

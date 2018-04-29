@@ -38,6 +38,21 @@ namespace InShare.Web.Controllers
             return View();
         }
 
+        #region 搜索
+
+        [HttpGet]
+        public ActionResult Search(string tagName)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Search(int tagId, int pageIndex = 1)
+        {
+            return Json(new AjaxResult { });
+        }
+
+        #endregion
 
         #region Like操作 未完成
 
@@ -55,7 +70,7 @@ namespace InShare.Web.Controllers
 
         #endregion
 
-        #region Comment操作 未完成
+        #region Comment操作
 
         [HttpPost]
         public ActionResult Comment(long postId, string content)

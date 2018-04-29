@@ -1,8 +1,269 @@
-﻿
+﻿@model InShare.Model.UserEntity
+
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
-<h2>Edit</h2>
+@section head {
 
+    <style type="text/css">
+        .top1 .top1Left {
+            margin: 0px auto;
+            width: 600px;
+            height: 470px;
+            border: solid 1px #978f94;
+        }
+
+            .top1 .top1Left ul li {
+                margin-top: 10px;
+                height: 50px;
+                /*border: solid 1px blue;*/
+            }
+
+        .label-div {
+            float: left;
+            padding-top: 6px;
+            width: 180px;
+        }
+
+            .label-div label {
+                float: right;
+                width: 190px;
+                text-align: right;
+                padding-right: 32px;
+                padding-left: 32px;
+                font-weight: 600;
+                font-size: 16px;
+            }
+
+        .input-div {
+            display: -webkit-inline-box;
+        }
+
+            .input-div input {
+                border: 1px solid #8c7272;
+                height: 32px;
+                border-radius: 3px;
+                font-size: 16px;
+                width: 360px;
+                padding: 0 10px;
+            }
+
+            .input-div textarea {
+                border: 1px solid #8c7272;
+                height: 32px;
+                border-radius: 3px;
+                font-size: 16px;
+                width: 360px;
+                padding: 0 10px;
+            }
+    </style>
+
+    <link href="~/Content/css/cropper.min.css" rel="stylesheet" />
+    <link href="~/Content/css/ImgCropping.css" rel="stylesheet" />
+
+}
+
+<div class="myIndex">
+    <div class="center">
+        <div class="centerTop">
+            <div class="top1">
+                <div class="top1Left">
+                        <ul>
+                            <li style="height: 160px;">
+                                <img id="profilePic" style="border-radius:50%;margin-left: 65px;" src="https://scontent-hkg3-2.cdninstagram.com/vp/761993dc007e86f9968a9f938e80e70a/5B697B1A/t51.2885-19/s150x150/25005602_1904421042944210_7172550441782214656_n.jpg">
+                                <div style="float: right;width: 55%;height: 100%;line-height: 3;">
+                                    <h1 style="font-size: x-large;">Joey Tribanly</h1>
+                                    <button id="replaceImg" class="l-btn">更换头像</button>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label-div">
+                                    <label>姓名</label>
+                                </div>
+                                <div class="input-div">
+                                    <input type="text" id="pepFullname" value="Joey Tribanly">
+                                </div>
+                            </li>
+                            <li style="height:60px;">
+                                <div class="label-div">
+                                    <label>个人简介</label>
+                                </div>
+                                <div class="input-div">
+                                    <textarea id="pepBio" style="padding:6px 10px;">Why not live a life of your dreams?</textarea>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label-div">
+                                    <label>邮箱</label>
+                                </div>
+                                <div class="input-div">
+                                    <input type="text" id="pepEmail" value="123456@qq.com">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="label-div">
+                                    <label>电话号码</label>
+                                </div>
+                                <div class="input-div">
+                                    <input type="text" id="pepPhoneNumber" value="+86 151 2383 6691">
+                                </div>
+                            </li>
+                            <li>
+                                <button type="submit" style="display: block;margin:10px auto;padding: 5px 10px;font-size: 16px;background: #3897f0;border-radius: 3px;color: #fff;border-style: solid;border-width: 1px;
+border-color: #3897f0;">提交</button>
+                            </li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--图片裁剪框 start-->
+<div style="display: none" class="tailoring-container">
+    <div class="black-cloth" onclick="closeTailor(this)"></div>
+    <div class="tailoring-content">
+        <div class="tailoring-content-one">
+            <label title="上传图片" for="chooseImg" class="l-btn choose-btn">
+                <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden" onchange="selectImg(this)">
+                选择图片
+            </label>
+            <div class="close-tailoring" onclick="closeTailor(this)">×</div>
+        </div>
+        <div class="tailoring-content-two">
+            <div class="tailoring-box-parcel">
+                <img id="tailoringImg">
+            </div>
+            <div class="preview-box-parcel">
+                <p>图片预览：</p>
+                <div class="square previewImg"></div>
+                <div class="circular previewImg"></div>
+            </div>
+        </div>
+        <div class="tailoring-content-three">
+            <button class="l-btn cropper-reset-btn">复位</button>
+            <button class="l-btn cropper-rotate-btn">旋转</button>
+            <button class="l-btn cropper-scaleX-btn">换向</button>
+            <button class="l-btn sureCut" id="sureCut">确定</button>
+        </div>
+    </div>
+</div>
+<!--图片裁剪框 end-->
+
+
+@section script {
+    <script src="~/Content/js/cropper.min.js"></script>
+    @*头像*@
+    <script type="text/javascript">
+        //弹出框水平垂直居中
+        (window.onresize = function () {
+            var win_height = $(window).height();
+            var win_width = $(window).width();
+            if (win_width <= 768) {
+                $(".tailoring-content").css({
+                    "top": (win_height - $(".tailoring-content").outerHeight()) / 2,
+                    "left": 0
+                });
+            } else {
+                $(".tailoring-content").css({
+                    "top": (win_height - $(".tailoring-content").outerHeight()) / 2,
+                    "left": (win_width - $(".tailoring-content").outerWidth()) / 2
+                });
+            }
+        })();
+
+        //弹出图片裁剪框
+        $("#replaceImg").on("click", function () {
+            $(".tailoring-container").toggle();
+        });
+        //图像上传
+        function selectImg(file) {
+            if (!file.files || !file.files[0]) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                var replaceSrc = evt.target.result;
+                //更换cropper的图片
+                $('#tailoringImg').cropper('replace', replaceSrc, false);//默认false，适应高度，不失真
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+        //cropper图片裁剪
+        $('#tailoringImg').cropper({
+            aspectRatio: 1 / 1,//默认比例
+            preview: '.previewImg',//预览视图
+            guides: false,  //裁剪框的虚线(九宫格)
+            autoCropArea: 0.5,  //0-1之间的数值，定义自动剪裁区域的大小，默认0.8
+            movable: false, //是否允许移动图片
+            dragCrop: true,  //是否允许移除当前的剪裁框，并通过拖动来新建一个剪裁框区域
+            movable: true,  //是否允许移动剪裁框
+            resizable: true,  //是否允许改变裁剪框的大小
+            zoomable: false,  //是否允许缩放图片大小
+            mouseWheelZoom: false,  //是否允许通过鼠标滚轮来缩放图片
+            touchDragZoom: true,  //是否允许通过触摸移动来缩放图片
+            rotatable: true,  //是否允许旋转图片
+            crop: function (e) {
+                // 输出结果数据裁剪图像。
+            }
+        });
+        //旋转
+        $(".cropper-rotate-btn").on("click", function () {
+            $('#tailoringImg').cropper("rotate", 45);
+        });
+        //复位
+        $(".cropper-reset-btn").on("click", function () {
+            $('#tailoringImg').cropper("reset");
+        });
+        //换向
+        var flagX = true;
+        $(".cropper-scaleX-btn").on("click", function () {
+            if (flagX) {
+                $('#tailoringImg').cropper("scaleX", -1);
+                flagX = false;
+            } else {
+                $('#tailoringImg').cropper("scaleX", 1);
+                flagX = true;
+            }
+            flagX != flagX;
+        });
+        //裁剪后的处理
+        $("#sureCut").on("click", function () {
+            if ($("#tailoringImg").attr("src") == null) {
+                return false;
+            } else {
+                var cas = $('#tailoringImg').cropper('getCroppedCanvas');//获取被裁剪后的canvas
+                var base64url = cas.toDataURL('image/png'); //转换为base64地址形式
+                //$("#finalImg").prop("src", base64url);//显示为图片的形式
+                //关闭裁剪框
+                closeTailor();
+            }
+        });
+
+        function uploadImg(base64Data) {
+            $.ajax({
+                url: "/User/UploadUserIcon",
+                dataType: "json",
+                type: "post",
+                data: { base64Data: base64Data },
+                success: function (res) {
+                    if (res.Status=="OK") {
+
+                    }
+                    else {
+                        alert(res.ErrorMsg);
+                    }
+                },
+                error: function () {
+                    alert("Network error");
+                }
+            });
+        }
+        //关闭裁剪框
+        function closeTailor() {
+            $(".tailoring-container").toggle();
+        }
+    </script>
+}

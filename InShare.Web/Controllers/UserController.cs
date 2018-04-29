@@ -21,11 +21,29 @@ namespace InShare.Web.Controllers
         public IFollowService FollowService { get; set; }
         [Dependency]
         public IPostService PostService { get; set; }
-
+        [Dependency]
+        public IVerifyService VerifyService { get; set; }
         /// <summary>
         /// 帖子每页数量
         /// </summary>
         public int PageSize = 6;
+
+        /// <summary>
+        /// 获取当前登录账号编号
+        /// </summary>
+        public long AccountId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(SessionHelper.Get("userId")))
+                {
+                    return 0;
+                }
+                return Convert.ToInt64(SessionHelper.Get("userId"));
+            }
+        }
+
+        #region 首页加载
 
         /// <summary>
         /// 加载用户详情
@@ -58,6 +76,8 @@ namespace InShare.Web.Controllers
                 p => new PostInfo(p));
             return Json(new AjaxResult { Status = "OK", Data = returList });
         }
+
+        #endregion
 
         #region 加载关注者或被关注者
 
@@ -112,13 +132,46 @@ namespace InShare.Web.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            return View();
+            if (AccountId == 0)
+            {
+                Redirect("/User/Login");
+            }
+            return View(UserService.GetUserById(AccountId));
         }
 
         [HttpPost]
-        public ActionResult Edit(long id, string userName, string fullName)
+        public ActionResult Edit(string biography, string fullName, string profilePic, string email)
         {
-            return View();
+            if (AccountId == 0)
+            {
+                Redirect("/User/Login");
+            }
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "fullname 不能为空" });
+            }
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "email 不能为空" });
+            }
+            var user = UserService.GetUserById(AccountId);
+            if (user != null)
+            {
+                fullName = fullName ?? user.FullName;
+                profilePic = profilePic ?? user.ProfilePic;
+                bool b = UserService.Edit(AccountId, user.UserName, fullName, biography, user.IsPrivate, user.Profile.Gender, profilePic, email);
+                if (b)
+                {
+                    return Json(new AjaxResult { Status = "OK" });
+                }
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "修改失败" });
+        }
+
+        [HttpPost]
+        public ActionResult UploadUserIcon()
+        {
+            return Json(new AjaxResult { });
         }
 
         #endregion
@@ -132,9 +185,25 @@ namespace InShare.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(long? id, string oldPwd, string newPwd)
+        public ActionResult ChangePassword(string oldPwd, string newPwd)
         {
             return View();
+        }
+
+        #endregion
+
+        #region 用户日志
+
+        [HttpGet]
+        public ActionResult Log()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Log(int pageIndex)
+        {
+            return Json(new AjaxResult { });
         }
 
         #endregion
@@ -154,6 +223,7 @@ namespace InShare.Web.Controllers
             {
                 if (FollowService.Follow(accountId, userId))
                 {
+                    LogService.Add(accountId, 3, string.Format("{0}成功关注{1}", accountId, userId));
                     return Json(new AjaxResult { Status = "OK" });
                 }
             }
@@ -173,6 +243,7 @@ namespace InShare.Web.Controllers
             {
                 if (FollowService.Unfollow(accountId, userId))
                 {
+                    LogService.Add(accountId, 4, string.Format("{0}成功取消关注{1}", accountId, userId));
                     return Json(new AjaxResult { Status = "OK" });
                 }
             }
@@ -224,26 +295,28 @@ namespace InShare.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string userName, string passWord, string ip, string city)
+        public ActionResult Login(string userName, string passWord, string ip)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(ip) || string.IsNullOrEmpty(city))
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(ip))
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "不能为空" });
             }
             var user = UserService.GetUserByUserName(userName);
-            if (user == null)
+            if (user != null)
             {
-                return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户不存在" });
+                string city = "重庆";//todo:根据ip获取当地位置
+                if (UserService.CheckLogin(userName, passWord))
+                {
+                    SessionHelper.Add("userId", user.Id.ToString(), 60);
+                    SessionHelper.Add("userName", user.UserName, 60);
+                    SessionHelper.Add("profilePic", user.ProfilePic, 60);
+                    SessionHelper.Add("IP", ip, 60);
+                    SessionHelper.Add("CityName", city, 60);
+                    LogService.Add(user.Id, 0, string.Format("在{0}登陆成功", city), ip);//日志记录用户登录
+                    return Json(new AjaxResult { Status = "OK", Data = user.Id });
+                }
             }
-            if (UserService.CheckLogin(userName, passWord))
-            {
-                Session["userId"] = user.Id;
-                Session["userName"] = user.UserName;
-                Session["profilePic"] = user.ProfilePic;
-                LogService.Add(user.Id, 0, string.Format("{0}在{1}登陆成功", user.FullName, city), ip);//日志记录用户登录
-                return Json(new AjaxResult { Status = "OK", Data = user.Id });
-            }
-            return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户不存在" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户名或密码错误" });
         }
 
         #endregion
@@ -257,9 +330,9 @@ namespace InShare.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip, string cityName)
+        public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(verifyCode) || string.IsNullOrEmpty(ip) || string.IsNullOrEmpty(cityName))
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(verifyCode) || string.IsNullOrEmpty(ip))
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "信息不能为空" });
             }
@@ -268,8 +341,9 @@ namespace InShare.Web.Controllers
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "验证码错误，请重新填写" });
             }
+            string city = "重庆";//todo:根据ip获取当地位置
             long userId = UserService.Add(userName, fullName, passWord);
-            LogService.Add(userId, 1, string.Format("{0}在{1}注册账号成功", userName, cityName), ip);
+            LogService.Add(userId, 1, string.Format("在{0}注册账号成功", city), ip);
             return Json(new AjaxResult { Status = "OK" });
         }
 
@@ -279,8 +353,98 @@ namespace InShare.Web.Controllers
 
         public ActionResult Logout()
         {
+            if (!string.IsNullOrEmpty(SessionHelper.Get("userId")))
+            {
+                LogService.Add(Convert.ToInt64(SessionHelper.Get("userId")), 1, string.Format("在{0}退出登录", SessionHelper.Get("CityName")), SessionHelper.Get("IP"));
+            }
             Session.Clear();
             return Redirect("/User/Login");
+        }
+
+        #endregion
+
+        #region 忘记密码
+
+        [HttpGet]
+        public ActionResult ForgotPwd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPwd(string email, string userName)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(userName))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "email或用户名不能为空" });
+            }
+            if (!RegexHelper.IsMatch(email, @"\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}"))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "email格式不正确" });
+            }
+            var user = UserService.GetUserByUserName(userName);
+            if (user == null)
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户不存在" });
+            }
+            var verify = VerifyService.Add(user.Id);
+            string content = string.Format("http://localhost:31726/User/ResetPassword?userId={0}&verifyCode={1}", user.Id, verify.VerifyCode);
+            bool b = EmailHelper.SendMail(new Email
+            {
+                DisplayName = "InShare运营团队",
+                Subject = "找回账号密码",
+                Body = content,//这里应该是链接，点击后请求修改密码页面
+            }, email);
+            if (b)
+            {
+                return Json(new AjaxResult { Status = "OK" });
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "请稍后再试" });
+        }
+
+        #endregion
+
+        #region 重置密码
+
+        [HttpGet]
+        public ActionResult ResetPassword(long? userId, string verifyCode)
+        {
+            if (userId == null || string.IsNullOrEmpty(verifyCode))
+            {
+                return Redirect("/SiteStatus/NotFound");
+            }
+            ViewBag.UserId = userId;
+            ViewBag.Code = verifyCode;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(long userId, string verifyCode, string userName, string pwd)
+        {
+            if (userId == 0 || string.IsNullOrEmpty(verifyCode) || string.IsNullOrEmpty(pwd))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "信息不完整" });
+            }
+            //查询验证码是否有效
+            var verify = VerifyService.GetVerify(userId);
+            if (verify == null)
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "验证码无效" });
+            }
+            //重置密码
+            var user = UserService.GetUserById(userId);
+            if (user.UserName != userName)
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户名错误" });
+            }
+            if (UserService.UpdatePwd(userId, pwd, user.Profile.Password))
+            {
+                //修改验证码状态
+                VerifyService.UpdateValid(userId);
+                LogService.Add(userId, 7, "重置密码成功");
+                return Json(new AjaxResult { Status = "OK" });
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "修改密码失败，请稍后重试" });
         }
 
         #endregion

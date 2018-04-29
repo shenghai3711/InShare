@@ -10,7 +10,7 @@ namespace InShare.Service
 {
     public class LogService : ILogService
     {
-        public long Add(long userId, int type, string content, string ip)
+        public long Add(long userId, int type, string content, string ip = "")
         {
             LogEntity log = new LogEntity
             {

@@ -24,8 +24,9 @@ namespace InShare.IService
         /// <param name="isPrivate">是否私有</param>
         /// <param name="genger">性别</param>
         /// <param name="profilePic">头像</param>
+        /// <param name="email">邮箱</param>
         /// <returns></returns>
-        bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool genger,string profilePic);
+        bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool? genger, string profilePic, string email = "");
 
         /// <summary>
         /// 修改密码
@@ -73,6 +74,6 @@ namespace InShare.IService
         /// <param name="name">名称（账号/全名）</param>
         /// <returns></returns>
         long GetAllUserCount(string name);
-
+        
     }
 }
