@@ -76,14 +76,6 @@
       <Project>{0b8a2d2f-8581-4d66-982f-cb91e991e04b}</Project>
       <Name>InShare.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InShare.Service\InShare.Service.csproj">
-      <Project>{1c12cc9f-447f-4f35-b399-7cd22bf8887a}</Project>
-      <Name>InShare.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\InShare.Web\InShare.Web.csproj">
-      <Project>{2B74B192-C54A-425B-817E-D53C554CB5EE}</Project>
-      <Name>InShare.Web</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -127,7 +127,7 @@ namespace InShare.Web.Controllers
 
         #endregion
 
-        #region 修改资料 未完成
+        #region 修改资料
 
         [HttpGet]
         public ActionResult Edit()
@@ -136,11 +136,13 @@ namespace InShare.Web.Controllers
             {
                 Redirect("/User/Login");
             }
-            return View(UserService.GetUserById(AccountId));
+            var user = UserService.GetUserById(AccountId);
+            user.Profile.PhoneNum = user.Profile.PhoneNum ?? "";
+            return View(user);
         }
 
         [HttpPost]
-        public ActionResult Edit(string biography, string fullName, string profilePic, string email)
+        public ActionResult Edit(string biography, string fullName, string email, string phoneNum)
         {
             if (AccountId == 0)
             {
@@ -157,26 +159,32 @@ namespace InShare.Web.Controllers
             var user = UserService.GetUserById(AccountId);
             if (user != null)
             {
-                fullName = fullName ?? user.FullName;
-                profilePic = profilePic ?? user.ProfilePic;
-                bool b = UserService.Edit(AccountId, user.UserName, fullName, biography, user.IsPrivate, user.Profile.Gender, profilePic, email);
-                if (b)
+                if (UserService.Edit(AccountId, user.UserName, fullName, biography, user.IsPrivate, user.Profile.Gender, email, phoneNum))
                 {
-                    return Json(new AjaxResult { Status = "OK" });
+                    return Json(new AjaxResult { Status = "OK", Data = "/User/" + AccountId });
                 }
             }
             return Json(new AjaxResult { Status = "Error", ErrorMsg = "修改失败" });
         }
 
         [HttpPost]
-        public ActionResult UploadUserIcon()
+        public ActionResult UploadUserIcon(string base64Data)
         {
-            return Json(new AjaxResult { });
+            string url = Common.ImageHelper.UploadStream(Common.ImageHelper.ImgBase64ToStream(base64Data));
+            if (string.IsNullOrEmpty(url))
+            {
+                return Json(new AjaxResult { Status = "Failed", ErrorMsg = "上传图片失败" });
+            }
+            if (UserService.EditProfilePic(AccountId, url))
+            {
+                return Json(new AjaxResult { Status = "OK", Data = url });
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "修改头像失败" });
         }
 
         #endregion
 
-        #region 修改密码 未完成
+        #region 修改密码
 
         [HttpGet]
         public ActionResult ChangePassword()
@@ -187,12 +195,31 @@ namespace InShare.Web.Controllers
         [HttpPost]
         public ActionResult ChangePassword(string oldPwd, string newPwd)
         {
-            return View();
+            if (string.IsNullOrEmpty(oldPwd) || string.IsNullOrEmpty(newPwd))
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "密码不能为空" });
+            }
+            if (oldPwd == newPwd)
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "新密码不能与旧密码重复" });
+            }
+            try
+            {
+                if (UserService.UpdatePwd(AccountId, newPwd, oldPwd))
+                {
+                    return Json(new AjaxResult { Status = "OK" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = ex.Message });
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "修改密码失败，请稍后重试" });
         }
 
         #endregion
 
-        #region 用户日志
+        #region 用户日志 未完成
 
         [HttpGet]
         public ActionResult Log()

@@ -70,51 +70,50 @@
         <div class="centerTop">
             <div class="top1">
                 <div class="top1Left">
-                        <ul>
-                            <li style="height: 160px;">
-                                <img id="profilePic" style="border-radius:50%;margin-left: 65px;" src="https://scontent-hkg3-2.cdninstagram.com/vp/761993dc007e86f9968a9f938e80e70a/5B697B1A/t51.2885-19/s150x150/25005602_1904421042944210_7172550441782214656_n.jpg">
-                                <div style="float: right;width: 55%;height: 100%;line-height: 3;">
-                                    <h1 style="font-size: x-large;">Joey Tribanly</h1>
-                                    <button id="replaceImg" class="l-btn">更换头像</button>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="label-div">
-                                    <label>姓名</label>
-                                </div>
-                                <div class="input-div">
-                                    <input type="text" id="pepFullname" value="Joey Tribanly">
-                                </div>
-                            </li>
-                            <li style="height:60px;">
-                                <div class="label-div">
-                                    <label>个人简介</label>
-                                </div>
-                                <div class="input-div">
-                                    <textarea id="pepBio" style="padding:6px 10px;">Why not live a life of your dreams?</textarea>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="label-div">
-                                    <label>邮箱</label>
-                                </div>
-                                <div class="input-div">
-                                    <input type="text" id="pepEmail" value="123456@qq.com">
-                                </div>
-                            </li>
-                            <li>
-                                <div class="label-div">
-                                    <label>电话号码</label>
-                                </div>
-                                <div class="input-div">
-                                    <input type="text" id="pepPhoneNumber" value="+86 151 2383 6691">
-                                </div>
-                            </li>
-                            <li>
-                                <button type="submit" style="display: block;margin:10px auto;padding: 5px 10px;font-size: 16px;background: #3897f0;border-radius: 3px;color: #fff;border-style: solid;border-width: 1px;
-border-color: #3897f0;">提交</button>
-                            </li>
-                        </ul>
+                    <ul>
+                        <li style="height: 160px;">
+                            <img id="profilePic" style="width: 150px;border-radius:50%;margin-left: 65px;" src="@Model.ProfilePic">
+                            <div style="float: right;width: 55%;height: 100%;line-height: 3;">
+                                <h1 style="font-size: x-large;">@Model.UserName</h1>
+                                <button id="replaceImg" class="l-btn">更换头像</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label-div">
+                                <label>姓名</label>
+                            </div>
+                            <div class="input-div">
+                                <input type="text" id="pepFullname" maxlength="20" value="@Model.FullName">
+                            </div>
+                        </li>
+                        <li style="height:60px;">
+                            <div class="label-div">
+                                <label>个人简介</label>
+                            </div>
+                            <div class="input-div">
+                                <textarea id="pepBio" style="padding:6px 10px;" maxlength="100">@Model.Biography</textarea>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label-div">
+                                <label>邮箱</label>
+                            </div>
+                            <div class="input-div">
+                                <input type="text" id="pepEmail" maxlength="50" value="@Model.Profile.Email">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label-div">
+                                <label>电话号码</label>
+                            </div>
+                            <div class="input-div">
+                                <input type="text" id="pepPhoneNumber" maxlength="11" value="@Model.Profile.PhoneNum">
+                            </div>
+                        </li>
+                        <li>
+                            <button id="btnEidt" style="display: -webkit-box;margin:10px auto;padding: 5px 10px;font-size: 16px;background: #3897f0;border-radius: 3px;color: #fff;border-style: solid;border-width: 1px;border-color: #3897f0;cursor: pointer;">提交</button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -237,11 +236,12 @@ border-color: #3897f0;">提交</button>
                 var cas = $('#tailoringImg').cropper('getCroppedCanvas');//获取被裁剪后的canvas
                 var base64url = cas.toDataURL('image/png'); //转换为base64地址形式
                 //$("#finalImg").prop("src", base64url);//显示为图片的形式
+                uploadImg(base64url);
                 //关闭裁剪框
                 closeTailor();
             }
         });
-
+        //头像上传
         function uploadImg(base64Data) {
             $.ajax({
                 url: "/User/UploadUserIcon",
@@ -249,8 +249,8 @@ border-color: #3897f0;">提交</button>
                 type: "post",
                 data: { base64Data: base64Data },
                 success: function (res) {
-                    if (res.Status=="OK") {
-
+                    if (res.Status == "OK") {
+                        $("#profilePic").prop("src", res.Data);
                     }
                     else {
                         alert(res.ErrorMsg);
@@ -265,5 +265,52 @@ border-color: #3897f0;">提交</button>
         function closeTailor() {
             $(".tailoring-container").toggle();
         }
+    </script>
+
+    <script>
+        $(function () {
+            $("#btnEidt").click(function () {
+                var b = true;
+                var fullName = $("#pepFullname").val();
+                if (fullName.length == 0) {
+                    $("#pepFullname").css("border-color", "red").focus();
+                    b = false;
+                }
+                var bio = $("#pepBio").val();
+                if (bio.length == 0) {
+                    $("#pepBio").css("border-color", "red").focus();
+                    b = false;
+                }
+                var email = $("#pepEmail").val();
+                var reg = /^\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                if (email.length == 0 || !reg.test(email)) {
+                    $("#pepEmail").css("border-color", "red").focus();
+                    b = false;
+                }
+                if (!b) {
+                    return;
+                }
+                var phoneNumber = $("#pepPhoneNumber").val();
+                $.ajax({
+                    url: "/User/Edit",
+                    dataType: "json",
+                    type: "post",
+                    data: { biography: bio, fullName: fullName, email: email, phoneNum: phoneNumber },
+                    success: function (res) {
+                        if (res.Status == "OK") {
+                            //location.href = res.Data;
+                            alert("修改资料成功");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(res.ErrorMsg);
+                        }
+                    },
+                    error: function () {
+                        alert("Network error");
+                    }
+                });
+            });
+        });
     </script>
 }

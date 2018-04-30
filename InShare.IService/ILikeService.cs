@@ -52,5 +52,13 @@ namespace InShare.IService
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
         List<long> GetLikeByUser(long userId, int pageSize, int pageIndex);
+
+        /// <summary>
+        /// 判断账号是否Like这个帖子
+        /// </summary>
+        /// <param name="accountId">账号编号</param>
+        /// <param name="postId">点赞编号</param>
+        /// <returns></returns>
+        bool IsLiked(long accountId, long postId);
     }
 }

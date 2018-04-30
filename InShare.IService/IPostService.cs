@@ -62,14 +62,12 @@ namespace InShare.IService
         int GetPostCountByTag(long tagId);
 
         /// <summary>
-        /// 根据标记编号获取帖子分页列表
+        /// 根据标记编号获取参与用户数量
         /// </summary>
         /// <param name="tagId">标记编号</param>
-        /// <param name="pageSize">每页数量</param>
-        /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
-        List<PostEntity> GetPostPagerByTag(long tagId, int pageSize, int pageIndex);
-
+        int GetUserCountByTag(long tagId);
+        
         /// <summary>
         /// 获取主页帖子
         /// </summary>
@@ -78,5 +76,15 @@ namespace InShare.IService
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
         List<PostEntity> GetHomePager(long userId, int pageSize, int pageIndex);
+
+        /// <summary>
+        /// 获取搜索页帖子
+        /// </summary>
+        /// <param name="tagId">标记编号</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="pageIndex">页索引</param>
+        /// <returns></returns>
+        List<PostEntity> GetSearchPager(long tagId, int pageSize, int pageIndex);
+       
     }
 }

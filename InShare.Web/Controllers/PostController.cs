@@ -19,8 +19,26 @@ namespace InShare.Web.Controllers
         public IPostService PostService { get; set; }
         [Dependency]
         public ICommentService CommentService { get; set; }
-
+        [Dependency]
+        public ITagService TagService { get; set; }
+        [Dependency]
+        public ILikeService LikeService { get; set; }
         public int PageSize = 6;
+
+        /// <summary>
+        /// 获取当前登录账号编号
+        /// </summary>
+        public long AccountId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(SessionHelper.Get("userId")))
+                {
+                    return 0;
+                }
+                return Convert.ToInt64(SessionHelper.Get("userId"));
+            }
+        }
 
         [HttpGet]
         public ActionResult Index(string shortCode)
@@ -34,6 +52,7 @@ namespace InShare.Web.Controllers
             {
                 return Redirect("/Home/Index");
             }
+            ViewBag.IsLiked = LikeService.IsLiked(AccountId, post.Id);
             ViewBag.Post = new PostInfo(post);
             return View();
         }
@@ -41,15 +60,44 @@ namespace InShare.Web.Controllers
         #region 搜索
 
         [HttpGet]
-        public ActionResult Search(string tagName)
+        public ActionResult Search(string keyword)
         {
+            keyword = keyword ?? Request.RequestContext.RouteData.Values["id"].ToString();
+            bool isAjax = Request.IsAjaxRequest();
+            if (string.IsNullOrEmpty(keyword))
+            {
+                if (isAjax)
+                {
+                    return Json(new AjaxResult { Status = "Error", ErrorMsg = "关键词不能为空" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            var tag = TagService.GetTagByName(keyword);
+            if (isAjax)
+            {
+                if (tag == null)
+                {
+                    return Json(new AjaxResult { Status = "Failed", ErrorMsg = "没有这个标签，赶快去发表一个包含这个标签的帖子吧" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new AjaxResult { Status = "OK" }, JsonRequestBehavior.AllowGet);
+            }
+            var post = PostService.GetSearchPager(tag.Id, PageSize, 1);
+            ViewBag.TagName = tag.Name;
+            ViewBag.PostCount = PostService.GetPostCountByTag(tag.Id);
+            ViewBag.TagId = tag.Id;
+            ViewBag.UserCount = PostService.GetUserCountByTag(tag.Id);
+            ViewBag.PostList = post.Select(p => new PostInfo(p));
             return View();
         }
 
         [HttpPost]
         public ActionResult Search(int tagId, int pageIndex = 1)
         {
-            return Json(new AjaxResult { });
+            var postList = PostService.GetSearchPager(tagId, PageSize, pageIndex).Select(p => new PostInfo(p));
+            return Json(new AjaxResult { Status = "OK", Data = postList });
         }
 
         #endregion
@@ -59,13 +107,21 @@ namespace InShare.Web.Controllers
         [HttpPost]
         public ActionResult Like(long postId)
         {
-            return View();
+            if (LikeService.Like(AccountId, postId))
+            {
+                return Json(new AjaxResult { Status="OK"});
+            }
+            return Json(new AjaxResult { Status = "Error",ErrorMsg="Like 失败" });
         }
 
         [HttpPost]
         public ActionResult Unlike(long postId)
         {
-            return View();
+            if (LikeService.UnLike(AccountId, postId))
+            {
+                return Json(new AjaxResult { Status = "OK" });
+            }
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "UnLike 失败" });
         }
 
         #endregion

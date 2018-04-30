@@ -45,6 +45,15 @@ namespace InShare.Service
                 return baseService.GetAll().Where(l => l.PostId == postId).Skip(pageSize * pageIndex).Take(pageSize).Select(p => p.UserId).ToList();
             }
         }
+        
+        public bool IsLiked(long accountId, long postId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<LikerEntity> baseService = new BaseService<LikerEntity>(db);
+                return baseService.GetAll().FirstOrDefault(l => l.PostId == postId && l.UserId == accountId) != null;
+            }
+        }
 
         public bool Like(long userId, long postId)
         {

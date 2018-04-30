@@ -9,7 +9,7 @@
         .top1 .top1Left {
             margin: 0px auto;
             width: 400px;
-            height: 170px;
+            height: 80px;
         }
 
             .top1 .top1Left a {
@@ -74,12 +74,12 @@
 
         .top1 .top1Left {
             margin: 0px auto;
-            width: 600px;
-            height: 200px;
-            border: solid 1px #978f94;
+            width: 400px;
+            /*border: solid 1px #978f94;*/
         }
 
             .top1 .top1Left ul li {
+                width:100%;
                 margin-top: 10px;
                 height: 50px;
                 /*border: solid 1px blue;*/
@@ -92,63 +92,32 @@
         <div class="centerTop">
             <div class="top1">
                 <div class="top1Left">
-                    <ul>
-                        <li style="height: 160px;width: 100%;">
-                            <img id="profilePic" style="border-radius:50%;margin-left: 65px;" src="https://scontent-hkg3-2.cdninstagram.com/vp/761993dc007e86f9968a9f938e80e70a/5B697B1A/t51.2885-19/s150x150/25005602_1904421042944210_7172550441782214656_n.jpg">
-                            <div style="float: right;width: 55%;height: 100%;line-height: 2;">
-                                <h1 style="font-size: -webkit-xxx-large;">#Test</h1>
-                                <h3>1,959,395 帖子</h3>
-                            </div>
-                        </li>
-                    </ul>
+                    <div style="float: left;">
+                        <h1 style="font-size: -webkit-xxx-large;">#@ViewBag.TagName</h1>
+                    </div>
+                    <div style="line-height: 2;float: right;">
+                        <h3><text id="postCount">@ViewBag.PostCount</text> 个帖子</h3>
+                        <h3><text>@ViewBag.UserCount</text> 个用户参与</h3>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <input type="hidden" value="1" id="pageIndex" />
+<input type="hidden" value="@ViewBag.TagId" id="tagId" />
 <!---start-content---->
 <div class="content">
     <div class="wrap">
         <div id="main" role="main">
             <ul id="tiles">
                 <!-- These are our grid blocks -->
-                @*@foreach (var post in ViewBag.PostList)
-                    {
-                        <li onclick="location.href='/Post/@post.ShortCode';">
-                            <img src="@post.DisplayUrl">
-                        </li>
-                    }*@
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
-                <li onclick="location.href='#';">
-                    <img src="http://oxdwc8csx.bkt.clouddn.com/5af234ce-98ba-416b-8250-bb21ded90a2c.jpg" />
-                </li>
+                @foreach (var post in ViewBag.PostList)
+                {
+                    <li onclick="location.href='/Post/@post.ShortCode';">
+                        <img src="@post.DisplayUrl">
+                    </li>
+                }
                 <!-- End of grid blocks -->
             </ul>
         </div>
@@ -203,33 +172,33 @@
                         return;
                     }
                     var pageIndex = $("#pageIndex").val();
-                    var postCount = $("#postCount").val();
+                    var postCount = $("#postCount")[0].textContent;
                     if (postCount == loadedCount) {
                         return;
                     }
-                    var userId = parseInt(window.location.pathname.replace(/[^0-9]/ig, ""));
+                    var tagId = $("#tagId").val();
                     isLoading = true;
                     //发送加载下一页请求
-                    //$.ajax({
-                    //    url: "/User/Load", dataType: "json",
-                    //    type: "post", data: { userId: userId, pageIndex: ++pageIndex },
-                    //    success: function (res) {
-                    //        if (res.Status == "OK") {
-                    //            $("#pageIndex").val(pageIndex);
-                    //            for (var i = 0; i < res.Data.length; i++) {
-                    //                var postUrl = "location.href='/Post/" + res.Data[i].ShortCode + "';";
-                    //                $tiles.append('<li onclick="' + postUrl + '"><img src="' + res.Data[i].DisplayUrl + '"></li>');
-                    //                applyLayout();
-                    //            }
-                    //        } else {
-                    //            $("#pageIndex").val(--pageIndex);
-                    //        }
-                    //        isLoading = false;
-                    //    }, error: function () {
-                    //        $("#pageIndex").val(--pageIndex);
-                    //        isLoading = false;
-                    //    }
-                    //});
+                    $.ajax({
+                        url: "/Post/Search", dataType: "json",
+                        type: "post", data: { tagId: tagId, pageIndex: ++pageIndex },
+                        success: function (res) {
+                            if (res.Status == "OK") {
+                                $("#pageIndex").val(pageIndex);
+                                for (var i = 0; i < res.Data.length; i++) {
+                                    var postUrl = "location.href='/Post/" + res.Data[i].ShortCode + "';";
+                                    $tiles.append('<li onclick="' + postUrl + '"><img src="' + res.Data[i].DisplayUrl + '"></li>');
+                                    applyLayout();
+                                }
+                            } else {
+                                $("#pageIndex").val(--pageIndex);
+                            }
+                            isLoading = false;
+                        }, error: function () {
+                            $("#pageIndex").val(--pageIndex);
+                            isLoading = false;
+                        }
+                    });
                 }
             };
 

@@ -71,5 +71,14 @@ namespace InShare.Service
                 return baseService.GetAll().Where(t => t.Name == name).Skip(pageSize * pageIndex).Take(pageSize).ToList();
             }
         }
+
+        public TagEntity GetTagByName(string name)
+        {
+            using (InShareContext db=new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.GetAll().FirstOrDefault(t => t.Name == name);
+            }
+        }
     }
 }

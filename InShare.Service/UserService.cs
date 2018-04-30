@@ -79,9 +79,10 @@ namespace InShare.Service
         /// <param name="bio"></param>
         /// <param name="isPrivate"></param>
         /// <param name="genger"></param>
-        /// <param name="profilePic"></param>
+        /// <param name="email"></param>
+        /// <param name="phoneNum"></param>
         /// <returns></returns>
-        public bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool? genger, string profilePic, string email = "")
+        public bool Edit(long userId, string userName, string fullName, string bio, bool isPrivate, bool? genger, string email, string phoneNum)
         {
             using (InShareContext db = new InShareContext())
             {
@@ -94,11 +95,27 @@ namespace InShare.Service
                 user.UserName = userName;
                 user.FullName = fullName;
                 user.Biography = bio;
-                user.IsPrivate = isPrivate;
                 user.Profile.Gender = genger;
-                user.ProfilePic = profilePic;
+                user.IsPrivate = isPrivate;
                 user.Profile.Email = email;
+                user.Profile.PhoneNum = phoneNum;
                 user.Profile.LastEditDateTime = DateTime.Now;
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool EditProfilePic(long userId, string profilePic)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                var user = baseService.GetById(userId);
+                if (user == null)
+                {
+                    throw new Exception("此用户不存在");
+                }
+                user.ProfilePic = profilePic;
                 db.SaveChanges();
                 return true;
             }
@@ -179,7 +196,7 @@ namespace InShare.Service
                 {
                     throw new Exception("此用户不存在");
                 }
-                if (user.Profile.Password != oldPwd)
+                if (user.Profile.Password != EncryptHelper.MD5Encrypt(userId + oldPwd + user.Profile.PasswordSalt))
                 {
                     throw new Exception("旧密码不匹配");
                 }

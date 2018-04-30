@@ -28,5 +28,11 @@ namespace InShare.IService
         /// <returns></returns>
         List<TagEntity> GetTagPagerList(string name, int pageSize, int pageIndex);
 
+        /// <summary>
+        /// 根据名称获取标签实体
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns></returns>
+        TagEntity GetTagByName(string name);
     }
 }

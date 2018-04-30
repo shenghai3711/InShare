@@ -116,23 +116,31 @@ namespace InShare.Service
             }
         }
 
-        public List<PostEntity> GetPostPagerByTag(long tagId, int pageSize, int pageIndex)
-        {
-            using (InShareContext db = new InShareContext())
-            {
-                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetPager<DateTime>(p => p.Tags.Any(t => t.Id == tagId), p => p.CreateDateTime, pageSize, pageIndex).ToList();
-            }
-        }
-
         public List<PostEntity> GetPostPagerList(long userId, int pageSize, int pageIndex)
         {
             using (InShareContext db = new InShareContext())
             {
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetPager<DateTime>(p => p.UserId == userId, p => p.CreateDateTime, pageSize, pageIndex).Include(p=>p.Owner).Include(p=>p.Tags).ToList();
+                return baseService.GetPager<DateTime>(p => p.UserId == userId, p => p.CreateDateTime, pageSize, pageIndex).Include(p => p.Owner).Include(p => p.Tags).ToList();
             }
         }
 
+        public List<PostEntity> GetSearchPager(long tagId, int pageSize, int pageIndex)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetPager<DateTime>(p => p.Tags.Any(t => t.Id == tagId), p => p.CreateDateTime, pageSize, pageIndex).Include(p => p.Owner).Include(p => p.Tags).ToList();
+            }
+        }
+
+        public int GetUserCountByTag(long tagId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetAll().Where(p => p.Tags.Any(t => t.Id == tagId)).GroupBy(p => p.UserId).Count();
+            }
+        }
     }
 }

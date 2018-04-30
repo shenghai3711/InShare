@@ -108,7 +108,7 @@
     <div class="header">
         <div class="wrap">
             <div class="logo">
-                <a href="/Home/Index"><img src="~/Content/img/logo.png" title="pinbal" /></a>
+                <a href="/Home/Index"><img src="~/Content/img/logo.png" title="Inshare" /></a>
             </div>
             <div class="nav-icon">
                 <a href="#" class="right_bt" id="activator"><span> </span> </a>
@@ -125,6 +125,7 @@
                                     {
                                         <li><a href="/Post/Posting"><span>Posting</span></a></li>
                                         <li><a href="/User/Edit"><span>Edit</span></a></li>
+                                        <li><a href="/User/Log"><span>Log</span></a></li>
                                         <li><a href="/User/ChangePassword"><span>ChangePassword</span></a></li>
                                     }
                                     <li><a href="/Home/About"><span>About</span></a></li>
@@ -137,9 +138,7 @@
                 </div>
             </div>
             <div class="top-searchbar">
-                <form>
-                    <input type="text" /><input type="submit" value="" />
-                </form>
+                <input id="searchTxt" type="text" value="" /><input type="submit" value="" id="btnSearch" />
             </div>
             <div class="userinfo">
                 <div class="user">
@@ -179,6 +178,34 @@
 
     @RenderSection("script", required: false)
 
+    <script>
+        $(function () {
+            $("#btnSearch").click(function () {
+                var searchTxt = $("#searchTxt").val();
+                if (searchTxt.length == 0) {
+                    return;
+                }
+                $.ajax({
+                    url: "/Post/Search/" + searchTxt,
+                    type: "get",
+                    dataType: "json",
+                    data: { keyword: searchTxt },
+                    success: function (res) {
+                        if (res.Status == "OK") {
+                            //alert("/Post/Search/" + searchTxt);
+                            location.href = "/Post/Search/" + searchTxt;
+                        }
+                        else {
+                            alert(res.ErrorMsg);
+                        }
+                    },
+                    error: function () {
+                        alert("网络错误");
+                    }
+                });
+            });
+        });
+    </script>
     <!----start-footer--->
     <div class="footer">
         <p>&copy; @DateTime.Now.Year Inshare</p>

@@ -19,17 +19,21 @@
             <div class="single-page-artical">
                 <div class="artical-content">
                     <img src="@ViewBag.Post.DisplayUrl" title="banner1">
-
                     <hr />
                     <p>@ViewBag.Post.Caption</p>
                 </div>
                 <div class="artical-links" style="float: none;">
                     <ul>
+                        <li>
+                            <a href="#" onclick="return false">
+                                <img src="~/Content/img/blog-icon4.png" title="Tag">
+                            </a>
+                        </li>
                         @foreach (var tag in ViewBag.Post.Tags)
                         {
                             <li>
                                 <h3>
-                                    <a href="#">#@tag</a>
+                                    <a href="/Post/Search/@tag">#@tag</a>
                                 </h3>
                             </li>
                         }
@@ -39,7 +43,7 @@
                     <ul>
                         <li>
                             <a href="/User/@ViewBag.Post.UserId">
-                                <img src="~/Content/img/blog-icon2.png" title="@ViewBag.Post.UserName">
+                                <img src="~/Content/img/blog-icon2.png" title="Author">
                                 <span>@ViewBag.Post.UserName</span>
                             </a>
                         </li>
@@ -50,8 +54,24 @@
                             </a>
                         </li>
                         <li>
+                            <a href="#" id="like" onclick="return false">
+                                @if (ViewBag.IsLiked)
+                                {
+                                    <img src="~/Content/img/liked.png" title="Unlike">
+                                    <span>Unlike</span>
+                                    <input type="hidden" value="1" id="isLiked" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/img/like.png" title="Like">
+                                    <span>Like</span>
+                                    <input type="hidden" value="0" id="isLiked" />
+                                }
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" onclick="return false">
-                                <img src="~/Content/img/blog-icon4.png" title="Lables">
+                                <img src="~/Content/img/date.png" title="Post Date">
                                 <span>
                                     @ViewBag.Post.DateTime
                                 </span>
@@ -75,6 +95,29 @@
             <div class="comment-section">
                 <div class="grids_of_2">
                     <h2>Comments</h2>
+                    <!--评论框-->
+                    <div id="commentBox" class="artical-commentbox">
+                        <h2>Leave a Comment</h2>
+                        <div class="table-form">
+                            <form action="#" method="post" name="post_comment">
+                                @*<div>
+                                        <label>Name<span>*</span></label>
+                                        <input type="text" value=" ">
+                                    </div>
+                                    <div>
+                                        <label>Email<span>*</span></label>
+                                        <input type="text" value=" ">
+                                    </div>*@
+                                <div>
+                                    <label>Your Comment<span>*</span></label>
+                                    <textarea id="commentContent" maxlength="50"> </textarea>
+                                </div>
+                            </form>
+                            <input type="submit" value="submit" id="btnAdd">
+
+                        </div>
+                        <div class="clear"> </div>
+                    </div>
                     <input type="hidden" value="1" id="pageIndex" />
                     <div id="commentList">
                         @*@foreach (var commentItem in ViewBag.Comments)
@@ -108,30 +151,6 @@
                             </div>
                             <div class="clear"></div>
                         </div>*@
-
-                    <!--评论框-->
-                    <div id="commentBox" class="artical-commentbox">
-                        <h2>Leave a Comment</h2>
-                        <div class="table-form">
-                            <form action="#" method="post" name="post_comment">
-                                @*<div>
-                                        <label>Name<span>*</span></label>
-                                        <input type="text" value=" ">
-                                    </div>
-                                    <div>
-                                        <label>Email<span>*</span></label>
-                                        <input type="text" value=" ">
-                                    </div>*@
-                                <div>
-                                    <label>Your Comment<span>*</span></label>
-                                    <textarea id="commentContent"> </textarea>
-                                </div>
-                            </form>
-                            <input type="submit" value="submit" id="btnAdd">
-
-                        </div>
-                        <div class="clear"> </div>
-                    </div>
                 </div>
             </div>
             <!---//End-comments-section--->
@@ -150,8 +169,11 @@
             $("#btnAdd").click(function () {
                 addComment();
             });
-            $(window).scroll(function () {
-                scrollFun();
+            //$(window).scroll(function () {
+            //    scrollFun();
+            //});
+            $("#like").click(function () {
+                postLike();
             });
         });
         function scrollFun() {
@@ -181,7 +203,7 @@
                     if (res.Status == "OK") {
                         //$("#commentList").text("");
                         for (var i = 0; i < res.Data.length; i++) {
-                            $("#commentList").append('<div class="grid1_of_2"><div class="grid_img"><a href="/User/' + res.Data[i].UserId + '"><img src="' + res.Data[i].UserIcon + '" alt="' + res.Data[i].UserName + '"></a></div><div class="grid_text"><h4 class="style1 list"><a href="/User/' + res.Data[i].UserId + '">' + res.Data[i].UserName + '</a ></h4 ><h3 class="style">' + res.Data[i].DateTime + '</h3 ><p class="para top">' + res.Data[i].Content + '</p ></div><div class="clear"></div></div>');
+                            $("#commentList").append('<div class="grid1_of_2"><div class="grid_img"><a href="/User/' + res.Data[i].UserId + '"><img style="border-radius: 50%;" src="' + res.Data[i].UserIcon + '" alt="' + res.Data[i].UserName + '"></a></div><div class="grid_text"><h4 class="style1 list"><a href="/User/' + res.Data[i].UserId + '">' + res.Data[i].UserName + '</a ></h4 ><h3 class="style">' + res.Data[i].DateTime + '</h3 ><p class="para top">' + res.Data[i].Content + '</p ></div><div class="clear"></div></div>');
                         }//<a href="" class="btn1">Click to Reply</a>
                         if (res.Data.length < 6) {
                             $("#pageIndex").val(0);
@@ -205,11 +227,10 @@
                 $.post("/Post/Comment", { postId: postId, content: msg },
                     function (res) {
                         if (res.Status == "OK") {
-                            $("#commentList").text("");
-                            if ($("#pageIndex").val() == 0) {
-                                $("#pageIndex").val(1);
-                            }
-                            loadComment();
+                            $("html,body").animate({ scrollTop: 0 }, 800);
+                            $("#commentList").html("");
+                            $("#pageIndex").val(1);
+                            //loadComment();
                             $("#commentContent").val("");
                             $("#commentBox").hide();
                         }
@@ -223,5 +244,41 @@
             }
         }
 
+        //Like或Unlike
+        function postLike() {
+            var isLiked = $("#isLiked").val();
+            var url = "";
+            if (isLiked == "1") {
+                url = "/Post/Unlike";
+            }
+            else {
+                url = "/Post/Like";
+            }
+            var postId = $("#postId").val();
+            $.post(url, { postId: postId },
+                function (res) {
+                    if (res.Status == "OK") {
+                        isLiked = isLiked == "1" ? "0" : "1";
+                        if (isLiked == "0") {
+                            $("#like").children("img").attr({
+                                "src": "/Content/img/like.png",
+                                "title": "Like"
+                            });
+                            $("#like").children("span").text("Like");
+                        }
+                        else {
+                            $("#like").children("img").attr({
+                                "src": "/Content/img/liked.png",
+                                "title": "Unlike"
+                            });
+                            $("#like").children("span").text("Unlike");
+                        }
+                        $("#isLiked").val(isLiked);
+                    }
+                    if (res.Status == "Error") {
+                        alert(res.ErrorMsg);
+                    }
+                });
+        }
     </script>
 }

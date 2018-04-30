@@ -17,7 +17,7 @@ namespace InShare.Service.ModelConfig
             this.Property(p => p.DisplayUrl).IsRequired().HasMaxLength(1000);
             //配置地理位置
             this.Property(p => p.Location).HasMaxLength(50);
-            //配置内容最长为100
+            //配置内容最长为500
             this.Property(p => p.Caption).HasMaxLength(500);
             //配置最大长度
             this.Property(p => p.ShortCode).IsRequired().HasMaxLength(20);
