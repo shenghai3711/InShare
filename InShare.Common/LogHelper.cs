@@ -29,7 +29,7 @@ namespace InShare.Common
         {
             LogManager.GetLogger(GetCurrentMethodFullName()).Error(message, exception);
         }
-        
+
 
         public static void Info(object message)
         {

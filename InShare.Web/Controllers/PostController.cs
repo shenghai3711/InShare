@@ -23,6 +23,7 @@ namespace InShare.Web.Controllers
         public ITagService TagService { get; set; }
         [Dependency]
         public ILikeService LikeService { get; set; }
+
         public int PageSize = 6;
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace InShare.Web.Controllers
 
         #endregion
 
-        #region Like操作 未完成
+        #region Like操作
 
         [HttpPost]
         public ActionResult Like(long postId)

@@ -69,6 +69,12 @@ namespace InShare.Web.Controllers
             return View(UserService.GetUserById(id.Value));
         }
 
+        /// <summary>
+        /// 用户详情页下拉加载数据
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Load(long userId, int pageIndex)
         {
@@ -237,6 +243,11 @@ namespace InShare.Web.Controllers
 
         #region Follow操作
 
+        /// <summary>
+        /// ajax post处理follo用户请求
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Follow(long userId)
         {
@@ -315,12 +326,23 @@ namespace InShare.Web.Controllers
 
         #region 登陆
 
+        /// <summary>
+        /// 进入登陆页面
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
+        /// <summary>
+        /// Ajax post登陆
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="passWord"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(string userName, string passWord, string ip)
         {
@@ -350,12 +372,25 @@ namespace InShare.Web.Controllers
 
         #region 注册
 
+        /// <summary>
+        /// 加载注册页
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
 
+        /// <summary>
+        /// ajax post 注册
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="fullName"></param>
+        /// <param name="passWord"></param>
+        /// <param name="verifyCode"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip)
         {
@@ -391,13 +426,22 @@ namespace InShare.Web.Controllers
         #endregion
 
         #region 忘记密码
-
+        /// <summary>
+        /// 忘记密码页面
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult ForgotPwd()
         {
             return View();
         }
 
+        /// <summary>
+        /// ajax post 忘记密码发送邮件
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult ForgotPwd(string email, string userName)
         {
