@@ -16,7 +16,7 @@ namespace InShare.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             log4net.Config.XmlConfigurator.Configure();//启动log4net
-            GlobalFilters.Filters.Add(new App_Start.ExceptionFilter());//启动异常日志记录Filter
+            GlobalFilters.Filters.Add(new App_Start.ExceptionFilter());//启动异常Filter
         }
 
     }

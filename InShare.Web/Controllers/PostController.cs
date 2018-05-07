@@ -44,6 +44,7 @@ namespace InShare.Web.Controllers
         [HttpGet]
         public ActionResult Index(string shortCode)
         {
+            //throw new Exception("测试404页面");
             if (string.IsNullOrEmpty(shortCode))
             {
                 return Redirect("/Home/Index");
@@ -110,9 +111,9 @@ namespace InShare.Web.Controllers
         {
             if (LikeService.Like(AccountId, postId))
             {
-                return Json(new AjaxResult { Status="OK"});
+                return Json(new AjaxResult { Status = "OK" });
             }
-            return Json(new AjaxResult { Status = "Error",ErrorMsg="Like 失败" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "Like Failed" });
         }
 
         [HttpPost]
@@ -122,7 +123,7 @@ namespace InShare.Web.Controllers
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
-            return Json(new AjaxResult { Status = "Error", ErrorMsg = "UnLike 失败" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "UnLike Failed" });
         }
 
         #endregion
@@ -134,11 +135,12 @@ namespace InShare.Web.Controllers
         {
             if (string.IsNullOrEmpty(content))
             {
-                return Json(new AjaxResult { Status = "Error", ErrorMsg = "评论内容为空" });
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "The content of the comment is empty" });
             }
             long userId = 0;
             if (!long.TryParse(Session["userId"].ToString(), out userId))
             {
+                Session.Clear();
                 return Redirect("/User/Login");
             }
             CommentService.Add(userId, postId, content);
@@ -167,12 +169,15 @@ namespace InShare.Web.Controllers
         {
             if (Session["userId"] == null)
             {
-                return Json(new AjaxResult { Status = "Error", ErrorMsg = "未登录用户" });
+                Session.Clear();
+                //return Json(new AjaxResult { Status = "Error", ErrorMsg = "未登录用户" });
+                return Redirect("/User/Login");
             }
+            //上传到文件服务器（七牛云）
             string url = Common.ImageHelper.UploadStream(Common.ImageHelper.ImgBase64ToStream(base64Data));
             if (string.IsNullOrEmpty(url))
             {
-                return Json(new AjaxResult { Status = "Failed", ErrorMsg = "上传图片失败" });
+                return Json(new AjaxResult { Status = "Failed", ErrorMsg = "Failed to upload picture" });
             }
             PostService.Add(Convert.ToInt64(Session["userId"]), content, url, city);
             LogService.Add(Convert.ToInt64(Session["userId"]), 2, string.Format("{0}在{1}发帖成功", Session["userName"], city), ip);
@@ -188,12 +193,12 @@ namespace InShare.Web.Controllers
         {
             if (Session["userId"] == null)
             {
-                return Json(new AjaxResult { Status = "NoLogin", ErrorMsg = "未登录用户" });
+                return Json(new AjaxResult { Status = "NoLogin", ErrorMsg = "Not logged in user" });
             }
             var post = PostService.GetPostInfo(rePostId);
             if (post == null)
             {
-                return Json(new AjaxResult { Status = "Failed", ErrorMsg = "请刷新后重试" });
+                return Json(new AjaxResult { Status = "Failed", ErrorMsg = "Please refresh and try again" });
             }
             PostService.Add(Convert.ToInt64(Session["userId"]), content, post.DisplayUrl, city);
             LogService.Add(Convert.ToInt64(Session["userId"]), 2, string.Format("{0}在{1}转发帖子成功", Session["userName"], city), ip);

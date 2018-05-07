@@ -103,19 +103,19 @@
     $("#btnRegister").click(function () {
         var inputCode = $("#verify-code").val();
         if (inputCode == "") {
-            $("#msg").show().find('div').html("请输入验证码");
+            $("#msg").show().find('div').html("Please input captcha!");
         }
         var userName = $("#username").val();
         if (userName == "") {
-            $("#msg").show().find('div').html("请输入账号");
+            $("#msg").show().find('div').html("Please input username!");
         }
         var fullName = $("#fullname").val();
         if (fullName == "") {
-            $("#msg").show().find('div').html("请输入全名");
+            $("#msg").show().find('div').html("Please input fullname!");
         }
         var pwd = $("#password").val();
         if (pwd == "") {
-            $("#msg").show().find('div').html("请输入密码");
+            $("#msg").show().find('div').html("Please input password!");
         }
         var i = returnCitySN;
         var userIP = i['cip'];
@@ -127,8 +127,8 @@
             type: "post", data: { userName: userName, fullName: fullName, passWord: pwd, verifyCode: inputCode, IP: userIP, City: userCity },
             success: function (res) {
                 if (res.Status == "OK") {
-                    alert("注册成功");
-                    location.href = "/User/Login";//如果登录成功，则自动跳转到首页
+                    alert("Register succeed!");
+                    location.href = "/User/Login";//如果注册成功，则自动跳转到登录页
                 } else {
                     $("#msg").show().find('div').html(res.ErrorMsg);
                     $("#btnRegister").find('span').html("Sign Up");

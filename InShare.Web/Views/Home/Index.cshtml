@@ -275,14 +275,13 @@
 <!--start 转发帖子-->
 <div id="msgBox">
     <form>
-        <h2>来 , 说说你转发的理由或想法<span id="cancelBtn" style="float:right;cursor: pointer;">×</span></h2>
+        <h2>Write your thoughts<span id="cancelBtn" style="float:right;cursor: pointer;">×</span></h2>
         <div><textarea id="conBox" class="f-text"></textarea></div>
         <div class="tr">
             <p>
-                <span class="countTxt">还能输入</span><strong class="maxNum">100</strong><span>个字</span>
+                <span class="countTxt">There are </span><strong class="maxNum">100</strong><span>words left</span>
 
-                <input id="sendBtn" type="button" value="" title="快捷键 Ctrl+Enter" />
-                @*<input id="cancelBtn" type="button" value="取消" title="点击关闭" />*@
+                <input id="sendBtn" type="button" value="" title="hot key Ctrl+Enter" />
             </p>
         </div>
         <input type="hidden" value="" id="rePostId" />
@@ -336,6 +335,7 @@
             /**
              * When scrolled all the way to the bottom, add more tiles
              */
+            //下拉加载
             function onScroll() {
 
                 if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
@@ -360,6 +360,7 @@
                                     var postUrl = "location.href='/Post/" + res.Data[i].ShortCode + "';";
                                     $tiles.append('<li id="' + res.Data[i].Id + '"><img src="' + res.Data[i].DisplayUrl + '"onclick="' + postUrl + '"/><div class="post-info"><div class="post-basic-info"><h3><a href="/User/' + res.Data[i].UserId + '">' + res.Data[i].UserName + '</a></h3><span><a href="#"><label> </label>' + res.Data[i].Location + '</a></span><p>' + res.Data[i].Caption + '</p></div><div class="post-info-rate-share"><div class="rateit"><span>' + res.Data[i].DateTime + '</span></div><div class="post-share"><span> </span></div><div class="clear"> </div></div></div></li>');
                                 }
+                                //判断是否为最后一页
                                 if (res.Data.length < 6) {
                                     $("#isExistPost").val(false);
                                 }
@@ -491,7 +492,7 @@
                         type: "post", data: { rePostId: postId, content: oConBox.value, ip: userIP, city: userCity },
                         success: function (res) {
                             if (res.Status == "OK") {
-                                alert("转发成功");
+                                alert("Repost succeed");
                             } else {
                                 if (res.Status == "NoLogin") {
                                     location.href = "/User/Login";

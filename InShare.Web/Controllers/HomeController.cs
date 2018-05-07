@@ -41,25 +41,21 @@ namespace InShare.Web.Controllers
             long userId = 0;
             if (Session["userId"] == null || !long.TryParse(Session["userId"].ToString(), out userId))
             {
-                return Json(new AjaxResult { Status = "Erroe" });
+                Session.Clear();
+                return Redirect("/User/Login");
             }
             var postList = PostService.GetHomePager(userId, PageSize, pageIndex).Select(p => new PostInfo(p)).ToList();
             return Json(new AjaxResult { Status = "OK", Data = postList });
         }
 
-        #region 搜索 未完成
-
-        public ActionResult SearchPost()
+        /// <summary>
+        /// 测试错误页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TestError()
         {
-            return View();
+            throw new Exception("测试错误页面");
         }
-
-        public ActionResult SearchUser()
-        {
-            return View();
-        }
-
-        #endregion
 
         public ActionResult About()
         {

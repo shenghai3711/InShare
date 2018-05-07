@@ -38,6 +38,7 @@ namespace InShare.Service
             base.OnModelCreating(modelBuilder);
             //读取配置（Config）
             //从程序集中加载所有EntityTypeConfiguration的子类到配置中
+            //加载形式：反射
             modelBuilder.Configurations.AddFromAssembly(Assembly.GetExecutingAssembly());
         }
     }

@@ -15,6 +15,10 @@ namespace InShare.Web.Controllers
     {
         [Dependency]
         public ILogService LogService { get; set; }
+        /// <summary>
+        /// 用户服务接口对象
+        /// 通过unity容器注入实现自动创建对应的实现类
+        /// </summary>
         [Dependency]
         public IUserService UserService { get; set; }
         [Dependency]
@@ -53,6 +57,7 @@ namespace InShare.Web.Controllers
         [HttpGet]
         public ActionResult Index(long? id)
         {
+            //IUserService UserService1 = new Service.UserService();
             if (id == null)
             {
                 return View();
@@ -344,16 +349,15 @@ namespace InShare.Web.Controllers
         /// <param name="ip"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Login(string userName, string passWord, string ip)
+        public ActionResult Login(string userName, string passWord, string ip,string city)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(ip))
             {
-                return Json(new AjaxResult { Status = "Error", ErrorMsg = "不能为空" });
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "Username or password can't be empty!" });
             }
             var user = UserService.GetUserByUserName(userName);
             if (user != null)
             {
-                string city = "重庆";//todo:根据ip获取当地位置
                 if (UserService.CheckLogin(userName, passWord))
                 {
                     SessionHelper.Add("userId", user.Id.ToString(), 60);
@@ -365,7 +369,7 @@ namespace InShare.Web.Controllers
                     return Json(new AjaxResult { Status = "OK", Data = user.Id });
                 }
             }
-            return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户名或密码错误" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "wrong user name or password" });
         }
 
         #endregion
@@ -385,25 +389,18 @@ namespace InShare.Web.Controllers
         /// <summary>
         /// ajax post 注册
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="fullName"></param>
-        /// <param name="passWord"></param>
-        /// <param name="verifyCode"></param>
-        /// <param name="ip"></param>
-        /// <returns></returns>
         [HttpPost]
-        public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip)
+        public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip,string city)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(verifyCode) || string.IsNullOrEmpty(ip))
             {
-                return Json(new AjaxResult { Status = "Error", ErrorMsg = "信息不能为空" });
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "The user info cannot be empty" });
             }
             string cacheVerifyCode = TempData["verifyCode"].ToString();
             if (string.IsNullOrEmpty(verifyCode) || verifyCode != cacheVerifyCode)
             {
-                return Json(new AjaxResult { Status = "Error", ErrorMsg = "验证码错误，请重新填写" });
+                return Json(new AjaxResult { Status = "Error", ErrorMsg = "Verification code error, please re-enter" });
             }
-            string city = "重庆";//todo:根据ip获取当地位置
             long userId = UserService.Add(userName, fullName, passWord);
             LogService.Add(userId, 1, string.Format("在{0}注册账号成功", city), ip);
             return Json(new AjaxResult { Status = "OK" });
@@ -534,7 +531,7 @@ namespace InShare.Web.Controllers
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
-            return Json(new AjaxResult { Status = "Error", ErrorMsg = "此账号已注册" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "The account has been registered" });
         }
 
         /// <summary>

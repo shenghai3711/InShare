@@ -21,7 +21,10 @@ namespace InShare.Web.App_Start
         /// <param name="filterContext"></param>
         public void OnException(ExceptionContext filterContext)
         {
+            //记录异常日志,方便以后修复问题
             log.Error("出现未处理异常(╯°口°)╯(┴—┴ \r\n", filterContext.Exception);
+            ////重定向友好错误页面
+            //filterContext.Result = new RedirectResult("~/error.html");
         }
     }
 }

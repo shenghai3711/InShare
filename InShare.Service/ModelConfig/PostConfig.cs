@@ -11,7 +11,7 @@ namespace InShare.Service.ModelConfig
             this.ToTable("T_Post");
             //配置主键
             this.HasKey(p => p.Id);
-            //配置主键列名
+            //配置主键列名，设置为不自动增长
             this.Property(p => p.Id).HasColumnName("PostId").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
             //配置图片路径不能为空
             this.Property(p => p.DisplayUrl).IsRequired().HasMaxLength(1000);
