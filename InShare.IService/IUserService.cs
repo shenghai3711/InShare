@@ -46,6 +46,14 @@ namespace InShare.IService
         bool UpdatePwd(long userId, string pwd, string oldPwd);
 
         /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <param name="pwd">重置密码</param>
+        /// <returns></returns>
+        bool ResetPassword(long userId, string pwd);
+
+        /// <summary>
         /// 根据用户编号查找用户
         /// </summary>
         /// <param name="userId">用户编号</param>

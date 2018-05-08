@@ -349,7 +349,7 @@ namespace InShare.Web.Controllers
         /// <param name="ip"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Login(string userName, string passWord, string ip,string city)
+        public ActionResult Login(string userName, string passWord, string ip, string city)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(ip))
             {
@@ -390,7 +390,7 @@ namespace InShare.Web.Controllers
         /// ajax post 注册
         /// </summary>
         [HttpPost]
-        public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip,string city)
+        public ActionResult Register(string userName, string fullName, string passWord, string verifyCode, string ip, string city)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(passWord) || string.IsNullOrEmpty(verifyCode) || string.IsNullOrEmpty(ip))
             {
@@ -455,8 +455,11 @@ namespace InShare.Web.Controllers
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户不存在" });
             }
+            //根据用户编号获取一个验证
             var verify = VerifyService.Add(user.Id);
+            //邮件内容
             string content = string.Format("http://localhost:31726/User/ResetPassword?userId={0}&verifyCode={1}", user.Id, verify.VerifyCode);
+            //发送邮件
             bool b = EmailHelper.SendMail(new Email
             {
                 DisplayName = "InShare运营团队",
@@ -479,8 +482,10 @@ namespace InShare.Web.Controllers
         {
             if (userId == null || string.IsNullOrEmpty(verifyCode))
             {
-                return Redirect("/SiteStatus/NotFound");
+                throw new Exception("信息不完整");
             }
+            var user = UserService.GetUserById(userId.Value);
+            ViewBag.UserName = user.FullName;
             ViewBag.UserId = userId;
             ViewBag.Code = verifyCode;
             return View();
@@ -499,13 +504,14 @@ namespace InShare.Web.Controllers
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "验证码无效" });
             }
-            //重置密码
+            //判断用户名是否输入正确
             var user = UserService.GetUserById(userId);
             if (user.UserName != userName)
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户名错误" });
             }
-            if (UserService.UpdatePwd(userId, pwd, user.Profile.Password))
+            //重置密码
+            if (UserService.ResetPassword(userId, pwd))
             {
                 //修改验证码状态
                 VerifyService.UpdateValid(userId);

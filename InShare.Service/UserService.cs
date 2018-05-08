@@ -180,6 +180,32 @@ namespace InShare.Service
         }
 
         /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public bool ResetPassword(long userId, string pwd)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                var user = baseService.GetById(userId);
+                if (user == null)
+                {
+                    throw new Exception("此用户不存在");
+                }
+                user.Profile.LastPasswordSalt = user.Profile.PasswordSalt;
+                user.Profile.LastPassword = user.Profile.Password;
+                user.Profile.PasswordSalt = RandomHelper.CreateSalt();
+                user.Profile.Password = EncryptHelper.MD5Encrypt(userId + pwd + user.Profile.PasswordSalt);
+                user.Profile.LastEditDateTime = DateTime.Now;
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="userId"></param>

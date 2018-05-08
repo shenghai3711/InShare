@@ -155,9 +155,9 @@
             $("#btnAdd").click(function () {
                 addComment();
             });
-            //$(window).scroll(function () {
-            //    scrollFun();
-            //});
+            $(window).scroll(function () {
+                scrollFun();
+            });
             $("#like").click(function () {
                 postLike();
             });
@@ -213,10 +213,10 @@
                 $.post("/Post/Comment", { postId: postId, content: msg },
                     function (res) {
                         if (res.Status == "OK") {
-                            $("html,body").animate({ scrollTop: 0 }, 800);
+                            $("html,body").animate({ scrollTop: 0 }, 500);
                             $("#commentList").html("");
                             $("#pageIndex").val(1);
-                            //loadComment();
+                            loadComment();
                             $("#commentContent").val("");
                             $("#commentBox").hide();
                         }

@@ -62,12 +62,12 @@ namespace InShare.Common
             Body = "邮件内容";
         }
         /// <summary>
-        /// 邮箱消息体
+        /// 邮箱主题内容
         /// </summary>
         public string Subject { get; set; }
 
         /// <summary>
-        /// 邮箱主题内容
+        /// 邮箱消息体
         /// </summary>
         public string Body { get; set; }
 
