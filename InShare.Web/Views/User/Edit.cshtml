@@ -75,12 +75,12 @@
                             <img id="profilePic" style="width: 150px;border-radius:50%;margin-left: 65px;" src="@Model.ProfilePic">
                             <div style="float: right;width: 55%;height: 100%;line-height: 3;">
                                 <h1 style="font-size: x-large;">@Model.UserName</h1>
-                                <button id="replaceImg" class="l-btn">更换头像</button>
+                                <button id="replaceImg" class="l-btn">Change the picture</button>
                             </div>
                         </li>
                         <li>
                             <div class="label-div">
-                                <label>姓名</label>
+                                <label>Full Name</label>
                             </div>
                             <div class="input-div">
                                 <input type="text" id="pepFullname" maxlength="20" value="@Model.FullName">
@@ -88,7 +88,7 @@
                         </li>
                         <li style="height:60px;">
                             <div class="label-div">
-                                <label>个人简介</label>
+                                <label>Biography</label>
                             </div>
                             <div class="input-div">
                                 <textarea id="pepBio" style="padding:6px 10px;" maxlength="100">@Model.Biography</textarea>
@@ -96,7 +96,7 @@
                         </li>
                         <li>
                             <div class="label-div">
-                                <label>邮箱</label>
+                                <label>Email</label>
                             </div>
                             <div class="input-div">
                                 <input type="text" id="pepEmail" maxlength="50" value="@Model.Profile.Email">
@@ -104,14 +104,14 @@
                         </li>
                         <li>
                             <div class="label-div">
-                                <label>电话号码</label>
+                                <label>Phone Num</label>
                             </div>
                             <div class="input-div">
                                 <input type="text" id="pepPhoneNumber" maxlength="11" value="@Model.Profile.PhoneNum">
                             </div>
                         </li>
                         <li>
-                            <button id="btnEidt" style="display: -webkit-box;margin:10px auto;padding: 5px 10px;font-size: 16px;background: #3897f0;border-radius: 3px;color: #fff;border-style: solid;border-width: 1px;border-color: #3897f0;cursor: pointer;">提交</button>
+                            <button id="btnEidt" style="display: -webkit-box;margin:10px auto;padding: 5px 10px;font-size: 16px;background: #3897f0;border-radius: 3px;color: #fff;border-style: solid;border-width: 1px;border-color: #3897f0;cursor: pointer;">Edit</button>
                         </li>
                     </ul>
                 </div>
@@ -125,9 +125,9 @@
     <div class="black-cloth" onclick="closeTailor(this)"></div>
     <div class="tailoring-content">
         <div class="tailoring-content-one">
-            <label title="上传图片" for="chooseImg" class="l-btn choose-btn">
+            <label title="upload image" for="chooseImg" class="l-btn choose-btn">
                 <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden" onchange="selectImg(this)">
-                选择图片
+                Select Image
             </label>
             <div class="close-tailoring" onclick="closeTailor(this)">×</div>
         </div>
@@ -136,16 +136,16 @@
                 <img id="tailoringImg">
             </div>
             <div class="preview-box-parcel">
-                <p>图片预览：</p>
+                <p>Picture Preview：</p>
                 <div class="square previewImg"></div>
                 <div class="circular previewImg"></div>
             </div>
         </div>
         <div class="tailoring-content-three">
-            <button class="l-btn cropper-reset-btn">复位</button>
-            <button class="l-btn cropper-rotate-btn">旋转</button>
-            <button class="l-btn cropper-scaleX-btn">换向</button>
-            <button class="l-btn sureCut" id="sureCut">确定</button>
+            <button class="l-btn cropper-reset-btn">Reset</button>
+            <button class="l-btn cropper-rotate-btn">Rotating</button>
+            <button class="l-btn cropper-scaleX-btn">Reversing</button>
+            <button class="l-btn sureCut" id="sureCut">OK</button>
         </div>
     </div>
 </div>
@@ -299,7 +299,7 @@
                     success: function (res) {
                         if (res.Status == "OK") {
                             //location.href = res.Data;
-                            alert("修改资料成功");
+                            alert("Edit successfully");
                             window.location.reload();
                         }
                         else {

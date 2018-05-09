@@ -19,7 +19,8 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            UploadImage();
+            CreateData();
+            //UploadImage();
             //bool b = EmailHelper.SendMail(new Email { DisplayName = "朱生海", Body = "测试邮件发送", Subject = "123456" }, "zhushenghai@outlook.com");
 
             Console.WriteLine("OK");
@@ -125,7 +126,8 @@ namespace ConsoleTest
 
             IUserService userService = new UserService();
             var admin = userService.GetUserById(userService.Add("admin", "管理员", "123456"));
-            //userService.Edit(admin.Id, admin.UserName, admin.FullName, biography, false, true, profilePic);
+            userService.EditProfilePic(admin.Id, profilePic);
+            userService.Edit(admin.Id, admin.UserName, admin.FullName, biography, false, true,"zhushenghai@outlook.com","000000000");
             List<UserEntity> userList = new List<UserEntity>() { admin };
             IFollowService followService = new FollowService();
             IPostService postService = new PostService();
@@ -176,10 +178,11 @@ Follow along to see more of our favorites from last weekend’s hashtag project,
             #endregion
             CommentService commentService = new CommentService();
             LikeService likeService = new LikeService();
-            for (int i = 0; i < 100; i++)
+            for (int i = 1; i < 51; i++)
             {
                 var user = userService.GetUserById(userService.Add("test" + i, "Test" + i, "123456"));
-                //userService.Edit(user.Id, user.UserName, user.FullName, biography, false, true, profilePic);
+                userService.Edit(user.Id, user.UserName, user.FullName, biography, false, true,"zhushenghai@outlook.com","123456789");
+                userService.EditProfilePic(user.Id, profilePic);
                 foreach (var item in dic)
                 {
                     var post = postService.GetPostInfo(postService.Add(user.Id, item.Key.Length > 100 ? item.Key.Substring(0, 99) : item.Key, item.Value, "重庆"));

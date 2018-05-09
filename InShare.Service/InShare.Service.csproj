@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminUserService.cs" />
     <Compile Include="BaseService.cs" />
     <Compile Include="CommentService.cs" />
     <Compile Include="FollowService.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="LikeService.cs" />
     <Compile Include="LogService.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelConfig\AdminUserConfig.cs" />
     <Compile Include="ModelConfig\CommentConfig.cs" />
     <Compile Include="ModelConfig\FollowConfig.cs" />
     <Compile Include="ModelConfig\LikerConfig.cs" />

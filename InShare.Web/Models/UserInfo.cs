@@ -16,5 +16,6 @@ namespace InShare.Web.Models
         public string FullName { get; set; }
         public string Biography { get; set; }
         public bool IsFollowing { get; set; }
+        public string CreateDateTime { get; set; }
     }
 }

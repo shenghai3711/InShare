@@ -91,5 +91,12 @@ namespace InShare.IService
         /// <returns></returns>
         long GetAllUserCount(string name);
 
+        /// <summary>
+        /// 获取用户分页列表
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        List<UserEntity> GetUserPagerList(int pageSize, int pageIndex);
     }
 }

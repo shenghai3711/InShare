@@ -66,7 +66,7 @@
         $("#username").blur(function () {
             var userName = $("#username").val();
             if (userName == "") {
-                $("#msg").show().find('div').html("请输入登陆账号");
+                $("#msg").show().find('div').html("Please enter login account");
                 $("#username").focus();
                 return;
             }
@@ -75,7 +75,7 @@
                 type: "post", data: { userName: userName },
                 success: function (res) {
                     if (res.Status == "OK") {
-                        $("#msg").show().find('div').html("用户名不存在");
+                        $("#msg").show().find('div').html("Username does not exist");
                         $("#username").focus();
                     } else {
                         verifyName = true;
@@ -93,13 +93,13 @@
         $("#email").blur(function () {
             var email = $("#email").val();
             if (email == "") {
-                $("#msg").show().find('div').html("请输入email地址");
+                $("#msg").show().find('div').html("Please enter email address");
                 $("#email").focus();
                 return;
             }
             var reg = /^\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
             if (!reg.test(email)) {
-                $("#msg").show().find('div').html("请输入正确的email地址");
+                $("#msg").show().find('div').html("Please enter the correct email address");
                 $("#email").focus();
                 return;
             }
@@ -114,13 +114,13 @@
     $("#btnSend").click(function () {
         var userName = $("#username").val();
         if (userName == "") {
-            $("#msg").show().find('div').html("请输入登陆账号");
+            $("#msg").show().find('div').html("Please enter login account");
             $("#username").focus();
             return;
         }
         var email = $("#email").val();
         if (email == "") {
-            $("#msg").show().find('div').html("请输入email地址");
+            $("#msg").show().find('div').html("Please enter email address");
             $("#email").focus();
             return;
         }
@@ -132,10 +132,10 @@
             code.attr('disabled', 'true').attr("color", "#818080");
             var t = setInterval(function () {
                 time--;
-                code.val(time + "秒");
+                code.val(time + "s");
                 if (time == 0) {
                     clearInterval(t);
-                    code.val("重新获取");
+                    code.val("Reacquire");
                     validCode = true;
                     code.removeAttr("disabled").removeAttr('color');
                 }

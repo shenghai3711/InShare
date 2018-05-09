@@ -32,6 +32,7 @@ namespace InShare.Service
         public DbSet<UserProfileEntity> Profiles { get; set; }
         public DbSet<FollowEntity> Follows { get; set; }
         public DbSet<VerifyEntity> Verifys { get; set; }
+        public DbSet<AdminUserEntity> AdminUsers { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

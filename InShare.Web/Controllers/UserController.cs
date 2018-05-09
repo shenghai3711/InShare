@@ -458,7 +458,9 @@ namespace InShare.Web.Controllers
             //根据用户编号获取一个验证
             var verify = VerifyService.Add(user.Id);
             //邮件内容
-            string content = string.Format("http://localhost:31726/User/ResetPassword?userId={0}&verifyCode={1}", user.Id, verify.VerifyCode);
+            //http://localhost:31726/Manage/Main/Login
+            string url = Request.Url.ToString();
+            string content = string.Format("{0}/User/ResetPassword?userId={1}&verifyCode={2}", url.Substring(0, url.IndexOf("/User")), user.Id, verify.VerifyCode);
             //发送邮件
             bool b = EmailHelper.SendMail(new Email
             {

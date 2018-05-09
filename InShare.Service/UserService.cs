@@ -179,6 +179,15 @@ namespace InShare.Service
             }
         }
 
+        public List<UserEntity> GetUserPagerList(int pageSize, int pageIndex)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                return baseService.GetPager<DateTime>(u => 1 == 1, u => u.CreateDateTime, pageSize, pageIndex).Include(u => u.Profile).ToList();
+            }
+        }
+
         /// <summary>
         /// 重置密码
         /// </summary>
