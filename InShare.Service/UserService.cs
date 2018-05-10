@@ -126,12 +126,16 @@ namespace InShare.Service
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public long GetAllUserCount(string name)
+        public long GetAllUserCount(string name = "", bool flag = false)
         {
             using (InShareContext db = new InShareContext())
             {
                 BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
-                return baseService.GetAll().Where(u => u.FullName.Contains(name) || u.UserName.Contains(name)).Count();
+                if (string.IsNullOrEmpty(name))
+                {
+                    return baseService.GetAll(flag).Count();
+                }
+                return baseService.GetAll(flag).Where(u => u.FullName.Contains(name) || u.UserName.Contains(name)).Count();
             }
         }
 
@@ -179,12 +183,48 @@ namespace InShare.Service
             }
         }
 
-        public List<UserEntity> GetUserPagerList(int pageSize, int pageIndex)
+        public List<UserEntity> GetUserPagerList(int pageSize, int pageIndex, bool flag = false)
         {
             using (InShareContext db = new InShareContext())
             {
                 BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
-                return baseService.GetPager<DateTime>(u => 1 == 1, u => u.CreateDateTime, pageSize, pageIndex).Include(u => u.Profile).ToList();
+                return baseService.GetPager<DateTime>(u => 1 == 1, u => u.CreateDateTime, pageSize, pageIndex, flag).Include(u => u.Profile).ToList();
+            }
+        }
+
+        public bool MarkBatchDel(long[] userIds)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                return baseService.MakeDels(userIds);
+            }
+        }
+
+        public bool MarkDel(long userId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                return baseService.MakeDel(userId);
+            }
+        }
+
+        public bool ReMark(long userId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                return baseService.ReMake(userId);
+            }
+        }
+
+        public bool ReMarkBatch(long[] userIds)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<UserEntity> baseService = new BaseService<UserEntity>(db);
+                return baseService.ReMakes(userIds);
             }
         }
 

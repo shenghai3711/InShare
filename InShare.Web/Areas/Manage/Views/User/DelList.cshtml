@@ -1,8 +1,9 @@
 ﻿@model InShare.Web.Models.UserInfo[]
 @{
-    ViewBag.Title = "用户列表";
+    ViewBag.Title = "用户回收站";
     Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
 }
+
 <style type="text/css">
     #pager li {
         float: left;
@@ -14,14 +15,14 @@
         font-size: xx-large;
     }
 </style>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span class="c-gray en">&gt;</span> 用户列表管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span class="c-gray en">&gt;</span> 用户回收站 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> @*<a href="javascript:;" onclick="layer_show('添加普通用户','/Manage/User/AddNew','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a>*@</span> <span class="r">共有数据：<strong>@ViewBag.totalCount</strong> 条</span> </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="batch_redel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量恢复</a></span> <span class="r">共有数据：<strong>@Model.Length</strong> 条</span> </div>
     <form id="formList">
         <table class="table table-border table-bordered table-bg">
             <thead>
                 <tr>
-                    <th scope="col" colspan="9">用户列表</th>
+                    <th scope="col" colspan="9">已删用户列表</th>
                 </tr>
                 <tr class="text-c">
                     <th width="25"><input type="checkbox" name="" value=""></th>
@@ -42,8 +43,7 @@
                         <td>******</td>
                         <td>@user.CreateDateTime</td>
                         <td class="td-manage">
-                            <a title="编辑" href="javascript:;" onclick="layer_show('用户编辑', '/Manage/User/Edit/@user.Id',  '560', '230')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-                            <a title="删除" href="javascript:;" onclick="role_del(this,@user.Id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                            <a title="恢复" href="javascript:;" onclick="role_redel(this,@user.Id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
                         </td>
                     </tr>
                 }
@@ -58,31 +58,32 @@
                                                  //对于所有cshtml要用到，但是又获取不到的数据，都由Action来获取，然后放到ViewBag或者Model中传递给cshtml
         pager.PageSize = 8;
         pager.TotalCount = (int)ViewBag.totalCount;
-        pager.UrlPattern = "/Manage/User/List?pageIndex={pn}";
+        pager.UrlPattern = "/Manage/User/DelList?pageIndex={pn}";
     }
     <div id="pager">@Html.Raw(pager.GetPagerHtml())</div>
 </div>
+
 @section FooterScript
 {
     <script type="text/javascript">
-        function batch_del() {
-            layer.confirm("确认要批量删除这些数据吗？", function () {
+        function batch_redel() {
+            layer.confirm("确认要批量恢复这些数据吗？", function () {
                 var formData = $("#formList").serializeArray();
                 $.ajax({
-                    url: "/Manage/User/BatchDelete",
+                    url: "/Manage/User/ReBatchDelete",
                     type: "post",
                     data: formData,
                     dataType: "json",
                     success: function (res) {
                         if (res.Status == "OK") {
                             location.reload();//刷新页面
-                            layer.msg('已删除!', { icon: 1, time: 2000 });
+                            layer.msg('已恢复!', { icon: 1, time: 2000 });
                         }
                         else if (res.Status == "Error") {
                             alert(res.ErrorMsg);
                         }
                         else {
-                            alert("删除失败");
+                            alert("恢复失败");
                         }
                     },
                     error: function () {
@@ -91,29 +92,27 @@
                 });
             });
         }
-
-        function role_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
+        function role_redel(obj, id) {
+            layer.confirm('确认要恢复吗？', function (index) {
                 //此处请求后台程序，下方是成功后的前台处理……
                 $.ajax({
-                    url: "/Manage/User/Delete/" + id,
+                    url: "/Manage/User/ReDelete/" + id,
                     type: "post",
                     dataType: "json",
                     success: function (res) {
                         if (res.Status == "OK") {
                             $(obj).parents("tr").remove();
-                            layer.msg('已删除!', { icon: 1, time: 2000 });
+                            layer.msg('已恢复!', { icon: 1, time: 2000 });
                         }
                         else if (res.Status == "Error") {
                             alert(res.ErrorMsg);
                         }
                         else {
-                            layer.msg('删除失败!', { icon: 2, time: 2000 });
+                            layer.msg('恢复失败!', { icon: 2, time: 2000 });
                         }
                     }
                 });
             });
         }
-
     </script>
 }

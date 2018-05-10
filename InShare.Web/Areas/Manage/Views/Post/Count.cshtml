@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Count";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main" style="width: 650px;height:400px;"></div>
+@section FooterScript{
+    <script src="~/Content/js/echarts.min.js"></script>
+    <script type="text/javascript">
+        var arr = [1, 2, 3, 4, 5, 6];
+        var option = {
+            title: {
+                text: '近一周发帖情况'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['最高发帖', '最低发帖']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: { readOnly: false },
+                    magicType: { type: ['line', 'bar'] },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            },
+            series: [
+                {
+                    name: '最高',
+                    type: 'line',
+                    data: [11, 11, 15, 13, 12, 13, 10],
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' }
+                        ]
+                    }
+                },
+                {
+                    name: '最低',
+                    type: 'line',
+                    data: [1, 2, 2, 5, 3, 2, 0],
+                    markPoint: {
+                        data: [
+                            { name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' },
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: '最大值'
+                                    }
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                }
+            ]
+        };
+
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption(option);
+    </script>
+    <script type="text/javascript">
+        function check() {
+            var stopDate = $("#date").val();
+            var reg = /((^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(10|12|0?[13578])([-\/\._])(3[01]|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(11|0?[469])([-\/\._])(30|[12][0-9]|0?[1-9])$)|(^((1[8-9]\d{2})|([2-9]\d{3}))([-\/\._])(0?2)([-\/\._])(2[0-8]|1[0-9]|0?[1-9])$)|(^([2468][048]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([3579][26]00)([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][0][48])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][2468][048])([-\/\._])(0?2)([-\/\._])(29)$)|(^([1][89][13579][26])([-\/\._])(0?2)([-\/\._])(29)$)|(^([2-9][0-9][13579][26])([-\/\._])(0?2)([-\/\._])(29)$))/ig;
+            var regExp = new RegExp(reg);
+            if (!regExp.test(stopDate)) {
+                layer.msg('请选择日期!', { icon: 2, time: 2000 });
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+}
+

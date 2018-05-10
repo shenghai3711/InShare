@@ -16,6 +16,11 @@ namespace InShare.Web.Areas.Manage.Controllers
         // GET: Manage/Main
         public ActionResult Index()
         {
+            if (Session["AdminName"] == null)
+            {
+                Session.Clear();
+                return Redirect("/Manage/Main/Login");
+            }
             return View();
         }
 
@@ -29,15 +34,16 @@ namespace InShare.Web.Areas.Manage.Controllers
         public ActionResult Login(string userName, string passWord, string verifyCode)
         {
             string cacheVerifyCode = TempData["verifyManageCode"].ToString();
-            if (verifyCode!=cacheVerifyCode)
+            if (verifyCode != cacheVerifyCode)
             {
                 return Json(new AjaxResult { Status = "Error", ErrorMsg = "验证码错误" });
             }
             if (AdminUserService.Login(userName, passWord))
             {
+                Session["AdminName"] = userName;
                 return Json(new AjaxResult { Status = "OK" });
             }
-            return Json(new AjaxResult { Status = "Error",ErrorMsg="用户名或密码错误" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "用户名或密码错误" });
         }
 
         public ActionResult Logout()
@@ -50,7 +56,7 @@ namespace InShare.Web.Areas.Manage.Controllers
         {
             return View();
         }
-        
+
         /// <summary>
         /// 获取验证码
         /// </summary>

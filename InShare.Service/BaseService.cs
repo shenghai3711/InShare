@@ -76,9 +76,26 @@ namespace InShare.Service
         /// <returns>恢复成功返回True，否则返回False</returns>
         public bool ReMake(long id)
         {
-            var user = GetAll().SingleOrDefault(t => t.Id == id);
+            var user = GetAll(true).SingleOrDefault(t => t.Id == id);
             if (user == null) return false;
             user.IsDeleted = false;
+            context.SaveChanges();
+            return true;
+        }
+
+        /// <summary>
+        /// 恢复列表
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public bool ReMakes(long[] ids)
+        {
+            var list = GetAll(true).Where(e => ids.Contains(e.Id)).ToList();
+            if (list.Count() == 0) return false;
+            foreach (var item in list)
+            {
+                item.IsDeleted = false;
+            }
             context.SaveChanges();
             return true;
         }
@@ -93,6 +110,23 @@ namespace InShare.Service
             var user = GetAll().SingleOrDefault(t => t.Id == id);
             if (user == null) return false;
             user.IsDeleted = true;
+            context.SaveChanges();
+            return true;
+        }
+
+        /// <summary>
+        /// 删除列表
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public bool MakeDels(long[] ids)
+        {
+            var list = GetAll().Where(e => ids.Contains(e.Id));
+            if (list.Count() == 0) return false;
+            foreach (var item in list)
+            {
+                item.IsDeleted = true;
+            }
             context.SaveChanges();
             return true;
         }
@@ -115,10 +149,11 @@ namespace InShare.Service
         /// <param name="orderBy">排序Lambda表达式</param>
         /// <param name="pageSize">每页数量</param>
         /// <param name="pageIndex">页索引</param>
+        /// <param name="flag">是否已删除（默认取不删除的数据）</param>
         /// <returns></returns>
-        public IQueryable<T> GetPager<TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageSize, int pageIndex)
+        public IQueryable<T> GetPager<TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderBy, int pageSize, int pageIndex, bool flag = false)
         {
-            return GetAll().Where(whereLambda).OrderByDescending(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            return GetAll(flag).Where(whereLambda).OrderByDescending(orderBy).Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }
     }
 }

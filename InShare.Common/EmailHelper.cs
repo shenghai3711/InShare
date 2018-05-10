@@ -40,9 +40,13 @@ namespace InShare.Common
                 client.Send(message);
                 return true;
             }
+#pragma warning disable CS0168 // 声明了变量“iex”，但从未使用过
             catch (InvalidOperationException iex)
+#pragma warning restore CS0168 // 声明了变量“iex”，但从未使用过
             { }
+#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
             catch (Exception ex)
+#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
             { }
             return false;
         }

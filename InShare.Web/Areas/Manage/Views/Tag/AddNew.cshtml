@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "AddNew";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+
+<form id="formAdd">
+    </p>
+    <div class="row cl" style="margin:0px auto;">
+        <label class="form-label col-3"><span class="c-red">*</span>名称：</label>
+        <div class="formControls col-5">
+            <input type="text" class="input-text" name="Name" id="Name" datatype="*2-50" nullmsg="名称不能为空" />
+        </div>
+        <div class="col-4"> </div>
+    </div>
+    </p>
+    <input type="button" value="保存" id="btnSave" />
+</form>
+
+@section FooterScript
+{
+    <script type="text/javascript">
+        var saveAjax = function () {
+            var formData = $("#formAdd").serializeArray();
+            $.ajax({
+                url: "/Manage/Tag/AddNew",
+                type: "post",
+                data: formData,
+                dataType: "json",
+                success: function (res) {
+                    if (res.Status == "OK") {
+                        parent.location.reload();//刷新父窗口
+                    }
+                    else {
+                        alert(res.ErrorMsg);
+                    }
+                },
+                error: function () { alert("请求出错"); }
+            });
+        };
+        $(function () {
+            var validForm = $("#formAdd").Validform({ tiptype: 2 });
+            $("#btnSave").click(function () {
+                if (validForm.check(false)) {
+                    saveAjax();
+                }
+            });
+        });
+    </script>
+}
+

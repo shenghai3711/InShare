@@ -79,12 +79,16 @@ namespace InShare.Service
             }
         }
 
-        public int GetPostCount(long userId)
+        public int GetPostCount(long userId = 0, bool flag = false)
         {
             using (InShareContext db = new InShareContext())
             {
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
-                return baseService.GetAll().Where(p => p.UserId == userId).Count();
+                if (userId == 0)
+                {
+                    return baseService.GetAll(flag).Count();
+                }
+                return baseService.GetAll(flag).Where(p => p.UserId == userId).Count();
             }
         }
 
@@ -140,6 +144,68 @@ namespace InShare.Service
             {
                 BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
                 return baseService.GetAll().Where(p => p.Tags.Any(t => t.Id == tagId)).GroupBy(p => p.UserId).Count();
+            }
+        }
+
+
+        public List<PostEntity> GetPostPagerList(int pageSize, int pageIndex, bool flag = false)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.GetPager<DateTime>(p => 1 == 1, p => p.CreateDateTime, pageSize, pageIndex, flag).Include(p => p.Owner).Include(p => p.Tags).ToList();
+            }
+        }
+
+        public bool MarkBatchDel(long[] postIds)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.MakeDels(postIds);
+            }
+        }
+
+        public bool MarkDel(long postId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.MakeDel(postId);
+            }
+        }
+
+        public bool ReMark(long postId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.ReMake(postId);
+            }
+        }
+
+        public bool ReMarkBatch(long[] postIds)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                return baseService.ReMakes(postIds);
+            }
+        }
+
+        public bool Edit(long postId, string content, string imgPath, string location)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<PostEntity> baseService = new BaseService<PostEntity>(db);
+                var post = baseService.GetById(postId);
+                if (post == null)
+                    return false;
+                post.Caption = content;
+                post.DisplayUrl = imgPath;
+                post.Location = location;
+                db.SaveChanges();
+                return true;
             }
         }
     }

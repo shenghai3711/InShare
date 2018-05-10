@@ -244,6 +244,17 @@
     <Content Include="Areas\Manage\Views\Main\Index.cshtml" />
     <Content Include="Areas\Manage\Views\User\List.cshtml" />
     <Content Include="Areas\Manage\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\User\DelList.cshtml" />
+    <Content Include="Areas\Manage\Views\User\Count.cshtml" />
+    <Content Include="Areas\Manage\Views\Post\List.cshtml" />
+    <Content Include="Areas\Manage\Views\Post\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Post\DelList.cshtml" />
+    <Content Include="Areas\Manage\Views\Post\Count.cshtml" />
+    <Content Include="Areas\Manage\Views\Tag\List.cshtml" />
+    <Content Include="Areas\Manage\Views\Tag\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Tag\Count.cshtml" />
+    <Content Include="Areas\Manage\Views\Tag\DelList.cshtml" />
+    <Content Include="Areas\Manage\Views\Tag\AddNew.cshtml" />
     <None Include="Content\js\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\js\jquery-1.10.2.js" />
     <Content Include="Content\js\jquery-1.10.2.min.js" />
@@ -1358,6 +1369,8 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\Manage\Controllers\MainController.cs" />
+    <Compile Include="Areas\Manage\Controllers\PostController.cs" />
+    <Compile Include="Areas\Manage\Controllers\TagController.cs" />
     <Compile Include="Areas\Manage\Controllers\UserController.cs" />
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Content\lib\ueditor\1.4.3\net\App_Code\Config.cs" />

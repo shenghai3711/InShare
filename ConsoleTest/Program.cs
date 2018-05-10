@@ -80,7 +80,9 @@ namespace ConsoleTest
                 byte[] byteArray = Convert.FromBase64String(dummyData);
                 return new System.IO.MemoryStream(byteArray);
             }
+#pragma warning disable CS0168 // 声明了变量“ex”，但从未使用过
             catch (Exception ex)
+#pragma warning restore CS0168 // 声明了变量“ex”，但从未使用过
             {
                 return null;
             }
@@ -112,7 +114,9 @@ namespace ConsoleTest
                     //return Json(new { Success = true, FilePath = path + saveName, Message = "上传成功！" });
                 }
             }
+#pragma warning disable CS0168 // 声明了变量“e”，但从未使用过
             catch (Exception e)
+#pragma warning restore CS0168 // 声明了变量“e”，但从未使用过
             {
                 return false;
                 //return Json(new { Success = false, FilePath = "", Message = "出错了！" });

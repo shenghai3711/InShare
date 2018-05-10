@@ -1,8 +1,9 @@
-﻿@model InShare.Web.Models.UserInfo[]
+﻿@model InShare.Model.TagEntity[]
 @{
-    ViewBag.Title = "用户列表";
+    ViewBag.Title = "标签列表";
     Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
 }
+
 <style type="text/css">
     #pager li {
         float: left;
@@ -14,36 +15,34 @@
         font-size: xx-large;
     }
 </style>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span class="c-gray en">&gt;</span> 用户列表管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 标签管理 <span class="c-gray en">&gt;</span> 标签列表管理 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="pd-20">
-    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> @*<a href="javascript:;" onclick="layer_show('添加普通用户','/Manage/User/AddNew','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a>*@</span> <span class="r">共有数据：<strong>@ViewBag.totalCount</strong> 条</span> </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="batch_del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="layer_show('添加标签','/Manage/Tag/AddNew','560', '230')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加标签</a></span> <span class="r">共有数据：<strong>@ViewBag.totalCount</strong> 条</span> </div>
     <form id="formList">
         <table class="table table-border table-bordered table-bg">
             <thead>
                 <tr>
-                    <th scope="col" colspan="9">用户列表</th>
+                    <th scope="col" colspan="9">标签列表</th>
                 </tr>
                 <tr class="text-c">
                     <th width="25"><input type="checkbox" name="" value=""></th>
-                    <th width="150">用户名</th>
+                    <th width="150">编号</th>
                     <th width="150">名称</th>
-                    <th width="150">密码</th>
-                    <th width="150">注册时间</th>
+                    <th width="150">创建时间</th>
                     <th width="100">操作</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var user in Model)
+                @foreach (var tag in Model)
                 {
                     <tr class="text-c">
-                        <td><input type="checkbox" value="@user.Id" name="selectedIds"></td>
-                        <td>@user.UserName</td>
-                        <td>@user.FullName</td>
-                        <td>******</td>
-                        <td>@user.CreateDateTime</td>
+                        <td><input type="checkbox" value="@tag.Id" name="selectedIds"></td>
+                        <td>@tag.Id</td>
+                        <td>@tag.Name</td>
+                        <td>@tag.CreateDateTime</td>
                         <td class="td-manage">
-                            <a title="编辑" href="javascript:;" onclick="layer_show('用户编辑', '/Manage/User/Edit/@user.Id',  '560', '230')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-                            <a title="删除" href="javascript:;" onclick="role_del(this,@user.Id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                            <a title="编辑" href="javascript:;" onclick="layer_show('标签编辑', '/Manage/Tag/Edit/@tag.Id',  '560', '230')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+                            <a title="删除" href="javascript:;" onclick="role_del(this,@tag.Id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
                         </td>
                     </tr>
                 }
@@ -58,7 +57,7 @@
                                                  //对于所有cshtml要用到，但是又获取不到的数据，都由Action来获取，然后放到ViewBag或者Model中传递给cshtml
         pager.PageSize = 8;
         pager.TotalCount = (int)ViewBag.totalCount;
-        pager.UrlPattern = "/Manage/User/List?pageIndex={pn}";
+        pager.UrlPattern = "/Manage/Tag/List?pageIndex={pn}";
     }
     <div id="pager">@Html.Raw(pager.GetPagerHtml())</div>
 </div>
@@ -69,7 +68,7 @@
             layer.confirm("确认要批量删除这些数据吗？", function () {
                 var formData = $("#formList").serializeArray();
                 $.ajax({
-                    url: "/Manage/User/BatchDelete",
+                    url: "/Manage/Tag/BatchDelete",
                     type: "post",
                     data: formData,
                     dataType: "json",
@@ -96,7 +95,7 @@
             layer.confirm('确认要删除吗？', function (index) {
                 //此处请求后台程序，下方是成功后的前台处理……
                 $.ajax({
-                    url: "/Manage/User/Delete/" + id,
+                    url: "/Manage/Tag/Delete/" + id,
                     type: "post",
                     dataType: "json",
                     success: function (res) {
@@ -117,3 +116,4 @@
 
     </script>
 }
+

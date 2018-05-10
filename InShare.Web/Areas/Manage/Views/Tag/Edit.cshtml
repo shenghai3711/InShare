@@ -1,29 +1,15 @@
-﻿@model InShare.Model.UserEntity
+﻿@model InShare.Model.TagEntity
 
 @{
-    ViewBag.Title = "用户编辑";
+    ViewBag.Title = "标签编辑";
     Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
 }
 <form id="formEdit">
     <input type="hidden" name="Id" value="@Model.Id" />
     <div class="row cl">
-        <label class="form-label col-3"><span class="c-red">*</span>账号：</label>
-        <div class="formControls col-5">
-            <input type="text" class="input-text" name="UserName" value="@Model.UserName" id="UserName" datatype="*2-10" nullmsg="账号不能为空" />
-        </div>
-        <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
         <label class="form-label col-3"><span class="c-red">*</span>名称：</label>
         <div class="formControls col-5">
-            <input type="text" class="input-text" name="FullName" placeholder="请输入名称" value="@Model.FullName" id="FullName" datatype="*2-10" nullmsg="名称不能为空" />
-        </div>
-        <div class="col-4"> </div>
-    </div>
-    <div class="row cl">
-        <label class="form-label col-3"><span class="c-red">*</span>邮箱：</label>
-        <div class="formControls col-5">
-            <input type="email" class="input-text" value="@Model.Profile.Email" name="Email" id="Email" datatype="e" nullmsg="邮箱不能为空" />
+            <input type="text" class="input-text" name="Name" value="@Model.Name" id="Name" datatype="*2-50" nullmsg="名称不能为空" />
         </div>
         <div class="col-4"> </div>
     </div>
@@ -36,7 +22,7 @@
         var saveAjax = function () {
             var formData = $("#formEdit").serializeArray();
             $.ajax({
-                url: "/Manage/User/Edit",
+                url: "/Manage/Tag/Edit",
                 type: "post",
                 data:formData,
                 dataType: "json",

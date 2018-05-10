@@ -1,6 +1,5 @@
 ﻿using InShare.Common;
 using InShare.IService;
-using InShare.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +9,32 @@ using Unity.Attributes;
 
 namespace InShare.Web.Areas.Manage.Controllers
 {
-    public class UserController : Controller
+    public class TagController : Controller
     {
         [Dependency]
-        public IUserService UserService { get; set; }
+        public ITagService TagService { get; set; }
 
         // GET: Manage/User
         public ActionResult List(int pageIndex = 1)
         {
             ViewBag.pageIndex = pageIndex;
-            ViewBag.totalCount = UserService.GetAllUserCount();
-            var userList = UserService.GetUserPagerList(8, pageIndex).Select(u => new UserInfo
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                UserName = u.UserName,
-                CreateDateTime = string.Format("{0:R}", u.CreateDateTime)
-            }).ToArray();
-            return View(userList);
+            ViewBag.totalCount = TagService.GetTagCount();
+            var list = TagService.GetTagPagerList(8, pageIndex).ToArray();
+            return View(list);
+        }
+
+        [HttpGet]
+        public ActionResult AddNew()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNew(string name)
+        {
+            if (TagService.Add(name))
+                return Json(new AjaxResult { Status = "OK" });
+            return Json(new AjaxResult { Status = "Error", ErrorMsg = "添加失败" });
         }
 
         #region 修改
@@ -35,15 +42,15 @@ namespace InShare.Web.Areas.Manage.Controllers
         [HttpGet]
         public ActionResult Edit(long id)
         {
-            var user = UserService.GetUserById(id);
-            return View(user);
+            var post = TagService.GetTagById(id);
+            return View(post);
         }
 
         [HttpPost]
-        public ActionResult Edit(long id, string userName, string fullName, string email)
+        public ActionResult Edit(long id, string name)
         {
-            var user = UserService.GetUserById(id);
-            if (UserService.Edit(id, userName, fullName, user.Biography, user.IsPrivate, user.Profile.Gender, email, user.Profile.PhoneNum))
+            var post = TagService.GetTagById(id);
+            if (TagService.Edit(id, name))
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
@@ -62,7 +69,7 @@ namespace InShare.Web.Areas.Manage.Controllers
         [HttpPost]
         public ActionResult Delete(long id)
         {
-            if (UserService.MarkDel(id))
+            if (TagService.MarkDel(id))
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
@@ -77,7 +84,7 @@ namespace InShare.Web.Areas.Manage.Controllers
         [HttpPost]
         public ActionResult BatchDelete(long[] selectedIds)
         {
-            if (UserService.MarkBatchDel(selectedIds))
+            if (TagService.MarkBatchDel(selectedIds))
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
@@ -99,15 +106,9 @@ namespace InShare.Web.Areas.Manage.Controllers
         public ActionResult DelList(int pageIndex = 1)
         {
             ViewBag.pageIndex = pageIndex;
-            ViewBag.totalCount = UserService.GetAllUserCount(flag: true);
-            var userList = UserService.GetUserPagerList(8, pageIndex, true).Select(u => new UserInfo
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                UserName = u.UserName,
-                CreateDateTime = string.Format("{0:R}", u.CreateDateTime)
-            }).ToArray();
-            return View(userList);
+            ViewBag.totalCount = TagService.GetTagCount(flag: true);
+            var list = TagService.GetTagPagerList(8, pageIndex, true).ToArray();
+            return View(list);
         }
 
         #region 恢复数据
@@ -120,7 +121,7 @@ namespace InShare.Web.Areas.Manage.Controllers
         [HttpPost]
         public ActionResult ReBatchDelete(long[] selectedIds)
         {
-            if (UserService.ReMarkBatch(selectedIds))
+            if (TagService.ReMarkBatch(selectedIds))
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
@@ -135,7 +136,7 @@ namespace InShare.Web.Areas.Manage.Controllers
         [HttpPost]
         public ActionResult ReDelete(long id)
         {
-            if (UserService.ReMark(id))
+            if (TagService.ReMark(id))
             {
                 return Json(new AjaxResult { Status = "OK" });
             }
@@ -143,6 +144,5 @@ namespace InShare.Web.Areas.Manage.Controllers
         }
 
         #endregion
-
     }
 }

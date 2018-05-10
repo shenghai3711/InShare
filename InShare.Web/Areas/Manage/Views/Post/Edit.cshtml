@@ -1,29 +1,29 @@
-﻿@model InShare.Model.UserEntity
+﻿@model InShare.Model.PostEntity
 
 @{
-    ViewBag.Title = "用户编辑";
+    ViewBag.Title = "帖子编辑";
     Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
 }
 <form id="formEdit">
     <input type="hidden" name="Id" value="@Model.Id" />
     <div class="row cl">
-        <label class="form-label col-3"><span class="c-red">*</span>账号：</label>
+        <label class="form-label col-3"><span class="c-red">*</span>内容：</label>
         <div class="formControls col-5">
-            <input type="text" class="input-text" name="UserName" value="@Model.UserName" id="UserName" datatype="*2-10" nullmsg="账号不能为空" />
+            <input type="text" class="input-text" name="Caption" value="@Model.Caption" id="Caption" datatype="*2-500" nullmsg="内容不能为空" />
         </div>
         <div class="col-4"> </div>
     </div>
     <div class="row cl">
-        <label class="form-label col-3"><span class="c-red">*</span>名称：</label>
+        <label class="form-label col-3"><span class="c-red">*</span>图片链接：</label>
         <div class="formControls col-5">
-            <input type="text" class="input-text" name="FullName" placeholder="请输入名称" value="@Model.FullName" id="FullName" datatype="*2-10" nullmsg="名称不能为空" />
+            <input type="text" class="input-text" name="DisplayUrl" placeholder="请输入图片链接" value="@Model.DisplayUrl" id="DisplayUrl" datatype="*2-500" nullmsg="图片链接不能为空" />
         </div>
         <div class="col-4"> </div>
     </div>
     <div class="row cl">
-        <label class="form-label col-3"><span class="c-red">*</span>邮箱：</label>
+        <label class="form-label col-3"><span class="c-red">*</span>地理位置：</label>
         <div class="formControls col-5">
-            <input type="email" class="input-text" value="@Model.Profile.Email" name="Email" id="Email" datatype="e" nullmsg="邮箱不能为空" />
+            <input type="text" class="input-text" value="@Model.Location" name="Location" id="Location" datatype="*2-10" nullmsg="地理位置不能为空" />
         </div>
         <div class="col-4"> </div>
     </div>
@@ -36,7 +36,7 @@
         var saveAjax = function () {
             var formData = $("#formEdit").serializeArray();
             $.ajax({
-                url: "/Manage/User/Edit",
+                url: "/Manage/Post/Edit",
                 type: "post",
                 data:formData,
                 dataType: "json",

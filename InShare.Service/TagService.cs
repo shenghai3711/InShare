@@ -45,12 +45,16 @@ namespace InShare.Service
             }
         }
 
-        public int GetTagCount(string name)
+        public int GetTagCount(string name = "", bool flag = false)
         {
             using (InShareContext db = new InShareContext())
             {
                 BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
-                return baseService.GetAll().Where(t => t.Name == name).Count();
+                if (string.IsNullOrEmpty(name))
+                {
+                    return baseService.GetAll(flag).Count();
+                }
+                return baseService.GetAll(flag).Where(t => t.Name == name).Count();
             }
         }
 
@@ -74,10 +78,93 @@ namespace InShare.Service
 
         public TagEntity GetTagByName(string name)
         {
-            using (InShareContext db=new InShareContext())
+            using (InShareContext db = new InShareContext())
             {
                 BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
                 return baseService.GetAll().FirstOrDefault(t => t.Name == name);
+            }
+        }
+
+        public List<TagEntity> GetTagPagerList(int pageSize, int pageIndex, bool flag = false)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.GetPager<DateTime>(p => 1 == 1, p => p.CreateDateTime, pageSize, pageIndex, flag).ToList();
+            }
+        }
+
+        public bool MarkBatchDel(long[] tagIds)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.MakeDels(tagIds);
+            }
+        }
+
+        public bool MarkDel(long tagId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.MakeDel(tagId);
+            }
+        }
+
+        public bool ReMark(long tagId)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.ReMake(tagId);
+            }
+        }
+
+        public bool ReMarkBatch(long[] tagIds)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.ReMakes(tagIds);
+            }
+        }
+
+        public bool Edit(long postId, string name)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                var tag = baseService.GetById(postId);
+                if (tag == null)
+                    return false;
+                tag.Name = name;
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        public TagEntity GetTagById(long id)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                return baseService.GetById(id);
+            }
+        }
+
+        public bool Add(string tagName)
+        {
+            using (InShareContext db = new InShareContext())
+            {
+                BaseService<TagEntity> baseService = new BaseService<TagEntity>(db);
+                if (!baseService.GetAll().Any(t => t.Name == tagName))
+                {
+                    db.Tags.Add(new TagEntity { Name = tagName });
+                    db.SaveChanges();
+                    return true;
+                }
+                return false;
             }
         }
     }

@@ -89,14 +89,48 @@ namespace InShare.IService
         /// </summary>
         /// <param name="name">名称（账号/全名）</param>
         /// <returns></returns>
-        long GetAllUserCount(string name);
+        long GetAllUserCount(string name = "", bool flag = false);
+
+        #region 后台操作
 
         /// <summary>
         /// 获取用户分页列表
         /// </summary>
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
+        /// <param name="flag">是否已删除</param>
         /// <returns></returns>
-        List<UserEntity> GetUserPagerList(int pageSize, int pageIndex);
+        List<UserEntity> GetUserPagerList(int pageSize, int pageIndex, bool flag = false);
+
+        /// <summary>
+        /// 标记删除
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        bool MarkDel(long userId);
+
+        /// <summary>
+        /// 标记删除
+        /// </summary>
+        /// <param name="userIds"></param>
+        /// <returns></returns>
+        bool MarkBatchDel(long[] userIds);
+
+        /// <summary>
+        /// 恢复单个
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        bool ReMark(long userId);
+
+        /// <summary>
+        /// 恢复多个
+        /// </summary>
+        /// <param name="userIds"></param>
+        /// <returns></returns>
+        bool ReMarkBatch(long[] userIds);
+
+        #endregion
+
     }
 }

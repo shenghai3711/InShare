@@ -43,7 +43,7 @@ namespace InShare.IService
         /// </summary>
         /// <param name="userId">用户编号</param>
         /// <returns></returns>
-        int GetPostCount(long userId);
+        int GetPostCount(long userId = 0, bool flag = false);
 
         /// <summary>
         /// 根据用户编号获取帖子分页列表
@@ -67,7 +67,7 @@ namespace InShare.IService
         /// <param name="tagId">标记编号</param>
         /// <returns></returns>
         int GetUserCountByTag(long tagId);
-        
+
         /// <summary>
         /// 获取主页帖子
         /// </summary>
@@ -85,6 +85,22 @@ namespace InShare.IService
         /// <param name="pageIndex">页索引</param>
         /// <returns></returns>
         List<PostEntity> GetSearchPager(long tagId, int pageSize, int pageIndex);
-       
+
+        #region 后台操作
+
+        List<PostEntity> GetPostPagerList(int pageSize, int pageIndex, bool flag = false);
+
+        bool MarkBatchDel(long[] postIds);
+
+        bool MarkDel(long postId);
+
+        bool ReMark(long postId);
+
+        bool ReMarkBatch(long[] postIds);
+
+        bool Edit(long postId, string content, string imgPath, string location);
+
+        #endregion
+
     }
 }
